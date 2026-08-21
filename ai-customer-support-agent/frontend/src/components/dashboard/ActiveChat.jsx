@@ -1,4 +1,6 @@
-const messages = [
+import { useState, useEffect, useRef } from "react";
+
+const initialMessages = [
   {
     id: 1,
     sender: "customer",
@@ -31,6 +33,97 @@ const messages = [
 ];
 
 export default function ActiveChat() {
+  const [messages, setMessages] = useState(initialMessages);
+  const [inputText, setInputText] = useState("");
+  const [isListening, setIsListening] = useState(false);
+  const [speechSupported, setSpeechSupported] = useState(true);
+  const recognitionRef = useRef(null);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      setSpeechSupported(false);
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onresult = (event) => {
+      let transcript = "";
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        transcript += event.results[i][0].transcript;
+      }
+      setInputText(transcript);
+    };
+
+    recognition.onerror = (event) => {
+      console.error("Speech recognition error:", event.error);
+      setIsListening(false);
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+    };
+
+    recognitionRef.current = recognition;
+  }, []);
+
+  const toggleListening = () => {
+    if (!speechSupported) {
+      alert("Speech recognition is not supported in this browser. Please try Chrome or Edge.");
+      return;
+    }
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current?.start();
+        setIsListening(true);
+      } catch (err) {
+        console.error("Failed to start speech recognition:", err);
+      }
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (!inputText.trim()) return;
+
+    if (isListening) {
+      recognitionRef.current?.stop();
+      setIsListening(false);
+    }
+
+    const now = new Date();
+    const timeString = now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+
+    const newMessage = {
+      id: Date.now(),
+      sender: "supervisor",
+      text: inputText,
+      time: timeString,
+    };
+
+    setMessages((prev) => [...prev, newMessage]);
+    setInputText("");
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
   return (
     <section className="flex-1 flex flex-col bg-dash-surface-container-lowest rounded-xl shadow-sm border border-dash-surface-variant overflow-hidden min-w-[300px]">
       {/* Frustration Warning Banner */}
@@ -81,6 +174,16 @@ export default function ActiveChat() {
           }
 
           const isCustomer = msg.sender === "customer";
+          const isSupervisor = msg.sender === "supervisor";
+          const isAi = msg.sender === "ai";
+
+          let bubbleStyles = "bg-dash-primary text-dash-on-primary rounded-tr-none";
+          if (isCustomer) {
+            bubbleStyles = "bg-dash-surface-container-high text-dash-on-surface rounded-tl-none border border-dash-surface-variant";
+          } else if (isSupervisor) {
+            bubbleStyles = "bg-dash-secondary text-dash-on-secondary rounded-tr-none";
+          }
+
           return (
             <div
               key={msg.id}
@@ -88,13 +191,7 @@ export default function ActiveChat() {
                 isCustomer ? "self-start" : "self-end items-end"
               }`}
             >
-              <div
-                className={`p-3 rounded-2xl text-body-sm shadow-sm ${
-                  isCustomer
-                    ? "bg-dash-surface-container-high text-dash-on-surface rounded-tl-none border border-dash-surface-variant"
-                    : "bg-dash-primary text-dash-on-primary rounded-tr-none"
-                }`}
-              >
+              <div className={`p-3 rounded-2xl text-body-sm shadow-sm ${bubbleStyles}`}>
                 {msg.text}
               </div>
               <span
@@ -103,7 +200,8 @@ export default function ActiveChat() {
                 }`}
               >
                 {msg.time}
-                {!isCustomer && " • AI Agent"}
+                {isAi && " • AI Agent"}
+                {isSupervisor && " • Human Supervisor"}
               </span>
             </div>
           );
@@ -122,22 +220,58 @@ export default function ActiveChat() {
             Take Over
           </button>
         </div>
-        <div className="relative">
+
+        <div className="relative flex items-center">
           <input
-            className="w-full bg-dash-surface-container-lowest border border-dash-outline-variant rounded-xl pl-4 pr-12 py-3 text-body-sm focus:ring-2 focus:ring-dash-primary focus:border-transparent outline-none transition-all placeholder:text-dash-outline"
-            placeholder="Type a message to take over..."
+            className={`w-full bg-dash-surface-container-lowest border border-dash-outline-variant rounded-xl pl-4 pr-24 py-3 text-body-sm focus:ring-2 focus:ring-dash-primary focus:border-transparent outline-none transition-all placeholder:text-dash-outline ${
+              isListening ? "ring-2 ring-emerald-500 border-emerald-500" : ""
+            }`}
+            placeholder={
+              isListening ? "Listening... Speak now..." : "Type a message to take over..."
+            }
             type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            onKeyDown={handleKeyDown}
           />
-          <button className="absolute right-2 top-1/2 -translate-y-1/2 p-2 text-dash-primary hover:bg-dash-surface-variant rounded-full transition-colors flex items-center justify-center cursor-pointer">
-            <span
-              className="material-symbols-outlined"
-              style={{ fontVariationSettings: "'FILL' 1" }}
+          <div className="absolute right-2 flex items-center gap-1">
+            {/* Mic / Speech-to-Text Button */}
+            <button
+              onClick={toggleListening}
+              type="button"
+              title={isListening ? "Stop Listening" : "Start Voice Input"}
+              className={`p-2 rounded-full transition-colors flex items-center justify-center cursor-pointer ${
+                isListening
+                  ? "bg-emerald-500 text-white animate-pulse"
+                  : "text-dash-on-surface-variant hover:bg-dash-surface-variant hover:text-dash-primary"
+              }`}
             >
-              send
-            </span>
-          </button>
+              <span
+                className="material-symbols-outlined text-xl"
+                style={isListening ? { fontVariationSettings: "'FILL' 1" } : {}}
+              >
+                {isListening ? "mic" : "mic_none"}
+              </span>
+            </button>
+
+            {/* Send Button */}
+            <button
+              onClick={handleSendMessage}
+              type="button"
+              title="Send Message"
+              className="p-2 text-dash-primary hover:bg-dash-surface-variant rounded-full transition-colors flex items-center justify-center cursor-pointer"
+            >
+              <span
+                className="material-symbols-outlined"
+                style={{ fontVariationSettings: "'FILL' 1" }}
+              >
+                send
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </section>
   );
 }
+
