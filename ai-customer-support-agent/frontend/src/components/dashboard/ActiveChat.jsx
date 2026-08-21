@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { api } from "../../services/api";
 
 const initialMessages = [
   {
@@ -38,6 +39,8 @@ export default function ActiveChat() {
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [conversationId, setConversationId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const recognitionRef = useRef(null);
   const fileInputRef = useRef(null);
 
@@ -103,7 +106,7 @@ export default function ActiveChat() {
     e.target.value = "";
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!inputText.trim() && !selectedFile) return;
 
     if (isListening) {
@@ -118,8 +121,9 @@ export default function ActiveChat() {
     });
 
     let messageText = inputText;
-    if (selectedFile) {
-      const fileLabel = `📎 ${selectedFile.name}`;
+    const currentFile = selectedFile;
+    if (currentFile) {
+      const fileLabel = `📎 ${currentFile.name}`;
       messageText = messageText ? `${messageText}\n${fileLabel}` : fileLabel;
     }
 
@@ -133,6 +137,65 @@ export default function ActiveChat() {
     setMessages((prev) => [...prev, newMessage]);
     setInputText("");
     setSelectedFile(null);
+    setIsLoading(true);
+
+    try {
+      if (currentFile) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: Date.now() + 1,
+            sender: "system",
+            text: `Uploading document: ${currentFile.name}...`,
+          },
+        ]);
+        
+        await api.uploadDocument(currentFile);
+        
+        setMessages((prev) => prev.filter(m => !m.text.includes('Uploading document:')));
+      }
+
+      const textToSend = inputText.trim();
+      if (textToSend) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: 'loading-indicator',
+            sender: "system",
+            text: "Waiting for AI response...",
+          }
+        ]);
+
+        const response = await api.sendMessage(textToSend, conversationId);
+        
+        if (response.conversationId) {
+          setConversationId(response.conversationId);
+        }
+
+        setMessages((prev) => prev.filter(m => m.id !== 'loading-indicator'));
+
+        const aiMessage = {
+          id: response.messageId || Date.now() + 2,
+          sender: "ai",
+          text: response.answer,
+          time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+        };
+
+        setMessages((prev) => [...prev, aiMessage]);
+      }
+    } catch (error) {
+      setMessages((prev) => prev.filter(m => m.id !== 'loading-indicator'));
+      setMessages((prev) => [
+        ...prev,
+        {
+          id: Date.now() + 3,
+          sender: "system",
+          text: `Error: ${error.message}`,
+        },
+      ]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleKeyDown = (e) => {
@@ -284,6 +347,7 @@ export default function ActiveChat() {
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyDown}
+            disabled={isLoading}
           />
           <div className="absolute right-2 flex items-center gap-1">
             {/* Mic / Speech-to-Text Button */}
@@ -309,8 +373,9 @@ export default function ActiveChat() {
             <button
               onClick={handleSendMessage}
               type="button"
+              disabled={isLoading}
               title="Send Message"
-              className="p-2 text-dash-primary hover:bg-dash-surface-variant rounded-full transition-colors flex items-center justify-center cursor-pointer"
+              className="p-2 text-dash-primary hover:bg-dash-surface-variant rounded-full transition-colors flex items-center justify-center cursor-pointer disabled:opacity-50"
             >
               <span
                 className="material-symbols-outlined"
