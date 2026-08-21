@@ -50,7 +50,7 @@ export default function Hero() {
       {/* Right Column — Dashboard Mockup */}
       <div className="relative w-full h-[500px] bg-surface-container-low rounded-xl border border-outline-variant shadow-2xl overflow-hidden flex justify-center items-center">
         <img
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuBRz2LKB1zYLvfCRjudq9cS9Wri9DAzj6cdGuy7uOs7KidEG8HQLrBMZEkwS9sLcBjku1Qy5Q7rrIFkifIYAiAtkSKo8MzfcfYGmingQAT1Y_hHCexdfgrJxjFKVYE9kFN81aPz7j1mh22ejqWQ3f-vOB3lAiKjWQFpvUJ3HTDmbw1Up3dPQd4RZdlJZdgJS33MIoHMsbMTcGsDHWxsOGpwsWI8N0dFbojnD3xuBGkKqzDcBAsPB83S"
+          src="/dashboard.png"
           alt="Luminous Support Dashboard Mockup"
           className="w-full h-full object-cover"
         />
