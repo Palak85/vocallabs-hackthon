@@ -1,0 +1,30 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base Styles ── */
+body {
+  font-family: "Inter", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Selection Color ── */
+::selection {
+  background-color: #47e5e6;
+  color: #006364;
+}
+
+/* ── Smooth Scroll ── */
+html {
+  scroll-behavior: smooth;
+}
+
+/* ── Pulse animation for the live dot ── */
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 2s ease-in-out infinite;
+}
