@@ -3,6 +3,8 @@ My account is locked due to incorrect netbanking passwords.,account_problem
 Unable to access mobile banking application.,account_problem
 "Net banking user ID is deactivated, how to unlock?",account_problem
 Mobile banking app login nahi ho raha account locked hai.,account_problem
+My UPI payment failed.,transaction_failed
+My UPI transaction failed.,transaction_failed
 My UPI payment failed but amount was debited from account.,transaction_failed
 ATM transaction failed to dispense cash but balance reduced.,transaction_failed
 Card swipe failed at merchant machine but money deducted.,transaction_failed
@@ -16,10 +18,12 @@ Merchant reversed transaction but bank balance not updated.,transaction_reversed
 Reversal reference number generated but amount not back.,transaction_reversed
 Refund reversal amount kab account me aayega?,transaction_reversed
 I was charged twice for the same restaurant POS swipe.,duplicate_transaction
+Money was deducted twice for a single grocery transaction.,duplicate_transaction
 Double deduction observed on savings account statement.,duplicate_transaction
 Single online order charged twice on credit card.,duplicate_transaction
 Ek hi payment ke liye do baar paise cut ho gaye.,duplicate_transaction
 "My credit card was blocked for suspicious activity, unblock it.",card_problem
+"My debit card is blocked, how to unblock it immediately?",card_problem
 Debit card chip not working at ATM machines.,card_problem
 Request new contactless debit card replacement.,card_problem
 Card block ho gaya hai unblock kaise karein?,card_problem
@@ -32,6 +36,7 @@ Requesting refund of wrongful penalty charges.,refund_request
 Annual debit card maintenance charge refund query.,refund_request
 Wrong charge laga diya bank ne refund chahiye.,refund_request
 How to get password-protected bank account statement PDF?,account_statement
+I need last 6 months bank account statement PDF.,account_statement
 Need annual interest certificate for income tax filing.,account_statement
 Download e-statement for last 3 months savings account.,account_statement
 Account statement PDF download kaise karein?,account_statement

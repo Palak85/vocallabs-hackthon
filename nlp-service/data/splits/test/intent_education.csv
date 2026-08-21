@@ -1,10 +1,10 @@
 text,label
 Attendance marked absent even though I was in lecture.,attendance
-"Withdrew admission, when will fee refund be credited?",fee_refund
+Need official stamp on my fee payment receipt PDF.,fee_receipt
+Online fee payment link open nahi ho raha.,fee_payment
 College administration ke against complaint karni hai.,complaint
-Bank debited fee amount but college portal is unpaid.,fee_payment_not_updated
-Eligibility criteria for state government scholarship.,scholarship
-College transport bus was late and missed morning lab.,transport
-Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
+I paid my college fees yesterday but the portal still shows unpaid.,fee_payment_not_updated
 Query regarding student identity card reissue.,other
-Can I change elective subjects in second year?,course_information
+Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
+College transport bus was late and missed morning lab.,transport
+Disbursement date for national merit scholarship.,scholarship

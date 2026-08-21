@@ -2,6 +2,9 @@ text,label
 My Amazon package hasn't arrived yet.,ecommerce
 My Blinkit delivery is late by two hours.,ecommerce
 "My package is late, where is the courier?",ecommerce
+My Amazon package is late.,ecommerce
+My Blinkit delivery is late.,ecommerce
+My Flipkart order has not arrived.,ecommerce
 I received a damaged phone in my delivery box.,ecommerce
 "The shirt size is wrong, I want to initiate a return.",ecommerce
 Where is my order ORD-99214 tracking link?,ecommerce
@@ -11,6 +14,8 @@ Refund has not been credited to my source account.,ecommerce
 Can I get a replacement for this defective product?,ecommerce
 Delivery partner did not call and marked order delivered.,ecommerce
 Mera order abhi tak deliver nahi hua.,ecommerce
+Mera order abhi tak nahi aaya hai.,ecommerce
+Mera order abhi tak nahi aaya.,ecommerce
 "Parcel kab tak aayega, status update nahi ho raha.",ecommerce
 "Flipkart order is delayed, please update status.",ecommerce
 My cart item is showing out of stock after payment.,ecommerce
@@ -23,9 +28,14 @@ I bought wireless earbuds but the charging case is not working.,ecommerce
 Is cash on delivery available for electronic gadgets?,ecommerce
 My order was delivered to the wrong house address.,ecommerce
 Coupons and promo code not applying at checkout page.,ecommerce
+Delivery boy order deke nahi gaya par delivered mark kar diya.,ecommerce
+Amazon se mangwaya tha parcel abhi tak nahi aaya.,ecommerce
 I need to pay my college semester tuition fees.,education
+I need to pay my college fees.,education
+My school payment isn't showing.,education
 My school fee payment isn't showing in the portal.,education
 I paid my daughter's school fees yesterday but portal says unpaid.,education
+I paid my college fees yesterday but the portal still shows unpaid.,education
 When is the last date for admission form submission?,education
 How do I apply for the merit scholarship?,education
 The university exam hall ticket has a spelling mistake in my name.,education
@@ -35,6 +45,7 @@ My attendance is marked incorrect for the math lecture.,education
 Can I get a refund of the admission seat booking fee?,education
 College bus transport route information needed.,education
 Mera college fee pay ho gaya par portal par unpaid dikh raha hai.,education
+College ki fees pay ho gayi par portal unpaid dikha raha hai.,education
 Semester exam schedule and timetable release date.,education
 I want to change my elective course for 4th semester.,education
 Hostel fee breakdown and installment options query.,education
@@ -43,12 +54,13 @@ When will the scholarship amount be disbursed to my account?,education
 Marksheet correction application process details.,education
 School transport fee is deducted twice this quarter.,education
 How to apply for transfer certificate from school?,education
-Professor was absent for lecture and attendance missing.,education
-Degree certificate convocation registration portal.,education
-Library overdue fine payment online portal link.,education
-Admission counseling round 2 seat allotment list.,education
+Admission form submit nahi ho raha server error aa raha.,education
+Exam admit card download nahi ho raha college portal se.,education
 My insurance claim CLM-45672 is still pending for three weeks.,insurance
+My insurance claim has been pending for three weeks.,insurance
+My insurance claim is delayed.,insurance
 "My policy premium is due tomorrow, how do I pay?",insurance
+My policy premium is due.,insurance
 Why was my health insurance cashless claim rejected?,insurance
 I need to download my car insurance policy document.,insurance
 How to add my spouse as nominee in life policy POL-9912?,insurance
@@ -58,6 +70,7 @@ Claim reimbursement amount settled is lower than bill.,insurance
 Renewal notice not received for my health policy.,insurance
 Hospitalisation cashless approval delayed by TPA desk.,insurance
 Mera health insurance claim abhi tak pass nahi hua.,insurance
+Claim approve kab tak hoga kuch update do insurance desk.,insurance
 Policy document email par nahi mila abhi tak.,insurance
 Term insurance cover amount enhancement eligibility query.,insurance
 Accidental damage claim inspection surveyor contact number.,insurance
@@ -67,11 +80,10 @@ No claim bonus transfer from previous vehicle insurer.,insurance
 Critical illness rider inclusion in existing policy.,insurance
 Claim status check for hospitalization bill refund.,insurance
 Change communication address in policy record POL-3312.,insurance
-Life insurance tax exemption certificate 80C download.,insurance
-Third party vs comprehensive bike insurance coverage.,insurance
-Surgery pre-authorization letter status for hospital.,insurance
-Grace period for term plan renewal after due date.,insurance
+Bima policy ka claim status track karna hai.,insurance
 My UPI payment failed but money was deducted from account.,banking
+My UPI payment failed.,banking
+My UPI transaction failed.,banking
 Money was deducted twice for a single grocery transaction.,banking
 "My debit card is blocked, how to unblock it immediately?",banking
 I need last 6 months bank account statement PDF.,banking
@@ -89,13 +101,11 @@ KYC document verification is still pending after 5 days.,banking
 Need to update my registered mobile number in bank account.,banking
 Transaction TXN-89912 is stuck in processing state.,banking
 Annual debit card maintenance charge refund query.,banking
-Fraudulent transaction dispute filing procedure.,banking
-Branch IFSC code and branch code for wire transfer.,banking
-Cheque book delivery tracking and dispatch status.,banking
-Credit card reward points redemption portal issue.,banking
-Daily UPI transaction limit increase request.,banking
-Savings account minimum balance penalty charges dispute.,banking
+Bank account se paise cut gaye par transfer nahi hua.,banking
+ATM machine me cash atak gaya aur balance cut gaya.,banking
 My recharge succeeded but mobile data is not working.,telecom
+My mobile data is not working.,telecom
+My mobile data isn't working.,telecom
 No network signal on my SIM card since morning.,telecom
 I recharged for 299 pack but unlimited 5G is inactive.,telecom
 "Frequent call drops in my area, please fix network tower.",telecom
@@ -104,6 +114,7 @@ How to port my mobile number to another telecom provider?,telecom
 Broadband fiber wifi internet is down with red light on router.,telecom
 Postpaid bill amount is showing extra hidden roaming charges.,telecom
 Mera recharge ho gaya lekin data nahi chal raha.,telecom
+Mera recharge ho gaya lekin internet data nahi chal raha hai.,telecom
 SIM card me full signal nahi aa raha hai call disconnect ho rahi hai.,telecom
 Validity recharge pack options for prepaid number.,telecom
 eSIM activation QR code expired before scanning.,telecom
@@ -112,14 +123,10 @@ Data balance exhausted too fast without heavy usage.,telecom
 International roaming pack not activated after deduction.,telecom
 Fiber installation technician did not arrive at appointment.,telecom
 "PUK code blocked for my SIM card, need unlock key.",telecom
-How to upgrade my prepaid SIM to 5G connection?,telecom
-Broadband speed test shows 10mbps instead of 200mbps plan.,telecom
-DND service activation request to stop promotional calls.,telecom
-Postpaid plan bill payment receipt not generated.,telecom
-Micro SIM replacement at local telecom store.,telecom
-VoLTE calling not working on my 4G smartphone.,telecom
-Family add-on connection request for secondary SIM.,telecom
+Net nahi chal raha SIM me signal gayab hai.,telecom
+Mobile network issue aa raha hai call drop ho rahi hai.,telecom
 "My flight 6E-412 was cancelled, need full refund.",travel
+My flight was cancelled.,travel
 I want to reschedule my flight departure date to next Monday.,travel
 Baggage missing at luggage belt in Mumbai airport.,travel
 Hotel booking confirmation voucher not received on email.,travel
@@ -128,6 +135,7 @@ Can I change passenger name on booked flight ticket?,travel
 "Train ticket PNR is in RAC, will it confirm before chart?",travel
 "Flight delay of 4 hours, is refreshment compensation provided?",travel
 Mera flight ticket cancel ho gaya refund kab aayega?,travel
+Flight cancel ho gayi hai refund kaise aayega?,travel
 Hotel check-in denied due to booking discrepancy.,travel
 Infant baggage allowance and seat booking inquiry.,travel
 Cab driver did not arrive at airport pickup spot.,travel
@@ -136,14 +144,10 @@ Cancellation charges for refundable domestic flight ticket.,travel
 Terminal change notice for connecting international flight.,travel
 Visa assistance and travel insurance policy for trip.,travel
 Lost handbag reported inside flight cabin.,travel
-Bus booking cancellation and instant wallet refund.,travel
-Wheelchair assistance request for elderly passenger at airport.,travel
-Meal preference update for long haul flight reservation.,travel
-Cruise ticket booking confirmation and itinerary.,travel
-Airport lounge access eligibility with boarding pass.,travel
-Frequent flyer miles not credited after travel.,travel
-Connecting flight transit visa requirement inquiry.,travel
+Flight ticket booking cancel karke full refund chahiye.,travel
 I need to book a doctor appointment with cardiologist.,healthcare
+I need to book an appointment with a doctor.,healthcare
+I need to book a doctor appointment.,healthcare
 When will my blood test lab report be available online?,healthcare
 "Doctor cancelled my appointment, how do I reschedule?",healthcare
 Query regarding dosage instructions on my digital prescription.,healthcare
@@ -159,11 +163,4 @@ MRI scan appointment booking and preparation guidelines.,healthcare
 Diagnostic center appointment confirmation SMS not received.,healthcare
 Prescription refill request for chronic blood pressure tablet.,healthcare
 Hospital emergency ambulance contact number request.,healthcare
-Health checkup package inclusions and fasting requirement.,healthcare
-Doctor fees refund for unattended teleconsultation session.,healthcare
-Physiotherapist home visit appointment booking inquiry.,healthcare
-Pathology blood sample collection technician home visit delay.,healthcare
-ICU patient daily medical bulletin and visitor pass.,healthcare
-CT scan report delivery time and radiologist consultation.,healthcare
-Dental root canal treatment appointment slot booking.,healthcare
-Eye clinic vision test and specs power prescription.,healthcare
+Doctor ka appointment lena hai specialist clinic me.,healthcare

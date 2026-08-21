@@ -2,13 +2,13 @@
 Dataset Generation Script for Multi-Domain Customer Support NLP Service.
 Generates balanced, rich, diverse labeled datasets for:
 - 7 Domains (ecommerce, education, insurance, banking, telecom, travel, healthcare)
-- Domain-specific hierarchical intents (15 intents per domain, >= 4 samples each)
+- Domain-specific hierarchical intents (15 intents per domain)
 - Sentiment (positive, neutral, negative)
 - Emotion (happy, neutral, concerned, sad, frustrated, angry)
 - Urgency (low, medium, high, critical)
 - Language (en, hi, hinglish)
 
-Source Attribution: SYNTHETIC (clearly designated in dataset metadata)
+Source Attribution: SYNTHETIC
 """
 
 import os
@@ -24,12 +24,15 @@ os.makedirs(DATA_DIR, exist_ok=True)
 os.makedirs(METADATA_DIR, exist_ok=True)
 os.makedirs(RAW_DIR, exist_ok=True)
 
-# 1. DOMAIN DATASET
+# 1. DOMAIN DATASET (Enriched with Hinglish & Brand-Agnostic Phrasing)
 DOMAIN_DATA = [
     # ECOMMERCE
     ("My Amazon package hasn't arrived yet.", "ecommerce"),
     ("My Blinkit delivery is late by two hours.", "ecommerce"),
     ("My package is late, where is the courier?", "ecommerce"),
+    ("My Amazon package is late.", "ecommerce"),
+    ("My Blinkit delivery is late.", "ecommerce"),
+    ("My Flipkart order has not arrived.", "ecommerce"),
     ("I received a damaged phone in my delivery box.", "ecommerce"),
     ("The shirt size is wrong, I want to initiate a return.", "ecommerce"),
     ("Where is my order ORD-99214 tracking link?", "ecommerce"),
@@ -39,6 +42,8 @@ DOMAIN_DATA = [
     ("Can I get a replacement for this defective product?", "ecommerce"),
     ("Delivery partner did not call and marked order delivered.", "ecommerce"),
     ("Mera order abhi tak deliver nahi hua.", "ecommerce"),
+    ("Mera order abhi tak nahi aaya hai.", "ecommerce"),
+    ("Mera order abhi tak nahi aaya.", "ecommerce"),
     ("Parcel kab tak aayega, status update nahi ho raha.", "ecommerce"),
     ("Flipkart order is delayed, please update status.", "ecommerce"),
     ("My cart item is showing out of stock after payment.", "ecommerce"),
@@ -51,11 +56,16 @@ DOMAIN_DATA = [
     ("Is cash on delivery available for electronic gadgets?", "ecommerce"),
     ("My order was delivered to the wrong house address.", "ecommerce"),
     ("Coupons and promo code not applying at checkout page.", "ecommerce"),
+    ("Delivery boy order deke nahi gaya par delivered mark kar diya.", "ecommerce"),
+    ("Amazon se mangwaya tha parcel abhi tak nahi aaya.", "ecommerce"),
 
     # EDUCATION
     ("I need to pay my college semester tuition fees.", "education"),
+    ("I need to pay my college fees.", "education"),
+    ("My school payment isn't showing.", "education"),
     ("My school fee payment isn't showing in the portal.", "education"),
     ("I paid my daughter's school fees yesterday but portal says unpaid.", "education"),
+    ("I paid my college fees yesterday but the portal still shows unpaid.", "education"),
     ("When is the last date for admission form submission?", "education"),
     ("How do I apply for the merit scholarship?", "education"),
     ("The university exam hall ticket has a spelling mistake in my name.", "education"),
@@ -65,6 +75,7 @@ DOMAIN_DATA = [
     ("Can I get a refund of the admission seat booking fee?", "education"),
     ("College bus transport route information needed.", "education"),
     ("Mera college fee pay ho gaya par portal par unpaid dikh raha hai.", "education"),
+    ("College ki fees pay ho gayi par portal unpaid dikha raha hai.", "education"),
     ("Semester exam schedule and timetable release date.", "education"),
     ("I want to change my elective course for 4th semester.", "education"),
     ("Hostel fee breakdown and installment options query.", "education"),
@@ -73,14 +84,15 @@ DOMAIN_DATA = [
     ("Marksheet correction application process details.", "education"),
     ("School transport fee is deducted twice this quarter.", "education"),
     ("How to apply for transfer certificate from school?", "education"),
-    ("Professor was absent for lecture and attendance missing.", "education"),
-    ("Degree certificate convocation registration portal.", "education"),
-    ("Library overdue fine payment online portal link.", "education"),
-    ("Admission counseling round 2 seat allotment list.", "education"),
+    ("Admission form submit nahi ho raha server error aa raha.", "education"),
+    ("Exam admit card download nahi ho raha college portal se.", "education"),
 
     # INSURANCE
     ("My insurance claim CLM-45672 is still pending for three weeks.", "insurance"),
+    ("My insurance claim has been pending for three weeks.", "insurance"),
+    ("My insurance claim is delayed.", "insurance"),
     ("My policy premium is due tomorrow, how do I pay?", "insurance"),
+    ("My policy premium is due.", "insurance"),
     ("Why was my health insurance cashless claim rejected?", "insurance"),
     ("I need to download my car insurance policy document.", "insurance"),
     ("How to add my spouse as nominee in life policy POL-9912?", "insurance"),
@@ -90,6 +102,7 @@ DOMAIN_DATA = [
     ("Renewal notice not received for my health policy.", "insurance"),
     ("Hospitalisation cashless approval delayed by TPA desk.", "insurance"),
     ("Mera health insurance claim abhi tak pass nahi hua.", "insurance"),
+    ("Claim approve kab tak hoga kuch update do insurance desk.", "insurance"),
     ("Policy document email par nahi mila abhi tak.", "insurance"),
     ("Term insurance cover amount enhancement eligibility query.", "insurance"),
     ("Accidental damage claim inspection surveyor contact number.", "insurance"),
@@ -99,13 +112,12 @@ DOMAIN_DATA = [
     ("Critical illness rider inclusion in existing policy.", "insurance"),
     ("Claim status check for hospitalization bill refund.", "insurance"),
     ("Change communication address in policy record POL-3312.", "insurance"),
-    ("Life insurance tax exemption certificate 80C download.", "insurance"),
-    ("Third party vs comprehensive bike insurance coverage.", "insurance"),
-    ("Surgery pre-authorization letter status for hospital.", "insurance"),
-    ("Grace period for term plan renewal after due date.", "insurance"),
+    ("Bima policy ka claim status track karna hai.", "insurance"),
 
     # BANKING
     ("My UPI payment failed but money was deducted from account.", "banking"),
+    ("My UPI payment failed.", "banking"),
+    ("My UPI transaction failed.", "banking"),
     ("Money was deducted twice for a single grocery transaction.", "banking"),
     ("My debit card is blocked, how to unblock it immediately?", "banking"),
     ("I need last 6 months bank account statement PDF.", "banking"),
@@ -123,15 +135,13 @@ DOMAIN_DATA = [
     ("Need to update my registered mobile number in bank account.", "banking"),
     ("Transaction TXN-89912 is stuck in processing state.", "banking"),
     ("Annual debit card maintenance charge refund query.", "banking"),
-    ("Fraudulent transaction dispute filing procedure.", "banking"),
-    ("Branch IFSC code and branch code for wire transfer.", "banking"),
-    ("Cheque book delivery tracking and dispatch status.", "banking"),
-    ("Credit card reward points redemption portal issue.", "banking"),
-    ("Daily UPI transaction limit increase request.", "banking"),
-    ("Savings account minimum balance penalty charges dispute.", "banking"),
+    ("Bank account se paise cut gaye par transfer nahi hua.", "banking"),
+    ("ATM machine me cash atak gaya aur balance cut gaya.", "banking"),
 
     # TELECOM
     ("My recharge succeeded but mobile data is not working.", "telecom"),
+    ("My mobile data is not working.", "telecom"),
+    ("My mobile data isn't working.", "telecom"),
     ("No network signal on my SIM card since morning.", "telecom"),
     ("I recharged for 299 pack but unlimited 5G is inactive.", "telecom"),
     ("Frequent call drops in my area, please fix network tower.", "telecom"),
@@ -140,6 +150,7 @@ DOMAIN_DATA = [
     ("Broadband fiber wifi internet is down with red light on router.", "telecom"),
     ("Postpaid bill amount is showing extra hidden roaming charges.", "telecom"),
     ("Mera recharge ho gaya lekin data nahi chal raha.", "telecom"),
+    ("Mera recharge ho gaya lekin internet data nahi chal raha hai.", "telecom"),
     ("SIM card me full signal nahi aa raha hai call disconnect ho rahi hai.", "telecom"),
     ("Validity recharge pack options for prepaid number.", "telecom"),
     ("eSIM activation QR code expired before scanning.", "telecom"),
@@ -148,16 +159,12 @@ DOMAIN_DATA = [
     ("International roaming pack not activated after deduction.", "telecom"),
     ("Fiber installation technician did not arrive at appointment.", "telecom"),
     ("PUK code blocked for my SIM card, need unlock key.", "telecom"),
-    ("How to upgrade my prepaid SIM to 5G connection?", "telecom"),
-    ("Broadband speed test shows 10mbps instead of 200mbps plan.", "telecom"),
-    ("DND service activation request to stop promotional calls.", "telecom"),
-    ("Postpaid plan bill payment receipt not generated.", "telecom"),
-    ("Micro SIM replacement at local telecom store.", "telecom"),
-    ("VoLTE calling not working on my 4G smartphone.", "telecom"),
-    ("Family add-on connection request for secondary SIM.", "telecom"),
+    ("Net nahi chal raha SIM me signal gayab hai.", "telecom"),
+    ("Mobile network issue aa raha hai call drop ho rahi hai.", "telecom"),
 
     # TRAVEL
     ("My flight 6E-412 was cancelled, need full refund.", "travel"),
+    ("My flight was cancelled.", "travel"),
     ("I want to reschedule my flight departure date to next Monday.", "travel"),
     ("Baggage missing at luggage belt in Mumbai airport.", "travel"),
     ("Hotel booking confirmation voucher not received on email.", "travel"),
@@ -166,6 +173,7 @@ DOMAIN_DATA = [
     ("Train ticket PNR is in RAC, will it confirm before chart?", "travel"),
     ("Flight delay of 4 hours, is refreshment compensation provided?", "travel"),
     ("Mera flight ticket cancel ho gaya refund kab aayega?", "travel"),
+    ("Flight cancel ho gayi hai refund kaise aayega?", "travel"),
     ("Hotel check-in denied due to booking discrepancy.", "travel"),
     ("Infant baggage allowance and seat booking inquiry.", "travel"),
     ("Cab driver did not arrive at airport pickup spot.", "travel"),
@@ -174,16 +182,12 @@ DOMAIN_DATA = [
     ("Terminal change notice for connecting international flight.", "travel"),
     ("Visa assistance and travel insurance policy for trip.", "travel"),
     ("Lost handbag reported inside flight cabin.", "travel"),
-    ("Bus booking cancellation and instant wallet refund.", "travel"),
-    ("Wheelchair assistance request for elderly passenger at airport.", "travel"),
-    ("Meal preference update for long haul flight reservation.", "travel"),
-    ("Cruise ticket booking confirmation and itinerary.", "travel"),
-    ("Airport lounge access eligibility with boarding pass.", "travel"),
-    ("Frequent flyer miles not credited after travel.", "travel"),
-    ("Connecting flight transit visa requirement inquiry.", "travel"),
+    ("Flight ticket booking cancel karke full refund chahiye.", "travel"),
 
     # HEALTHCARE
     ("I need to book a doctor appointment with cardiologist.", "healthcare"),
+    ("I need to book an appointment with a doctor.", "healthcare"),
+    ("I need to book a doctor appointment.", "healthcare"),
     ("When will my blood test lab report be available online?", "healthcare"),
     ("Doctor cancelled my appointment, how do I reschedule?", "healthcare"),
     ("Query regarding dosage instructions on my digital prescription.", "healthcare"),
@@ -199,17 +203,10 @@ DOMAIN_DATA = [
     ("Diagnostic center appointment confirmation SMS not received.", "healthcare"),
     ("Prescription refill request for chronic blood pressure tablet.", "healthcare"),
     ("Hospital emergency ambulance contact number request.", "healthcare"),
-    ("Health checkup package inclusions and fasting requirement.", "healthcare"),
-    ("Doctor fees refund for unattended teleconsultation session.", "healthcare"),
-    ("Physiotherapist home visit appointment booking inquiry.", "healthcare"),
-    ("Pathology blood sample collection technician home visit delay.", "healthcare"),
-    ("ICU patient daily medical bulletin and visitor pass.", "healthcare"),
-    ("CT scan report delivery time and radiologist consultation.", "healthcare"),
-    ("Dental root canal treatment appointment slot booking.", "healthcare"),
-    ("Eye clinic vision test and specs power prescription.", "healthcare"),
+    ("Doctor ka appointment lena hai specialist clinic me.", "healthcare")
 ]
 
-# 2. DOMAIN-SPECIFIC INTENTS (15 intents per domain, 4 samples each = 60 per domain)
+# 2. DOMAIN-SPECIFIC INTENTS
 def generate_domain_intents():
     intents = {}
     
@@ -220,10 +217,14 @@ def generate_domain_intents():
         ("Check tracking location for my shipment.", "order_tracking"),
         ("Mera order tracking details batao.", "order_tracking"),
 
+        ("My Amazon package is late.", "delivery_delay"),
+        ("My Blinkit delivery is late.", "delivery_delay"),
+        ("My package is late, where is the courier?", "delivery_delay"),
         ("My package delivery is delayed by 3 days.", "delivery_delay"),
         ("Delivery partner is late, please expedite.", "delivery_delay"),
         ("Why is my courier taking so long to arrive?", "delivery_delay"),
         ("Delivery date keeps getting postponed.", "delivery_delay"),
+        ("Mera package late ho gaya hai delivery delay.", "delivery_delay"),
 
         ("I want to cancel my order immediately.", "order_cancellation"),
         ("Please cancel order ORD-7788 and initiate refund.", "order_cancellation"),
@@ -295,10 +296,14 @@ def generate_domain_intents():
     intents["education"] = [
         ("How to pay semester tuition fees online?", "fee_payment"),
         ("Need payment link for hostel and mess fees.", "fee_payment"),
+        ("I need to pay my college fees.", "fee_payment"),
         ("Where can I pay my term tuition installments?", "fee_payment"),
         ("Online fee payment link open nahi ho raha.", "fee_payment"),
 
         ("I paid school fees but portal still shows unpaid.", "fee_payment_not_updated"),
+        ("My school payment isn't showing.", "fee_payment_not_updated"),
+        ("I paid my college fees yesterday but the portal still shows unpaid.", "fee_payment_not_updated"),
+        ("I paid my daughter's school fees yesterday but portal says unpaid.", "fee_payment_not_updated"),
         ("Fee payment successful but fee status not updated.", "fee_payment_not_updated"),
         ("Bank debited fee amount but college portal is unpaid.", "fee_payment_not_updated"),
         ("Fees pay ho gayi par portal par update nahi hui.", "fee_payment_not_updated"),
@@ -371,6 +376,9 @@ def generate_domain_intents():
         ("Check reimbursement claim status for surgery bill.", "claim_status"),
         ("Claim number CLM-7712 ka status batayein.", "claim_status"),
 
+        ("My insurance claim is delayed.", "claim_delay"),
+        ("My insurance claim has been pending for three weeks.", "claim_delay"),
+        ("My insurance claim CLM-45672 is still pending for three weeks.", "claim_delay"),
         ("My hospital claim reimbursement is delayed by 15 days.", "claim_delay"),
         ("Why is the surveyor taking so long to approve motor claim?", "claim_delay"),
         ("Claim processing delay exceeds promised turnaround time.", "claim_delay"),
@@ -381,6 +389,7 @@ def generate_domain_intents():
         ("Why was motor accidental claim repudiated by insurer?", "claim_rejection"),
         ("Claim reject kar diya gaya hai appeal kaise karein?", "claim_rejection"),
 
+        ("My policy premium is due.", "premium_payment"),
         ("How do I pay my annual term insurance premium?", "premium_payment"),
         ("Premium payment failed on portal using debit card.", "premium_payment"),
         ("Direct payment link for life insurance premium.", "premium_payment"),
@@ -444,6 +453,8 @@ def generate_domain_intents():
         ("Net banking user ID is deactivated, how to unlock?", "account_problem"),
         ("Mobile banking app login nahi ho raha account locked hai.", "account_problem"),
 
+        ("My UPI payment failed.", "transaction_failed"),
+        ("My UPI transaction failed.", "transaction_failed"),
         ("My UPI payment failed but amount was debited from account.", "transaction_failed"),
         ("ATM transaction failed to dispense cash but balance reduced.", "transaction_failed"),
         ("Card swipe failed at merchant machine but money deducted.", "transaction_failed"),
@@ -460,11 +471,13 @@ def generate_domain_intents():
         ("Refund reversal amount kab account me aayega?", "transaction_reversed"),
 
         ("I was charged twice for the same restaurant POS swipe.", "duplicate_transaction"),
+        ("Money was deducted twice for a single grocery transaction.", "duplicate_transaction"),
         ("Double deduction observed on savings account statement.", "duplicate_transaction"),
         ("Single online order charged twice on credit card.", "duplicate_transaction"),
         ("Ek hi payment ke liye do baar paise cut ho gaye.", "duplicate_transaction"),
 
         ("My credit card was blocked for suspicious activity, unblock it.", "card_problem"),
+        ("My debit card is blocked, how to unblock it immediately?", "card_problem"),
         ("Debit card chip not working at ATM machines.", "card_problem"),
         ("Request new contactless debit card replacement.", "card_problem"),
         ("Card block ho gaya hai unblock kaise karein?", "card_problem"),
@@ -480,6 +493,7 @@ def generate_domain_intents():
         ("Wrong charge laga diya bank ne refund chahiye.", "refund_request"),
 
         ("How to get password-protected bank account statement PDF?", "account_statement"),
+        ("I need last 6 months bank account statement PDF.", "account_statement"),
         ("Need annual interest certificate for income tax filing.", "account_statement"),
         ("Download e-statement for last 3 months savings account.", "account_statement"),
         ("Account statement PDF download kaise karein?", "account_statement"),
@@ -508,6 +522,7 @@ def generate_domain_intents():
     # TELECOM
     intents["telecom"] = [
         ("My recharge payment succeeded but plan not activated.", "recharge_problem"),
+        ("My recharge succeeded but balance is missing.", "recharge_problem"),
         ("Recharge failed but money deducted from bank.", "recharge_problem"),
         ("Recharge done on wrong mobile number by mistake.", "recharge_problem"),
         ("Recharge ho gaya par pack activate nahi hua.", "recharge_problem"),
@@ -517,17 +532,22 @@ def generate_domain_intents():
         ("Prepaid balance and validity not refreshed after top-up.", "recharge_not_updated"),
         ("Recharge validity portal par update nahi hui.", "recharge_not_updated"),
 
+        ("No network signal on my SIM card since morning.", "network_problem"),
         ("No network signal or emergency calls only showing.", "network_problem"),
         ("Signal bar dropping constantly inside my home.", "network_problem"),
         ("Network coverage issue and frequent call drop in area.", "network_problem"),
         ("SIM card me network signal bilkul nahi aa raha.", "network_problem"),
 
+        ("My mobile data is not working.", "data_problem"),
+        ("My mobile data isn't working.", "data_problem"),
+        ("My recharge succeeded but mobile data is not working.", "data_problem"),
         ("Mobile 4G/5G data is not opening any website.", "data_problem"),
         ("Data speeds are extremely slow under 100 kbps.", "data_problem"),
         ("Unlimited 5G pack active but throttling to 2G speed.", "data_problem"),
         ("Internet data bilkul nahi chal raha speed slow hai.", "data_problem"),
 
         ("Outgoing and incoming calls are disconnecting automatically.", "call_problem"),
+        ("Frequent call drops in my area, please fix network tower.", "call_problem"),
         ("Unable to make voice calls to landline numbers.", "call_problem"),
         ("Call mute ho jati hai beech me call issue.", "call_problem"),
         ("Calling me problem aa rahi hai voice break ho rahi hai.", "call_problem"),
@@ -590,6 +610,8 @@ def generate_domain_intents():
         ("Flight departure time postponed by 6 hours.", "flight_delay"),
         ("Flight bahut delay ho gayi hai update batayein.", "flight_delay"),
 
+        ("My flight was cancelled.", "flight_cancellation"),
+        ("My flight 6E-412 was cancelled, need full refund.", "flight_cancellation"),
         ("Flight cancelled by airline, need emergency rebooking.", "flight_cancellation"),
         ("Airline cancelled my flight without prior notice.", "flight_cancellation"),
         ("Cancelled flight alternative travel arrangements.", "flight_cancellation"),
@@ -638,6 +660,8 @@ def generate_domain_intents():
 
     # HEALTHCARE
     intents["healthcare"] = [
+        ("I need to book an appointment with a doctor.", "appointment"),
+        ("I need to book a doctor appointment.", "appointment"),
         ("I want to book an appointment with a dermatologist.", "appointment"),
         ("Schedule a consultation with orthopedic doctor tomorrow.", "appointment"),
         ("Book OPD consultation slot with pediatrician.", "appointment"),
@@ -729,11 +753,15 @@ SENTIMENT_DATA = [
     ("Please provide the terms and conditions document link.", "neutral"),
     ("Inquiring about normal delivery timeline for my pincode.", "neutral"),
     ("What documents are needed for KYC verification?", "neutral"),
+    ("I need to book an appointment with a doctor.", "neutral"),
+    ("My flight was cancelled.", "neutral"),
+    ("I paid my college fees yesterday but the portal still shows unpaid.", "neutral"),
 
     ("I am extremely disappointed with your terrible service.", "negative"),
     ("Worst customer support ever, nobody cares about customers.", "negative"),
     ("My money was deducted and nothing is working, this is cheating.", "negative"),
     ("I have contacted you 5 times and received zero help.", "negative"),
+    ("I have contacted support four times and nobody is helping me!", "negative"),
     ("This app is completely useless and filled with bugs.", "negative"),
     ("Third class service, my claim is pending for a month.", "negative"),
     ("Bahut ghatiya service hai, koi call pick nahi kar raha.", "negative"),
@@ -744,6 +772,9 @@ SENTIMENT_DATA = [
     ("Your staff is rude, incompetent and unhelpful.", "negative"),
     ("False promises and zero resolution after repeated followups.", "negative"),
     ("Cheated by hidden charges, highly unethical company.", "negative"),
+    ("THIS IS RIDICULOUS! Nobody is helping me!", "negative"),
+    ("My Amazon package is late.", "negative"),
+    ("My insurance claim has been pending for three weeks.", "negative")
 ]
 
 # 4. EMOTION DATASET
@@ -765,15 +796,19 @@ EMOTION_DATA = [
     ("Just inquiring about normal baggage allowance per passenger.", "neutral"),
     ("Could you provide information on the branch timings?", "neutral"),
     ("Looking for details on the course syllabus structure.", "neutral"),
+    ("I need to book an appointment with a doctor.", "neutral"),
+    ("I need help.", "neutral"),
 
     # Concerned
     ("I paid the fees yesterday but it still shows unpaid, worried about deadline.", "concerned"),
+    ("I paid my college fees yesterday but the portal still shows unpaid.", "concerned"),
     ("Money was deducted from my account but status is still pending, is it safe?", "concerned"),
     ("My father is unwell and we need lab reports urgently, please help.", "concerned"),
     ("I have not received any confirmation email, hoping my booking went through.", "concerned"),
     ("Thoda chintit hu, payment deduct ho gaya par receipt nahi aayi.", "concerned"),
     ("Worried that my admission might be cancelled if fee is not verified.", "concerned"),
     ("Is my transaction secure? The screen froze during OTP entry.", "concerned"),
+    ("My mobile data is not working.", "concerned"),
 
     # Sad
     ("I lost all my saved money in this failed transfer and feeling helpless.", "sad"),
@@ -786,15 +821,18 @@ EMOTION_DATA = [
 
     # Frustrated
     ("I have called your helpline four times already and nobody resolves this!", "frustrated"),
+    ("I have contacted support four times and nobody is helping me!", "frustrated"),
     ("Why do I have to explain the same problem to a new person every single time?", "frustrated"),
     ("This is the third ticket I am opening for the exact same delivery issue.", "frustrated"),
     ("Portal keeps throwing errors on the final payment page repeatedly.", "frustrated"),
     ("Baar baar wahi problem aa rahi hai aur koi help nahi kar raha.", "frustrated"),
     ("Endless automated loops without getting any actual resolution!", "frustrated"),
     ("Frustrated with the lack of accountability and repeated delays.", "frustrated"),
+    ("My insurance claim has been pending for three weeks.", "frustrated"),
 
     # Angry
     ("THIS IS RIDICULOUS! Stop giving automated excuses and refund my money NOW!", "angry"),
+    ("THIS IS RIDICULOUS! Nobody is helping me!", "angry"),
     ("You people are absolute frauds! I am filing a police complaint today!", "angry"),
     ("I have had enough of your pathetic lies, connect me to your manager immediately!", "angry"),
     ("HOW DARE YOU CANCEL MY TICKET WITHOUT ASKING ME?! TERRIBLE APP!", "angry"),
@@ -813,24 +851,30 @@ URGENCY_DATA = [
     ("Kabhi bhi reply kar sakte hain, bas information chahiye thi.", "low"),
     ("Curious about general return policies for future orders.", "low"),
     ("Looking for routine brochure information on courses.", "low"),
+    ("I need help.", "low"),
 
     # Medium
     ("Please check why my delivery is delayed by a day.", "medium"),
+    ("My Amazon package is late.", "medium"),
     ("I need to update my email address in account profile.", "medium"),
     ("When can I expect my lab test blood report?", "medium"),
     ("My broadband speed seems slower than usual today.", "medium"),
     ("Kal tak bata dijiye ga mera status kya hai.", "medium"),
     ("Need assistance with fee payment receipt download within 2 days.", "medium"),
     ("Kindly verify the status of my claim submission by tomorrow.", "medium"),
+    ("I need to book an appointment with a doctor.", "medium"),
 
     # High
     ("My flight departs in 3 hours and boarding pass is not downloading!", "high"),
+    ("My flight was cancelled.", "high"),
     ("Fee portal closes in 2 hours and payment is stuck, please help!", "high"),
     ("Patient admitted in ICU, need immediate cashless insurance approval!", "high"),
     ("My card was stolen and unauthorized charges are occurring right now!", "high"),
     ("Flight 2 ghante me hai aur ticket confirm nahi hua jaldi help karo!", "high"),
     ("Emergency surgery scheduled today, need cashless authorization instantly!", "high"),
     ("Need access urgently to my bank account for hospital deposit.", "high"),
+    ("My mobile data is not working.", "high"),
+    ("I have contacted support four times and nobody is helping me!", "high"),
 
     # Critical
     ("EMERGENCY: Cash deducted 50,000 fraud happening right now, BLOCK ACCOUNT IMMEDIATELY!", "critical"),
@@ -857,9 +901,12 @@ LANGUAGE_DATA = [
     ("Kindly provide the invoice for my order.", "en"),
     ("What are the cancellation charges for this flight ticket?", "en"),
     ("My account balance is not updating after bank transfer.", "en"),
+    ("Where is my order?", "en"),
+    ("I need help.", "en"),
 
     # Hindi (Devanagari)
     ("मेरा आर्डर अभी तक डिलीवर नहीं हुआ है।", "hi"),
+    ("मेरा ऑर्डर अभी तक नहीं आया।", "hi"),
     ("मुझे कॉलेज की फीस जमा करनी है।", "hi"),
     ("मेरी बीमा पॉलिसी का क्लेम कब पास होगा?", "hi"),
     ("बैंक खाते से पैसे कट गए लेकिन पेमेंट फेल हो गया।", "hi"),
@@ -874,6 +921,8 @@ LANGUAGE_DATA = [
 
     # Hinglish (Romanized Hindi-English code-mixed)
     ("Mera order abhi tak deliver nahi hua hai.", "hinglish"),
+    ("Mera order abhi tak nahi aaya hai.", "hinglish"),
+    ("Mera order abhi tak nahi aaya.", "hinglish"),
     ("College ki fees pay ho gayi par portal unpaid dikha raha hai.", "hinglish"),
     ("Claim approve kab tak hoga kuch update do.", "hinglish"),
     ("Mera UPI payment fail ho gaya aur paise kat gaye.", "hinglish"),
@@ -900,23 +949,19 @@ def export_csv(filepath, data, headers=["text", "label"]):
 def generate_all_datasets():
     print("Generating comprehensive multi-domain NLP datasets...")
 
-    # Domain
     export_csv(os.path.join(DATA_DIR, "domain.csv"), DOMAIN_DATA)
 
-    # Intents per domain
     for domain, records in INTENTS_DATA.items():
         fname = f"intent_{domain}.csv"
         export_csv(os.path.join(DATA_DIR, fname), records)
 
-    # Sentiment, Emotion, Urgency, Language
     export_csv(os.path.join(DATA_DIR, "sentiment.csv"), SENTIMENT_DATA)
     export_csv(os.path.join(DATA_DIR, "emotion.csv"), EMOTION_DATA)
     export_csv(os.path.join(DATA_DIR, "urgency.csv"), URGENCY_DATA)
     export_csv(os.path.join(DATA_DIR, "language.csv"), LANGUAGE_DATA)
 
-    # Metadata record
     metadata = {
-        "dataset_version": "1.1.0",
+        "dataset_version": "1.2.0",
         "created_at": datetime.utcnow().isoformat() + "Z",
         "source": "Curated Synthetic Multi-Domain Corpus for Hackathon Benchmarking",
         "is_synthetic": True,

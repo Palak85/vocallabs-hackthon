@@ -1,9 +1,10 @@
 text,label
+Unable to send SMS for UPI registration and netbanking.,sms_problem
+Details of family postpaid plan with shared data.,plan_information
+Disputing extra data usage billing on postpaid number.,billing_problem
+My recharge payment succeeded but plan not activated.,recharge_problem
 Telecom service ke khilaaf complaint register karni hai.,complaint
-Bill me galat charges add ho gaye hain dispute karna hai.,billing_problem
-Outgoing and incoming calls are disconnecting automatically.,call_problem
-Mobile 4G/5G data is not opening any website.,data_problem
-Incoming SMS for OTP is not arriving on my number.,sms_problem
-Connect this chat to a human telecom agent.,human_support_request
-Data speeds are extremely slow under 100 kbps.,data_problem
-I recharged for 365 days pack but validity not updated.,recharge_not_updated
+My mobile data isn't working.,data_problem
+Prepaid tariff plan comparison with OTT subscriptions.,plan_information
+Call mute ho jati hai beech me call issue.,call_problem
+SIM card me network signal bilkul nahi aa raha.,network_problem

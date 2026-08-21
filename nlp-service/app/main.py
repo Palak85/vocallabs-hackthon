@@ -1,6 +1,6 @@
 """
 FastAPI Microservice Main Entry Point.
-Initializes application lifecycle, loads models into memory once, and mounts API routes.
+Initializes application lifecycle, loads models into memory once in lifespan, and mounts API routes.
 """
 
 from contextlib import asynccontextmanager
@@ -12,6 +12,7 @@ from app.routes.nlp import router as nlp_router
 from app.routes.health import router as health_router
 from app.routes.model_info import router as model_info_router
 from app.routes.conversation import router as conversation_router
+from app.services.inference import pipeline
 from app.utils.logger import get_logger
 
 logger = get_logger("main")
@@ -22,7 +23,9 @@ async def lifespan(app: FastAPI):
     logger.info("Starting up NLP Microservice...")
     # Initialize database tables
     init_db()
-    logger.info("NLP Microservice startup complete.")
+    # Attach NLP Pipeline to application state
+    app.state.pipeline = pipeline
+    logger.info("NLP Microservice startup complete with models preloaded into memory.")
     yield
     logger.info("Shutting down NLP Microservice...")
 
@@ -34,7 +37,7 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# CORS middleware for local development
+# CORS middleware for development and integration
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],

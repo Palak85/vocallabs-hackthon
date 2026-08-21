@@ -1,10 +1,11 @@
 text,label
-Very bad experience with your delivery guy and service.,complaint
-Track my parcel delivery status.,order_tracking
-Package me ek product missing hai.,missing_product
-Parcel me toota hua product mila hai.,damaged_product
-Please cancel order ORD-7788 and initiate refund.,order_cancellation
-Please replace this defective toaster with new one.,replacement_request
-Missing charger adapter from the electronics box.,missing_product
-Delivered product is completely different from listing.,wrong_product
 How to book a return pickup for defective headphones?,return_request
+What are the upcoming festive sale discounts?,general_query
+Parcel me toota hua product mila hai.,damaged_product
+Only 2 out of 3 ordered books were inside package.,missing_product
+General question regarding available payment modes.,general_query
+"Delivery partner is late, please expedite.",delivery_delay
+Check tracking location for my shipment.,order_tracking
+My Blinkit delivery is late.,delivery_delay
+Please cancel order ORD-7788 and initiate refund.,order_cancellation
+Cancel my pending shipment before dispatch.,order_cancellation

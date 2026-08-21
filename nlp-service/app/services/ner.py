@@ -1,13 +1,13 @@
 """
 Hybrid Named Entity Recognition (NER) Service.
 Combines deterministic regex extraction for high-precision structured IDs
-with pattern-based extraction for domain-specific context entities.
+with pattern-based extraction for domain-specific context entities and temporal markers.
 """
 
 import re
 from typing import List, Dict, Any
 
-# Structured ID Patterns
+# Structured ID and Context Entity Patterns
 PATTERNS = {
     "order_id": re.compile(r"\b(?:ORD|ORDER)[-_]?\d{3,10}\b", re.IGNORECASE),
     "policy_number": re.compile(r"\b(?:POL|POLICY)[-_]?\d{3,10}\b", re.IGNORECASE),
@@ -18,7 +18,8 @@ PATTERNS = {
     "amount": re.compile(r"\b(?:Rs\.?|INR|₹|\$)\s*(\d+(?:,\d+)*(?:\.\d+)?)\b|\b(\d+(?:,\d+)*)\s*(?:rupees|rs|bucks)\b", re.IGNORECASE),
     "phone_number": re.compile(r"\b(?:\+?91[\-\s]?)?[6-9]\d{9}\b"),
     "fee_type": re.compile(r"\b(tuition|semester|hostel|school|college|admission|transport|mess)\s+fees?\b", re.IGNORECASE),
-    "doctor_name": re.compile(r"\bDr\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\b")
+    "doctor_name": re.compile(r"\bDr\.?\s+[A-Z][a-z]+(?:\s+[A-Z][a-z]+)?\b"),
+    "date": re.compile(r"\b(?:yesterday|today|tomorrow|last\s+week|next\s+week|\d+\s+days?\s+ago|\d+\s+weeks?|\d{1,2}[/-]\d{1,2}[/-]\d{2,4})\b", re.IGNORECASE)
 }
 
 
@@ -39,7 +40,6 @@ class EntityExtractor:
                 key = (entity_type, val.lower())
                 if key not in seen:
                     seen.add(key)
-                    # Normalize fee type
                     if entity_type == "fee_type":
                         clean_val = val.lower().replace(" ", "_")
                     else:

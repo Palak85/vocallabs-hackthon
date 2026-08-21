@@ -1,9 +1,10 @@
 text,label
-Card block ho gaya hai unblock kaise karein?,card_problem
-Mobile banking app login nahi ho raha account locked hai.,account_problem
-How to get password-protected bank account statement PDF?,account_statement
-Filing formal complaint regarding unauthorized debit charge.,complaint
 UPI PIN set error and daily UPI transaction limit exceeded.,upi_problem
-What are the current interest rates for fixed deposits?,general_query
-"Worst banking branch service, staff refused assistance.",complaint
-NEFT money transfer is pending for last 8 hours.,transaction_pending
+Paise kat gaye par UPI payment fail dikha raha hai.,transaction_failed
+"Net banking user ID is deactivated, how to unlock?",account_problem
+When will money reversed from failed payment be credited?,transaction_reversed
+"My debit card is blocked, how to unblock it immediately?",card_problem
+Debit card chip not working at ATM machines.,card_problem
+My UPI payment failed but amount was debited from account.,transaction_failed
+Download e-statement for last 3 months savings account.,account_statement
+Please connect me to bank customer care executive.,human_support_request

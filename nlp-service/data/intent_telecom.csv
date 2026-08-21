@@ -1,5 +1,6 @@
 text,label
 My recharge payment succeeded but plan not activated.,recharge_problem
+My recharge succeeded but balance is missing.,recharge_problem
 Recharge failed but money deducted from bank.,recharge_problem
 Recharge done on wrong mobile number by mistake.,recharge_problem
 Recharge ho gaya par pack activate nahi hua.,recharge_problem
@@ -7,15 +8,20 @@ I recharged for 365 days pack but validity not updated.,recharge_not_updated
 Plan validity date still shows yesterday after recharge.,recharge_not_updated
 Prepaid balance and validity not refreshed after top-up.,recharge_not_updated
 Recharge validity portal par update nahi hui.,recharge_not_updated
+No network signal on my SIM card since morning.,network_problem
 No network signal or emergency calls only showing.,network_problem
 Signal bar dropping constantly inside my home.,network_problem
 Network coverage issue and frequent call drop in area.,network_problem
 SIM card me network signal bilkul nahi aa raha.,network_problem
+My mobile data is not working.,data_problem
+My mobile data isn't working.,data_problem
+My recharge succeeded but mobile data is not working.,data_problem
 Mobile 4G/5G data is not opening any website.,data_problem
 Data speeds are extremely slow under 100 kbps.,data_problem
 Unlimited 5G pack active but throttling to 2G speed.,data_problem
 Internet data bilkul nahi chal raha speed slow hai.,data_problem
 Outgoing and incoming calls are disconnecting automatically.,call_problem
+"Frequent call drops in my area, please fix network tower.",call_problem
 Unable to make voice calls to landline numbers.,call_problem
 Call mute ho jati hai beech me call issue.,call_problem
 Calling me problem aa rahi hai voice break ho rahi hai.,call_problem

@@ -1,9 +1,10 @@
 text,label
-Ek hi payment ke liye do baar paise cut ho gaye.,duplicate_transaction
+Need annual interest certificate for income tax filing.,account_statement
+Cheque book requisition tracking status.,other
 Transaction pending hai kab tak clear hoga?,transaction_pending
-Card swipe failed at merchant machine but money deducted.,transaction_failed
-Other banking service related inquiries.,other
-I need to speak to a phone banking officer.,human_support_request
-Bank executive se baat karni hai urgent.,human_support_request
-When will money reversed from failed payment be credited?,transaction_reversed
+Bank branch service ke khilaaf complaint darj karni hai.,complaint
+Money was deducted twice for a single grocery transaction.,duplicate_transaction
 Requesting refund of wrongful penalty charges.,refund_request
+General question about bank working hours on Saturday.,general_query
+NEFT money transfer is pending for last 8 hours.,transaction_pending
+Single online order charged twice on credit card.,duplicate_transaction

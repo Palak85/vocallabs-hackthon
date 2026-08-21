@@ -1,37 +1,41 @@
 text,label
-Postpaid bill has extra unauthorized VAS service charges.,billing_problem
-Plan validity date still shows yesterday after recharge.,recharge_not_updated
-Postpaid plan change karke dusra plan lena hai.,plan_change
-Prepaid balance and validity not refreshed after top-up.,recharge_not_updated
-Best postpaid plans ki details batayein.,plan_information
-Procedure to convert physical SIM to eSIM.,general_query
-Call mute ho jati hai beech me call issue.,call_problem
-Unlimited 5G pack active but throttling to 2G speed.,data_problem
-No network signal or emergency calls only showing.,network_problem
-Internet data bilkul nahi chal raha speed slow hai.,data_problem
-I want to downgrade my postpaid plan to lower rental.,plan_change
-Unable to make voice calls to landline numbers.,call_problem
+"Frequent call drops in my area, please fix network tower.",call_problem
+Other mobile network inquiries.,other
 Transfer me to a live telecom operator executive.,human_support_request
-Recharge ho gaya par pack activate nahi hua.,recharge_problem
-Broadband router password reset instructions.,other
-Details of family postpaid plan with shared data.,plan_information
-Unable to send SMS for UPI registration and netbanking.,sms_problem
-Customer care representative se connect karein.,human_support_request
-Recharge done on wrong mobile number by mistake.,recharge_problem
-Disputing extra data usage billing on postpaid number.,billing_problem
-Outgoing SMS failing with error code 38.,sms_problem
-Filing complaint against broadband installation delay.,complaint
-How to port my mobile number to another operator?,general_query
-Complaint regarding non-resolution of network ticket.,complaint
-I want to speak with customer care supervisor.,human_support_request
-Query regarding duplicate SIM replacement procedure.,other
 Wrong late fee added to my monthly telecom bill.,billing_problem
-Kuch alag telecom query hai connection ke baare me.,other
-Recharge failed but money deducted from bank.,recharge_problem
-"Service is terrible, network has been down for 3 days.",complaint
-What are the best international roaming packs for Dubai?,plan_information
-Bank OTP ka SMS nahi aa raha phone par.,sms_problem
-How to activate free caller tune on my number?,general_query
 Change active billing plan to annual recharge pack.,plan_change
-Calling me problem aa rahi hai voice break ho rahi hai.,call_problem
+I want to downgrade my postpaid plan to lower rental.,plan_change
+My recharge succeeded but mobile data is not working.,data_problem
+My recharge succeeded but balance is missing.,recharge_problem
+Unlimited 5G pack active but throttling to 2G speed.,data_problem
 Signal bar dropping constantly inside my home.,network_problem
+Procedure to convert physical SIM to eSIM.,general_query
+I recharged for 365 days pack but validity not updated.,recharge_not_updated
+My mobile data is not working.,data_problem
+Recharge ho gaya par pack activate nahi hua.,recharge_problem
+Outgoing and incoming calls are disconnecting automatically.,call_problem
+No network signal on my SIM card since morning.,network_problem
+Plan validity date still shows yesterday after recharge.,recharge_not_updated
+No network signal or emergency calls only showing.,network_problem
+Recharge validity portal par update nahi hui.,recharge_not_updated
+Incoming SMS for OTP is not arriving on my number.,sms_problem
+Outgoing SMS failing with error code 38.,sms_problem
+How to port my mobile number to another operator?,general_query
+Recharge done on wrong mobile number by mistake.,recharge_problem
+Bill me galat charges add ho gaye hain dispute karna hai.,billing_problem
+What are the best international roaming packs for Dubai?,plan_information
+"Service is terrible, network has been down for 3 days.",complaint
+Internet data bilkul nahi chal raha speed slow hai.,data_problem
+Complaint regarding non-resolution of network ticket.,complaint
+Best postpaid plans ki details batayein.,plan_information
+How to activate free caller tune on my number?,general_query
+Postpaid plan change karke dusra plan lena hai.,plan_change
+I want to speak with customer care supervisor.,human_support_request
+Postpaid bill has extra unauthorized VAS service charges.,billing_problem
+Kuch alag telecom query hai connection ke baare me.,other
+Filing complaint against broadband installation delay.,complaint
+Mobile 4G/5G data is not opening any website.,data_problem
+Query regarding duplicate SIM replacement procedure.,other
+Calling me problem aa rahi hai voice break ho rahi hai.,call_problem
+Connect this chat to a human telecom agent.,human_support_request
+Bank OTP ka SMS nahi aa raha phone par.,sms_problem

@@ -11,6 +11,8 @@ Flight ticket cancel karna hai refund ke sath.,booking_cancellation
 "Connecting flight delayed, will I miss next flight?",flight_delay
 Flight departure time postponed by 6 hours.,flight_delay
 Flight bahut delay ho gayi hai update batayein.,flight_delay
+My flight was cancelled.,flight_cancellation
+"My flight 6E-412 was cancelled, need full refund.",flight_cancellation
 "Flight cancelled by airline, need emergency rebooking.",flight_cancellation
 Airline cancelled my flight without prior notice.,flight_cancellation
 Cancelled flight alternative travel arrangements.,flight_cancellation

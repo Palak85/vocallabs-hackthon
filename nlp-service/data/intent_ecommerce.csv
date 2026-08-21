@@ -3,10 +3,14 @@ Where is my order ORD-99214 right now?,order_tracking
 Track my parcel delivery status.,order_tracking
 Check tracking location for my shipment.,order_tracking
 Mera order tracking details batao.,order_tracking
+My Amazon package is late.,delivery_delay
+My Blinkit delivery is late.,delivery_delay
+"My package is late, where is the courier?",delivery_delay
 My package delivery is delayed by 3 days.,delivery_delay
 "Delivery partner is late, please expedite.",delivery_delay
 Why is my courier taking so long to arrive?,delivery_delay
 Delivery date keeps getting postponed.,delivery_delay
+Mera package late ho gaya hai delivery delay.,delivery_delay
 I want to cancel my order immediately.,order_cancellation
 Please cancel order ORD-7788 and initiate refund.,order_cancellation
 Cancel my pending shipment before dispatch.,order_cancellation

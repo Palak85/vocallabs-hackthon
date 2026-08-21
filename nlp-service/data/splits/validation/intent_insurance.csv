@@ -1,9 +1,10 @@
 text,label
-Surrender value calculation for endowment policy.,policy_cancellation
-Please email my health insurance policy schedule copy.,policy_document
 Policy me kya kya cover hota hai details batayein.,coverage_information
-Policy document copy email par bhej dijiye.,policy_document
-What are the network cashless hospitals in Bangalore?,general_query
-Claim pending hai do hafte se koi update nahi.,claim_delay
-Change percentage share of nominee in policy record.,nominee_information
-Complaint against unfair deduction in hospital claim bill.,complaint
+I want to cancel my policy and surrender insurance.,policy_cancellation
+Claim processing delay exceeds promised turnaround time.,claim_delay
+My insurance claim CLM-45672 is still pending for three weeks.,claim_delay
+Disputing rejection of surgery claim on pre-existing grounds.,claim_rejection
+How do I pay my annual term insurance premium?,premium_payment
+Grace period for renewal of health insurance cover.,policy_renewal
+Policy premium online jama kaise karein?,premium_payment
+I want to speak directly to a human support agent.,human_support_request

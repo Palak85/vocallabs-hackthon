@@ -1,118 +1,116 @@
 text,label
-Data balance exhausted too fast without heavy usage.,telecom
-Admission counseling round 2 seat allotment list.,education
-Money was deducted twice for a single grocery transaction.,banking
-My Amazon package hasn't arrived yet.,ecommerce
-Boarding pass web check-in is throwing server error.,travel
-Doctor appointment reschedule karna hai kal ke liye.,healthcare
-Dental root canal treatment appointment slot booking.,healthcare
-Unauthorized ATM cash withdrawal transaction reported.,banking
-I want to change my elective course for 4th semester.,education
-Annual debit card maintenance charge refund query.,banking
-Health checkup package inclusions and fasting requirement.,healthcare
-Delivery partner did not call and marked order delivered.,ecommerce
-I recharged for 299 pack but unlimited 5G is inactive.,telecom
-Baggage missing at luggage belt in Mumbai airport.,travel
-College bus transport route information needed.,education
-Can I change passenger name on booked flight ticket?,travel
-Can I get a refund of the admission seat booking fee?,education
-Marksheet correction application process details.,education
-I need to pay my college semester tuition fees.,education
-Fixed deposit maturity amount auto-renewal cancellation.,banking
-Coupons and promo code not applying at checkout page.,ecommerce
-School transport fee is deducted twice this quarter.,education
-Infant baggage allowance and seat booking inquiry.,travel
-Micro SIM replacement at local telecom store.,telecom
-My order was delivered to the wrong house address.,ecommerce
-How do I exchange my sneakers for a larger size?,ecommerce
-My UPI payment failed but money was deducted from account.,banking
-Cab driver did not arrive at airport pickup spot.,travel
-The university exam hall ticket has a spelling mistake in my name.,education
-Bus booking cancellation and instant wallet refund.,travel
-Credit card reward points redemption portal issue.,banking
-Hospitalisation cashless approval delayed by TPA desk.,insurance
-"My flight 6E-412 was cancelled, need full refund.",travel
-Change communication address in policy record POL-3312.,insurance
-Vaccination slot availability for infant immunization.,healthcare
-Eye clinic vision test and specs power prescription.,healthcare
-Library overdue fine payment online portal link.,education
-"Flipkart order is delayed, please update status.",ecommerce
-"Caller tune service activated without my consent, deactivate it.",telecom
-I bought wireless earbuds but the charging case is not working.,ecommerce
-Connecting flight transit visa requirement inquiry.,travel
-When is the last date for admission form submission?,education
-SIM card me full signal nahi aa raha hai call disconnect ho rahi hai.,telecom
-Product quality is extremely poor compared to photo.,ecommerce
-Net banking password reset OTP is not coming on phone.,banking
-Pathology blood sample collection technician home visit delay.,healthcare
-Payment deducted for order but order status is failed.,ecommerce
-International roaming pack not activated after deduction.,telecom
-"The shirt size is wrong, I want to initiate a return.",ecommerce
-Home loan interest certificate download issue.,banking
-No claim bonus transfer from previous vehicle insurer.,insurance
-When will the scholarship amount be disbursed to my account?,education
-"My debit card is blocked, how to unblock it immediately?",banking
-Need to update my registered mobile number in bank account.,banking
-Daily UPI transaction limit increase request.,banking
-MRI scan appointment booking and preparation guidelines.,healthcare
-Family add-on connection request for secondary SIM.,telecom
-Visa assistance and travel insurance policy for trip.,travel
-Why was my health insurance cashless claim rejected?,insurance
-"Parcel kab tak aayega, status update nahi ho raha.",ecommerce
-I want to reschedule my flight departure date to next Monday.,travel
-"Doctor cancelled my appointment, how do I reschedule?",healthcare
-I need to download my car insurance policy document.,insurance
-Maturity benefit payout date for endowment policy.,insurance
-Refund has not been credited to my source account.,ecommerce
-Validity recharge pack options for prepaid number.,telecom
-Is cashless mediclaim accepted for cataract surgery at clinic?,healthcare
-Accidental damage claim inspection surveyor contact number.,insurance
-How to add my spouse as nominee in life policy POL-9912?,insurance
-Mera health insurance claim abhi tak pass nahi hua.,insurance
-ICU patient daily medical bulletin and visitor pass.,healthcare
-Postpaid plan bill payment receipt not generated.,telecom
-Transaction TXN-89912 is stuck in processing state.,banking
-How do I apply for the merit scholarship?,education
-Account me money debit hua but receiver ko nahi mila.,banking
-Grace period for term plan renewal after due date.,insurance
-CT scan report delivery time and radiologist consultation.,healthcare
-"Frequent call drops in my area, please fix network tower.",telecom
-Doctor fees refund for unattended teleconsultation session.,healthcare
-I want to cancel my order before it ships.,ecommerce
-Wheelchair assistance request for elderly passenger at airport.,travel
-Claim status check for hospitalization bill refund.,insurance
-Where is my order ORD-99214 tracking link?,ecommerce
-Lost handbag reported inside flight cabin.,travel
-I paid my daughter's school fees yesterday but portal says unpaid.,education
-Professor was absent for lecture and attendance missing.,education
-Broadband speed test shows 10mbps instead of 200mbps plan.,telecom
-KYC document verification is still pending after 5 days.,banking
-How to upgrade my prepaid SIM to 5G connection?,telecom
 "My policy premium is due tomorrow, how do I pay?",insurance
-What is the waiting period for pre-existing disease coverage?,insurance
-Cheque bounce charges wrongly levied on savings account.,banking
-Surgery pre-authorization letter status for hospital.,insurance
-How to port my mobile number to another telecom provider?,telecom
-I received a damaged phone in my delivery box.,ecommerce
-Branch IFSC code and branch code for wire transfer.,banking
-"SMS service not working, unable to send bank verification SMS.",telecom
-VoLTE calling not working on my 4G smartphone.,telecom
-"PUK code blocked for my SIM card, need unlock key.",telecom
-Critical illness rider inclusion in existing policy.,insurance
-Cruise ticket booking confirmation and itinerary.,travel
-"Item missing from parcel, only received invoice.",ecommerce
-Claim reimbursement amount settled is lower than bill.,insurance
-Semester exam schedule and timetable release date.,education
+Can I get a refund of the admission seat booking fee?,education
+Policy document email par nahi mila abhi tak.,insurance
+I want to change my elective course for 4th semester.,education
+Cancellation charges for refundable domestic flight ticket.,travel
+"Frequent call drops in my area, please fix network tower.",telecom
 "Flight delay of 4 hours, is refreshment compensation provided?",travel
-Hotel booking confirmation voucher not received on email.,travel
+KYC document verification is still pending after 5 days.,banking
+"My debit card is blocked, how to unblock it immediately?",banking
+Mobile network issue aa raha hai call drop ho rahi hai.,telecom
+Flight ticket booking cancel karke full refund chahiye.,travel
+"The shirt size is wrong, I want to initiate a return.",ecommerce
+Mera flight ticket cancel ho gaya refund kab aayega?,travel
+Critical illness rider inclusion in existing policy.,insurance
+My Flipkart order has not arrived.,ecommerce
+Infant baggage allowance and seat booking inquiry.,travel
 How to enable international transactions on credit card?,banking
-I need to book a doctor appointment with cardiologist.,healthcare
+I need to pay my college semester tuition fees.,education
+Is cashless mediclaim accepted for cataract surgery at clinic?,healthcare
+Vaccination slot availability for infant immunization.,healthcare
+Bank account se paise cut gaye par transfer nahi hua.,banking
+My Blinkit delivery is late.,ecommerce
+Amazon se mangwaya tha parcel abhi tak nahi aaya.,ecommerce
+Where can I download the semester fee receipt?,education
+SIM card me full signal nahi aa raha hai call disconnect ho rahi hai.,telecom
+Terminal change notice for connecting international flight.,travel
+Payment deducted for order but order status is failed.,ecommerce
+Seat selection charges deducted twice during web check-in.,travel
+Mera order abhi tak deliver nahi hua.,ecommerce
+Boarding pass web check-in is throwing server error.,travel
+Claim reimbursement amount settled is lower than bill.,insurance
+Prescription refill request for chronic blood pressure tablet.,healthcare
+My insurance claim is delayed.,insurance
+Baggage missing at luggage belt in Mumbai airport.,travel
+"Flipkart order is delayed, please update status.",ecommerce
+How to apply for transfer certificate from school?,education
+"Parcel kab tak aayega, status update nahi ho raha.",ecommerce
+I paid my college fees yesterday but the portal still shows unpaid.,education
+My cart item is showing out of stock after payment.,ecommerce
+Fixed deposit maturity amount auto-renewal cancellation.,banking
+Term insurance cover amount enhancement eligibility query.,insurance
+College ki fees pay ho gayi par portal unpaid dikha raha hai.,education
+"Doctor cancelled my appointment, how do I reschedule?",healthcare
+Need to update my registered mobile number in bank account.,banking
+My UPI payment failed.,banking
+Semester exam schedule and timetable release date.,education
+eSIM activation QR code expired before scanning.,telecom
+My school payment isn't showing.,education
+Delivery partner did not call and marked order delivered.,ecommerce
+"Train ticket PNR is in RAC, will it confirm before chart?",travel
+Doctor ka appointment lena hai specialist clinic me.,healthcare
+Can I get a replacement for this defective product?,ecommerce
+Validity recharge pack options for prepaid number.,telecom
+Can you change the delivery address for order ORD-112?,ecommerce
+My policy premium is due.,insurance
+Claim status check for hospitalization bill refund.,insurance
+Delivery boy order deke nahi gaya par delivered mark kar diya.,ecommerce
+College bus transport route information needed.,education
+I recharged for 299 pack but unlimited 5G is inactive.,telecom
+Hospital emergency ambulance contact number request.,healthcare
 Hospital admission room billing discrepancy and itemized bill.,healthcare
-Student portal login is locked due to password error.,education
-My attendance is marked incorrect for the math lecture.,education
+Hostel fee breakdown and installment options query.,education
+Postpaid bill amount is showing extra hidden roaming charges.,telecom
+Refund has not been credited to my source account.,ecommerce
+I need to book a doctor appointment.,healthcare
+Renewal notice not received for my health policy.,insurance
+Account me money debit hua but receiver ko nahi mila.,banking
+Marksheet correction application process details.,education
+Mera UPI payment fail ho gaya aur paise kat gaye.,banking
+My insurance claim has been pending for three weeks.,insurance
+Query regarding dosage instructions on my digital prescription.,healthcare
+Accidental damage claim inspection surveyor contact number.,insurance
+My school fee payment isn't showing in the portal.,education
+Lost handbag reported inside flight cabin.,travel
+Visa assistance and travel insurance policy for trip.,travel
+My Amazon package is late.,ecommerce
+My mobile data isn't working.,telecom
+Admission form submit nahi ho raha server error aa raha.,education
+I want to cancel my order before it ships.,ecommerce
+No network signal on my SIM card since morning.,telecom
+Money was deducted twice for a single grocery transaction.,banking
+International roaming pack not activated after deduction.,telecom
+Maturity benefit payout date for endowment policy.,insurance
+Mera health insurance claim abhi tak pass nahi hua.,insurance
+Credit card bill payment reversed but limit not restored.,banking
+I want to cancel my policy and request a premium refund.,insurance
+Net nahi chal raha SIM me signal gayab hai.,telecom
+Where is my order ORD-99214 tracking link?,ecommerce
+My UPI payment failed but money was deducted from account.,banking
+Mera recharge ho gaya lekin data nahi chal raha.,telecom
+Fiber installation technician did not arrive at appointment.,telecom
+Data balance exhausted too fast without heavy usage.,telecom
+"My motor insurance expired last week, how to renew?",insurance
+My flight was cancelled.,travel
+Product quality is extremely poor compared to photo.,ecommerce
+How to add my spouse as nominee in life policy POL-9912?,insurance
+Exam admit card download nahi ho raha college portal se.,education
+"PUK code blocked for my SIM card, need unlock key.",telecom
+Hotel check-in denied due to booking discrepancy.,travel
+I need last 6 months bank account statement PDF.,banking
+I need to book a doctor appointment with cardiologist.,healthcare
+Doctor appointment reschedule karna hai kal ke liye.,healthcare
+Fee payment debited from bank but no receipt generated.,education
+I paid my daughter's school fees yesterday but portal says unpaid.,education
 Online video consultation doctor did not join call.,healthcare
-My Blinkit delivery is late by two hours.,ecommerce
-DND service activation request to stop promotional calls.,telecom
-Airport lounge access eligibility with boarding pass.,travel
-Physiotherapist home visit appointment booking inquiry.,healthcare
-Life insurance tax exemption certificate 80C download.,insurance
+Coupons and promo code not applying at checkout page.,ecommerce
+No claim bonus transfer from previous vehicle insurer.,insurance
+MRI scan appointment booking and preparation guidelines.,healthcare
+Why was my health insurance cashless claim rejected?,insurance
+"My package is late, where is the courier?",ecommerce
+Transaction TXN-89912 is stuck in processing state.,banking
+Mera order abhi tak nahi aaya hai.,ecommerce
+I received a damaged phone in my delivery box.,ecommerce
+The university exam hall ticket has a spelling mistake in my name.,education
+My UPI transaction failed.,banking

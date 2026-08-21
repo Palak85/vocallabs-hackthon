@@ -1,10 +1,10 @@
 text,label
-"My claim was rejected without clear reason, please review.",claim_rejection
-Miscellaneous insurance coverage query.,other
 Claim number CLM-7712 ka status batayein.,claim_status
-Connect me with customer care manager for claim issue.,human_support_request
-How do I pay my annual term insurance premium?,premium_payment
-Excess premium deduction refund request.,refund_request
-Claim officer se baat karwao turant.,human_support_request
-How to renew my expired car insurance policy?,policy_renewal
-Escalating poor customer service from insurance branch.,complaint
+Please email my health insurance policy schedule copy.,policy_document
+Nominee change karne ka process kya hai?,nominee_information
+Complaint against unfair deduction in hospital claim bill.,complaint
+Critical illness inclusion and sum insured limits.,coverage_information
+Add spouse as secondary nominee in term insurance.,nominee_information
+Kuch aur jaankari chahiye insurance account ke baare me.,other
+How is No Claim Bonus calculated on policy renewal?,general_query
+When will my cancelled policy premium refund arrive?,refund_request

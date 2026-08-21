@@ -1,37 +1,40 @@
 text,label
-My account is locked due to incorrect netbanking passwords.,account_problem
-Transaction status shows pending at beneficiary bank.,transaction_pending
-Wrong charge laga diya bank ne refund chahiye.,refund_request
-IMPS fund transfer is processing and money not received.,transaction_pending
-Paise kat gaye par UPI payment fail dikha raha hai.,transaction_failed
-Single online order charged twice on credit card.,duplicate_transaction
-Download e-statement for last 3 months savings account.,account_statement
-Complaint against rude branch manager and long queues.,complaint
-Please connect me to bank customer care executive.,human_support_request
-Bank branch service ke khilaaf complaint darj karni hai.,complaint
-Refund for failed online merchant transaction not received.,refund_request
-Need annual interest certificate for income tax filing.,account_statement
-Home loan interest rates for existing customers.,general_query
-Refund reversal amount kab account me aayega?,transaction_reversed
-Cheque book requisition tracking status.,other
-ATM transaction failed to dispense cash but balance reduced.,transaction_failed
-UPI auto-pay mandate cancel request failing.,upi_problem
-General question about bank working hours on Saturday.,general_query
-Reversal reference number generated but amount not back.,transaction_reversed
-"Net banking user ID is deactivated, how to unlock?",account_problem
-Google Pay UPI server error on bank side.,upi_problem
-Request new contactless debit card replacement.,card_problem
-I was charged twice for the same restaurant POS swipe.,duplicate_transaction
-"My credit card was blocked for suspicious activity, unblock it.",card_problem
-What is the minimum average balance requirement for savings?,general_query
-Query about locker availability in local branch.,other
-Unable to access mobile banking application.,account_problem
+I need last 6 months bank account statement PDF.,account_statement
 Kuch miscellaneous bank queries hain.,other
-Merchant reversed transaction but bank balance not updated.,transaction_reversed
-Debit card chip not working at ATM machines.,card_problem
-My UPI payment failed but amount was debited from account.,transaction_failed
-UPI transactions nahi chal rahi server error aa raha hai.,upi_problem
-Double deduction observed on savings account statement.,duplicate_transaction
-Annual debit card maintenance charge refund query.,refund_request
-Account statement PDF download kaise karein?,account_statement
 Transfer to a human banking representative.,human_support_request
+Unable to access mobile banking application.,account_problem
+My UPI transaction failed.,transaction_failed
+Annual debit card maintenance charge refund query.,refund_request
+Complaint against rude branch manager and long queues.,complaint
+Refund reversal amount kab account me aayega?,transaction_reversed
+Ek hi payment ke liye do baar paise cut ho gaye.,duplicate_transaction
+Other banking service related inquiries.,other
+What are the current interest rates for fixed deposits?,general_query
+Transaction status shows pending at beneficiary bank.,transaction_pending
+Filing formal complaint regarding unauthorized debit charge.,complaint
+Google Pay UPI server error on bank side.,upi_problem
+How to get password-protected bank account statement PDF?,account_statement
+Query about locker availability in local branch.,other
+IMPS fund transfer is processing and money not received.,transaction_pending
+Bank executive se baat karni hai urgent.,human_support_request
+Merchant reversed transaction but bank balance not updated.,transaction_reversed
+UPI transactions nahi chal rahi server error aa raha hai.,upi_problem
+UPI auto-pay mandate cancel request failing.,upi_problem
+Home loan interest rates for existing customers.,general_query
+Reversal reference number generated but amount not back.,transaction_reversed
+Mobile banking app login nahi ho raha account locked hai.,account_problem
+Card swipe failed at merchant machine but money deducted.,transaction_failed
+Request new contactless debit card replacement.,card_problem
+"Worst banking branch service, staff refused assistance.",complaint
+Card block ho gaya hai unblock kaise karein?,card_problem
+ATM transaction failed to dispense cash but balance reduced.,transaction_failed
+I was charged twice for the same restaurant POS swipe.,duplicate_transaction
+My UPI payment failed.,transaction_failed
+I need to speak to a phone banking officer.,human_support_request
+My account is locked due to incorrect netbanking passwords.,account_problem
+Wrong charge laga diya bank ne refund chahiye.,refund_request
+"My credit card was blocked for suspicious activity, unblock it.",card_problem
+Double deduction observed on savings account statement.,duplicate_transaction
+Refund for failed online merchant transaction not received.,refund_request
+Account statement PDF download kaise karein?,account_statement
+What is the minimum average balance requirement for savings?,general_query

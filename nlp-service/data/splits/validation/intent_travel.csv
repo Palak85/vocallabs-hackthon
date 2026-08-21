@@ -1,8 +1,8 @@
 text,label
-Passenger name spelling error on international e-ticket.,ticket_problem
-Visa requirements for transit passengers in Singapore.,general_query
-Airline ne flight cancel kar di alternative flight do.,flight_cancellation
-Ticket cancellation refund kab tak account me aayega?,refund
-Hotel overbooked and denied confirmed room.,hotel_problem
+Boarding pass download nahi ho raha error aa raha.,ticket_problem
+General question regarding airport terminal departure gates.,general_query
+Airline cancelled my flight without prior notice.,flight_cancellation
+When will hotel cancellation refund reach my account?,refund
+Hotel me check-in nahi de rahe booking mil nahi rahi.,hotel_problem
 Luggage airport par kho gaya hai bag nahi mila.,baggage_problem
-"My flight AI-102 is delayed by 4 hours, what to do?",flight_delay
+"My flight 6E-412 was cancelled, need full refund.",flight_cancellation

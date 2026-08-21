@@ -7,8 +7,8 @@ Estimates frustration score (0-100) and maps to categorical levels:
 - critical (85-100)
 
 Distinguishes pure sentiment from active behavioral frustration by evaluating:
-- Repetition cues ("3rd time", "contacted 4 times", "again and again", "baar baar")
-- Escalation & legal threats ("court", "police", "consumer forum", "fraud", "cheating")
+- Repetition cues ("3rd time", "contacted 4 times", "again and again", "baar baar", "nobody is helping")
+- Escalation & legal threats ("police", "court", "consumer forum", "fraud", "cheating")
 - Emotional intensity (exclamations, full capitalization, angry/frustrated emotion)
 """
 
@@ -19,7 +19,7 @@ from app.utils.thresholds import FRUSTRATION_LOW_MAX, FRUSTRATION_MEDIUM_MAX, FR
 REPETITION_PATTERNS = [
     r"\b(?:\d+|two|three|four|five|six|multiple)\s*(?:times|calls|attempts|tickets|days)\b",
     r"\b(?:again\s+and\s+again|repeatedly|baar\s+baar|har\s+baar|already\s+contacted)\b",
-    r"\b(?:nobody\s+is\s+helping|no\s+one\s+cares|koi\s+help\s+nahi)\b",
+    r"\b(?:nobody\s+is\s+helping|no\s+one\s+cares|koi\s+help\s+nahi|zero\s+help)\b",
     r"\b(?:wasting\s+my\s+time|time\s+pass)\b"
 ]
 
@@ -55,13 +55,13 @@ class FrustrationAnalyzer:
 
         # Base score from emotion
         if emotion_label == "angry":
-            score += 35.0 * emotion_conf
+            score += 35.0 * max(emotion_conf, 0.5)
         elif emotion_label == "frustrated":
-            score += 30.0 * emotion_conf
+            score += 30.0 * max(emotion_conf, 0.5)
         elif emotion_label == "concerned":
-            score += 15.0 * emotion_conf
+            score += 15.0 * max(emotion_conf, 0.5)
         elif emotion_label == "sad":
-            score += 10.0 * emotion_conf
+            score += 10.0 * max(emotion_conf, 0.5)
 
         # Punctuation & capitalization cues
         exclamations = signals.get("exclamation_count", 0)
@@ -76,7 +76,7 @@ class FrustrationAnalyzer:
         # Repetition / follow-up attempts cues
         for rgx in self.repetition_regex:
             if rgx.search(raw_text):
-                score += 20.0
+                score += 30.0
                 break
 
         # Escalation & Legal threat cues

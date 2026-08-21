@@ -1,43 +1,45 @@
 text,label
+Sent wrong size and model for my ordered shoes.,wrong_product
+I want to cancel my order immediately.,order_cancellation
 Account is locked due to multiple login attempts.,account_problem
+"Checkout payment failed, balance deducted from card.",payment_failure
 Unable to log in to my shopping account.,account_problem
-Miscellaneous inquiry regarding loyalty coins balance.,other
+Mera order tracking details batao.,order_tracking
+Return pickup request schedule karna hai.,return_request
+Galat item deliver ho gaya parcel me.,wrong_product
+"My package is late, where is the courier?",delivery_delay
+The box was torn and contents were broken inside.,damaged_product
+Order cancel karna chahta hu turant.,order_cancellation
+Defective unit ko replace karwana hai.,replacement_request
+Package me ek product missing hai.,missing_product
 Where is my order ORD-99214 right now?,order_tracking
+Delivery date keeps getting postponed.,delivery_delay
+Service is terrible and rude delivery partner behavior.,complaint
+Mujhe human agent se baat karni hai.,human_support_request
+Random feedback about app theme design.,other
+Need to return this item and get money back.,return_request
+Do you provide gift wrap packaging on orders?,general_query
 How does membership delivery speed work?,general_query
+Please replace this defective toaster with new one.,replacement_request
+Something else about your shopping platform rewards.,other
+Amount debited but cart shows payment error.,payment_failure
+Refund of 1499 not received in my bank account.,refund_request
+Mera package late ho gaya hai delivery delay.,delivery_delay
+Track my parcel delivery status.,order_tracking
+Please transfer this chat to human customer agent.,human_support_request
+Payment ho gaya par order place nahi hua.,payment_failure
 I want to return this dress because size is small.,return_request
 Why is my courier taking so long to arrive?,delivery_delay
-One item missing from multi-item order box.,missing_product
-Service is terrible and rude delivery partner behavior.,complaint
-Mera refund status check karke bataiye.,refund_request
-Galat item deliver ho gaya parcel me.,wrong_product
-Order cancel karna chahta hu turant.,order_cancellation
-Need to return this item and get money back.,return_request
-"Checkout payment failed, balance deducted from card.",payment_failure
-Connect me to a live customer service executive.,human_support_request
-I want to speak with a human support representative.,human_support_request
-When will my returned item refund be credited?,refund_request
-Mera order tracking details batao.,order_tracking
-Check tracking location for my shipment.,order_tracking
-Return pickup request schedule karna hai.,return_request
-What are the upcoming festive sale discounts?,general_query
-Payment failed during checkout but money was deducted.,payment_failure
-Sent wrong size and model for my ordered shoes.,wrong_product
-Amount debited but cart shows payment error.,payment_failure
-Delivery date keeps getting postponed.,delivery_delay
-Cancel my pending shipment before dispatch.,order_cancellation
+Missing charger adapter from the electronics box.,missing_product
 "Worst shopping app, filing complaint for cheating.",complaint
-"Received wrong item, ordered blue shirt got red.",wrong_product
-Refund of 1499 not received in my bank account.,refund_request
-Exchange request for a larger shoe size.,replacement_request
-Only 2 out of 3 ordered books were inside package.,missing_product
+Delivered product is completely different from listing.,wrong_product
 Complaint register karni hai ghatiya service ke liye.,complaint
-Mujhe human agent se baat karni hai.,human_support_request
-Do you provide gift wrap packaging on orders?,general_query
-Can I get replacement for broken coffee mug?,replacement_request
+Exchange request for a larger shoe size.,replacement_request
+I want to speak with a human support representative.,human_support_request
+My Amazon package is late.,delivery_delay
+When will my returned item refund be credited?,refund_request
 Delivered item is physically broken in shipping.,damaged_product
 Received a damaged and cracked laptop screen.,damaged_product
-Kuch alag query hai regarding store policies.,other
-I want to cancel my order immediately.,order_cancellation
+Miscellaneous inquiry regarding loyalty coins balance.,other
+One item missing from multi-item order box.,missing_product
 Password reset link is not arriving on my email.,account_problem
-Something else about your shopping platform rewards.,other
-The box was torn and contents were broken inside.,damaged_product

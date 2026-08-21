@@ -1,9 +1,10 @@
 text,label
-General question about DND activation process.,general_query
-Recharge validity portal par update nahi hui.,recharge_not_updated
-Prepaid tariff plan comparison with OTT subscriptions.,plan_information
-Other mobile network inquiries.,other
-Network coverage issue and frequent call drop in area.,network_problem
-SIM card me network signal bilkul nahi aa raha.,network_problem
-My recharge payment succeeded but plan not activated.,recharge_problem
+Unable to make voice calls to landline numbers.,call_problem
+Broadband router password reset instructions.,other
+Recharge failed but money deducted from bank.,recharge_problem
+Data speeds are extremely slow under 100 kbps.,data_problem
+Customer care representative se connect karein.,human_support_request
 How to switch from postpaid connection to prepaid?,plan_change
+Network coverage issue and frequent call drop in area.,network_problem
+Prepaid balance and validity not refreshed after top-up.,recharge_not_updated
+General question about DND activation process.,general_query
