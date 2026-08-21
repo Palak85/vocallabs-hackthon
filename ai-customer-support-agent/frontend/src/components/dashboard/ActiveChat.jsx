@@ -37,7 +37,9 @@ export default function ActiveChat() {
   const [inputText, setInputText] = useState("");
   const [isListening, setIsListening] = useState(false);
   const [speechSupported, setSpeechSupported] = useState(true);
+  const [selectedFile, setSelectedFile] = useState(null);
   const recognitionRef = useRef(null);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     const SpeechRecognition =
@@ -92,8 +94,17 @@ export default function ActiveChat() {
     }
   };
 
+  const handleFileSelect = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+    // Reset input so same file can be re-selected
+    e.target.value = "";
+  };
+
   const handleSendMessage = () => {
-    if (!inputText.trim()) return;
+    if (!inputText.trim() && !selectedFile) return;
 
     if (isListening) {
       recognitionRef.current?.stop();
@@ -106,15 +117,22 @@ export default function ActiveChat() {
       minute: "2-digit",
     });
 
+    let messageText = inputText;
+    if (selectedFile) {
+      const fileLabel = `📎 ${selectedFile.name}`;
+      messageText = messageText ? `${messageText}\n${fileLabel}` : fileLabel;
+    }
+
     const newMessage = {
       id: Date.now(),
       sender: "supervisor",
-      text: inputText,
+      text: messageText,
       time: timeString,
     };
 
     setMessages((prev) => [...prev, newMessage]);
     setInputText("");
+    setSelectedFile(null);
   };
 
   const handleKeyDown = (e) => {
@@ -221,7 +239,40 @@ export default function ActiveChat() {
           </button>
         </div>
 
-        <div className="relative flex items-center">
+        {/* File Preview Chip */}
+        {selectedFile && (
+          <div className="flex items-center gap-2 mb-2 px-3 py-1.5 bg-dash-surface-container rounded-lg border border-dash-outline-variant w-fit">
+            <span className="material-symbols-outlined text-sm text-dash-primary">attach_file</span>
+            <span className="text-label-xs text-dash-on-surface truncate max-w-[200px]">{selectedFile.name}</span>
+            <button
+              onClick={() => setSelectedFile(null)}
+              className="text-dash-on-surface-variant hover:text-dash-error transition-colors cursor-pointer"
+              title="Remove file"
+            >
+              <span className="material-symbols-outlined text-sm">close</span>
+            </button>
+          </div>
+        )}
+
+        <div className="relative flex items-center gap-2">
+          {/* Hidden File Input */}
+          <input
+            ref={fileInputRef}
+            type="file"
+            className="hidden"
+            onChange={handleFileSelect}
+          />
+
+          {/* + File Upload Button */}
+          <button
+            onClick={() => fileInputRef.current?.click()}
+            type="button"
+            title="Attach a file"
+            className="p-2 rounded-full text-dash-on-surface-variant hover:bg-dash-surface-variant hover:text-dash-primary transition-colors flex items-center justify-center cursor-pointer shrink-0"
+          >
+            <span className="material-symbols-outlined text-xl">add_circle</span>
+          </button>
+
           <input
             className={`w-full bg-dash-surface-container-lowest border border-dash-outline-variant rounded-xl pl-4 pr-24 py-3 text-body-sm focus:ring-2 focus:ring-dash-primary focus:border-transparent outline-none transition-all placeholder:text-dash-outline ${
               isListening ? "ring-2 ring-emerald-500 border-emerald-500" : ""
