@@ -1,0 +1,9 @@
+text,label
+Telecom service ke khilaaf complaint register karni hai.,complaint
+Bill me galat charges add ho gaye hain dispute karna hai.,billing_problem
+Outgoing and incoming calls are disconnecting automatically.,call_problem
+Mobile 4G/5G data is not opening any website.,data_problem
+Incoming SMS for OTP is not arriving on my number.,sms_problem
+Connect this chat to a human telecom agent.,human_support_request
+Data speeds are extremely slow under 100 kbps.,data_problem
+I recharged for 365 days pack but validity not updated.,recharge_not_updated

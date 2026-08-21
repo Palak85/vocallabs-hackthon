@@ -1,0 +1,890 @@
+{
+  "trained_at": "2026-08-21T13:03:15.767203Z",
+  "models": {
+    "language": {
+      "accuracy": 1.0,
+      "macro_f1": 1.0,
+      "classification_report": {
+        "en": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "hi": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "hinglish": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "accuracy": 1.0,
+        "macro avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        },
+        "weighted avg": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 6.0
+        }
+      },
+      "classes": [
+        "en",
+        "hi",
+        "hinglish"
+      ]
+    },
+    "domain": {
+      "accuracy": 0.6538461538461539,
+      "macro_f1": 0.6213151927437641,
+      "classification_report": {
+        "banking": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1-score": 0.8571428571428571,
+          "support": 4.0
+        },
+        "ecommerce": {
+          "precision": 0.16666666666666666,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.2222222222222222,
+          "support": 3.0
+        },
+        "education": {
+          "precision": 0.8,
+          "recall": 1.0,
+          "f1-score": 0.8888888888888888,
+          "support": 4.0
+        },
+        "healthcare": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 4.0
+        },
+        "insurance": {
+          "precision": 0.6,
+          "recall": 0.75,
+          "f1-score": 0.6666666666666666,
+          "support": 4.0
+        },
+        "telecom": {
+          "precision": 0.75,
+          "recall": 1.0,
+          "f1-score": 0.8571428571428571,
+          "support": 3.0
+        },
+        "travel": {
+          "precision": 1.0,
+          "recall": 0.75,
+          "f1-score": 0.8571428571428571,
+          "support": 4.0
+        },
+        "accuracy": 0.6538461538461539,
+        "macro avg": {
+          "precision": 0.6166666666666666,
+          "recall": 0.6547619047619048,
+          "f1-score": 0.6213151927437641,
+          "support": 26.0
+        },
+        "weighted avg": {
+          "precision": 0.6288461538461539,
+          "recall": 0.6538461538461539,
+          "f1-score": 0.6275946275946276,
+          "support": 26.0
+        }
+      },
+      "classes": [
+        "banking",
+        "ecommerce",
+        "education",
+        "healthcare",
+        "insurance",
+        "telecom",
+        "travel"
+      ]
+    },
+    "intent": {
+      "ecommerce": {
+        "accuracy": 0.5555555555555556,
+        "macro_f1": 0.4074074074074074,
+        "classification_report": {
+          "complaint": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "damaged_product": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "missing_product": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 2.0
+          },
+          "order_cancellation": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "order_tracking": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "refund_request": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "replacement_request": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "return_request": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "wrong_product": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "accuracy": 0.5555555555555556,
+          "macro avg": {
+            "precision": 0.3888888888888889,
+            "recall": 0.4444444444444444,
+            "f1-score": 0.4074074074074074,
+            "support": 9.0
+          },
+          "weighted avg": {
+            "precision": 0.5,
+            "recall": 0.5555555555555556,
+            "f1-score": 0.5185185185185186,
+            "support": 9.0
+          }
+        },
+        "classes": [
+          "account_problem",
+          "complaint",
+          "damaged_product",
+          "delivery_delay",
+          "general_query",
+          "human_support_request",
+          "missing_product",
+          "order_cancellation",
+          "order_tracking",
+          "other",
+          "payment_failure",
+          "refund_request",
+          "replacement_request",
+          "return_request",
+          "wrong_product"
+        ]
+      },
+      "education": {
+        "accuracy": 0.5555555555555556,
+        "macro_f1": 0.4333333333333333,
+        "classification_report": {
+          "admission": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "attendance": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "complaint": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "course_information": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "fee_payment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "fee_payment_not_updated": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 2.0
+          },
+          "fee_refund": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "other": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "scholarship": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "transport": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "accuracy": 0.5555555555555556,
+          "macro avg": {
+            "precision": 0.45,
+            "recall": 0.45,
+            "f1-score": 0.4333333333333333,
+            "support": 9.0
+          },
+          "weighted avg": {
+            "precision": 0.6111111111111112,
+            "recall": 0.5555555555555556,
+            "f1-score": 0.5555555555555556,
+            "support": 9.0
+          }
+        },
+        "classes": [
+          "admission",
+          "attendance",
+          "complaint",
+          "course_information",
+          "exam",
+          "fee_payment",
+          "fee_payment_not_updated",
+          "fee_receipt",
+          "fee_refund",
+          "general_query",
+          "human_support_request",
+          "other",
+          "scholarship",
+          "transport"
+        ]
+      },
+      "insurance": {
+        "accuracy": 0.5555555555555556,
+        "macro_f1": 0.4333333333333333,
+        "classification_report": {
+          "claim_rejection": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "claim_status": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "complaint": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "coverage_information": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "human_support_request": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 2.0
+          },
+          "other": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "policy_document": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "policy_renewal": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "premium_payment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "refund_request": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "accuracy": 0.5555555555555556,
+          "macro avg": {
+            "precision": 0.4,
+            "recall": 0.5,
+            "f1-score": 0.4333333333333333,
+            "support": 9.0
+          },
+          "weighted avg": {
+            "precision": 0.4444444444444444,
+            "recall": 0.5555555555555556,
+            "f1-score": 0.48148148148148145,
+            "support": 9.0
+          }
+        },
+        "classes": [
+          "claim_delay",
+          "claim_rejection",
+          "claim_status",
+          "complaint",
+          "coverage_information",
+          "general_query",
+          "human_support_request",
+          "nominee_information",
+          "other",
+          "policy_cancellation",
+          "policy_document",
+          "policy_renewal",
+          "premium_payment",
+          "refund_request"
+        ]
+      },
+      "banking": {
+        "accuracy": 0.75,
+        "macro_f1": 0.6666666666666666,
+        "classification_report": {
+          "account_problem": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "account_statement": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "card_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "complaint": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 2.0
+          },
+          "general_query": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "refund_request": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "transaction_pending": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "upi_problem": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "accuracy": 0.75,
+          "macro avg": {
+            "precision": 0.6875,
+            "recall": 0.6875,
+            "f1-score": 0.6666666666666666,
+            "support": 8.0
+          },
+          "weighted avg": {
+            "precision": 0.8125,
+            "recall": 0.75,
+            "f1-score": 0.75,
+            "support": 8.0
+          }
+        },
+        "classes": [
+          "account_problem",
+          "account_statement",
+          "card_problem",
+          "complaint",
+          "duplicate_transaction",
+          "general_query",
+          "human_support_request",
+          "other",
+          "refund_request",
+          "transaction_failed",
+          "transaction_pending",
+          "transaction_reversed",
+          "upi_problem"
+        ]
+      },
+      "telecom": {
+        "accuracy": 0.5,
+        "macro_f1": 0.4074074074074074,
+        "classification_report": {
+          "billing_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "call_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "complaint": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "data_problem": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 2.0
+          },
+          "general_query": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "human_support_request": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "plan_information": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "recharge_not_updated": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "sms_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "accuracy": 0.5,
+          "macro avg": {
+            "precision": 0.4444444444444444,
+            "recall": 0.3888888888888889,
+            "f1-score": 0.4074074074074074,
+            "support": 8.0
+          },
+          "weighted avg": {
+            "precision": 0.625,
+            "recall": 0.5,
+            "f1-score": 0.5416666666666666,
+            "support": 8.0
+          }
+        },
+        "classes": [
+          "billing_problem",
+          "call_problem",
+          "complaint",
+          "data_problem",
+          "general_query",
+          "human_support_request",
+          "network_problem",
+          "other",
+          "plan_change",
+          "plan_information",
+          "recharge_not_updated",
+          "recharge_problem",
+          "sms_problem"
+        ]
+      },
+      "travel": {
+        "accuracy": 0.25,
+        "macro_f1": 0.18518518518518517,
+        "classification_report": {
+          "booking": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "booking_cancellation": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "complaint": {
+            "precision": 1.0,
+            "recall": 0.5,
+            "f1-score": 0.6666666666666666,
+            "support": 2.0
+          },
+          "flight_delay": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "general_query": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "hotel_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "human_support_request": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "other": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "ticket_problem": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "accuracy": 0.25,
+          "macro avg": {
+            "precision": 0.2222222222222222,
+            "recall": 0.16666666666666666,
+            "f1-score": 0.18518518518518517,
+            "support": 8.0
+          },
+          "weighted avg": {
+            "precision": 0.375,
+            "recall": 0.25,
+            "f1-score": 0.29166666666666663,
+            "support": 8.0
+          }
+        },
+        "classes": [
+          "baggage_problem",
+          "booking",
+          "booking_cancellation",
+          "complaint",
+          "flight_cancellation",
+          "flight_delay",
+          "general_query",
+          "hotel_problem",
+          "human_support_request",
+          "other",
+          "refund",
+          "ticket_problem"
+        ]
+      },
+      "healthcare": {
+        "accuracy": 0.5714285714285714,
+        "macro_f1": 0.4583333333333333,
+        "classification_report": {
+          "appointment": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "appointment_cancellation": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 0.0
+          },
+          "complaint": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 2.0
+          },
+          "doctor_information": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "human_support_request": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1-score": 0.6666666666666666,
+            "support": 1.0
+          },
+          "insurance_query": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "prescription_query": {
+            "precision": 0.0,
+            "recall": 0.0,
+            "f1-score": 0.0,
+            "support": 1.0
+          },
+          "report_query": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1-score": 1.0,
+            "support": 1.0
+          },
+          "accuracy": 0.5714285714285714,
+          "macro avg": {
+            "precision": 0.4375,
+            "recall": 0.5,
+            "f1-score": 0.4583333333333333,
+            "support": 7.0
+          },
+          "weighted avg": {
+            "precision": 0.5,
+            "recall": 0.5714285714285714,
+            "f1-score": 0.5238095238095238,
+            "support": 7.0
+          }
+        },
+        "classes": [
+          "appointment",
+          "appointment_cancellation",
+          "billing_problem",
+          "complaint",
+          "doctor_information",
+          "general_query",
+          "human_support_request",
+          "insurance_query",
+          "other",
+          "prescription_query",
+          "report_query"
+        ]
+      }
+    },
+    "sentiment": {
+      "accuracy": 0.5714285714285714,
+      "macro_f1": 0.5555555555555555,
+      "classification_report": {
+        "negative": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1-score": 0.5,
+          "support": 2.0
+        },
+        "neutral": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 2.0
+        },
+        "positive": {
+          "precision": 1.0,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.5,
+          "support": 3.0
+        },
+        "accuracy": 0.5714285714285714,
+        "macro avg": {
+          "precision": 0.6666666666666666,
+          "recall": 0.611111111111111,
+          "f1-score": 0.5555555555555555,
+          "support": 7.0
+        },
+        "weighted avg": {
+          "precision": 0.7142857142857143,
+          "recall": 0.5714285714285714,
+          "f1-score": 0.5476190476190476,
+          "support": 7.0
+        }
+      },
+      "classes": [
+        "negative",
+        "neutral",
+        "positive"
+      ]
+    },
+    "emotion": {
+      "accuracy": 0.2857142857142857,
+      "macro_f1": 0.2333333333333333,
+      "classification_report": {
+        "angry": {
+          "precision": 0.25,
+          "recall": 1.0,
+          "f1-score": 0.4,
+          "support": 1.0
+        },
+        "concerned": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "frustrated": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "happy": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 2.0
+        },
+        "neutral": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "sad": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "accuracy": 0.2857142857142857,
+        "macro avg": {
+          "precision": 0.20833333333333334,
+          "recall": 0.3333333333333333,
+          "f1-score": 0.2333333333333333,
+          "support": 7.0
+        },
+        "weighted avg": {
+          "precision": 0.17857142857142858,
+          "recall": 0.2857142857142857,
+          "f1-score": 0.19999999999999998,
+          "support": 7.0
+        }
+      },
+      "classes": [
+        "angry",
+        "concerned",
+        "frustrated",
+        "happy",
+        "neutral",
+        "sad"
+      ]
+    },
+    "urgency": {
+      "accuracy": 0.8,
+      "macro_f1": 0.6666666666666666,
+      "classification_report": {
+        "critical": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 1.0
+        },
+        "high": {
+          "precision": 0.5,
+          "recall": 1.0,
+          "f1-score": 0.6666666666666666,
+          "support": 1.0
+        },
+        "low": {
+          "precision": 1.0,
+          "recall": 1.0,
+          "f1-score": 1.0,
+          "support": 2.0
+        },
+        "medium": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1-score": 0.0,
+          "support": 1.0
+        },
+        "accuracy": 0.8,
+        "macro avg": {
+          "precision": 0.625,
+          "recall": 0.75,
+          "f1-score": 0.6666666666666666,
+          "support": 5.0
+        },
+        "weighted avg": {
+          "precision": 0.7,
+          "recall": 0.8,
+          "f1-score": 0.7333333333333333,
+          "support": 5.0
+        }
+      },
+      "classes": [
+        "critical",
+        "high",
+        "low",
+        "medium"
+      ]
+    }
+  }
+}

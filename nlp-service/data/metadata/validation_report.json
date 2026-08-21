@@ -1,0 +1,303 @@
+{
+  "datasets": {
+    "domain.csv": {
+      "total_samples": 168,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 117,
+      "val_samples": 25,
+      "test_samples": 26,
+      "class_distribution": {
+        "ecommerce": 24,
+        "education": 24,
+        "insurance": 24,
+        "banking": 24,
+        "telecom": 24,
+        "travel": 24,
+        "healthcare": 24
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "emotion.csv": {
+      "total_samples": 42,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 29,
+      "val_samples": 6,
+      "test_samples": 7,
+      "class_distribution": {
+        "happy": 7,
+        "neutral": 7,
+        "concerned": 7,
+        "sad": 7,
+        "frustrated": 7,
+        "angry": 7
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_banking.csv": {
+      "total_samples": 52,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 36,
+      "val_samples": 8,
+      "test_samples": 8,
+      "class_distribution": {
+        "account_problem": 4,
+        "transaction_failed": 4,
+        "transaction_pending": 4,
+        "transaction_reversed": 4,
+        "duplicate_transaction": 4,
+        "card_problem": 4,
+        "upi_problem": 4,
+        "refund_request": 4,
+        "account_statement": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_ecommerce.csv": {
+      "total_samples": 60,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 42,
+      "val_samples": 9,
+      "test_samples": 9,
+      "class_distribution": {
+        "order_tracking": 4,
+        "delivery_delay": 4,
+        "order_cancellation": 4,
+        "refund_request": 4,
+        "payment_failure": 4,
+        "damaged_product": 4,
+        "wrong_product": 4,
+        "missing_product": 4,
+        "return_request": 4,
+        "replacement_request": 4,
+        "account_problem": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_education.csv": {
+      "total_samples": 56,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 39,
+      "val_samples": 8,
+      "test_samples": 9,
+      "class_distribution": {
+        "fee_payment": 4,
+        "fee_payment_not_updated": 4,
+        "fee_receipt": 4,
+        "fee_refund": 4,
+        "admission": 4,
+        "scholarship": 4,
+        "exam": 4,
+        "attendance": 4,
+        "course_information": 4,
+        "transport": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_healthcare.csv": {
+      "total_samples": 44,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 30,
+      "val_samples": 7,
+      "test_samples": 7,
+      "class_distribution": {
+        "appointment": 4,
+        "appointment_cancellation": 4,
+        "prescription_query": 4,
+        "billing_problem": 4,
+        "report_query": 4,
+        "insurance_query": 4,
+        "doctor_information": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_insurance.csv": {
+      "total_samples": 56,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 39,
+      "val_samples": 8,
+      "test_samples": 9,
+      "class_distribution": {
+        "claim_status": 4,
+        "claim_delay": 4,
+        "claim_rejection": 4,
+        "premium_payment": 4,
+        "policy_renewal": 4,
+        "policy_cancellation": 4,
+        "policy_document": 4,
+        "coverage_information": 4,
+        "nominee_information": 4,
+        "refund_request": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_telecom.csv": {
+      "total_samples": 52,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 36,
+      "val_samples": 8,
+      "test_samples": 8,
+      "class_distribution": {
+        "recharge_problem": 4,
+        "recharge_not_updated": 4,
+        "network_problem": 4,
+        "data_problem": 4,
+        "call_problem": 4,
+        "sms_problem": 4,
+        "plan_information": 4,
+        "plan_change": 4,
+        "billing_problem": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "intent_travel.csv": {
+      "total_samples": 48,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 33,
+      "val_samples": 7,
+      "test_samples": 8,
+      "class_distribution": {
+        "booking": 4,
+        "booking_cancellation": 4,
+        "flight_delay": 4,
+        "flight_cancellation": 4,
+        "refund": 4,
+        "baggage_problem": 4,
+        "ticket_problem": 4,
+        "hotel_problem": 4,
+        "complaint": 4,
+        "human_support_request": 4,
+        "general_query": 4,
+        "other": 4
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "language.csv": {
+      "total_samples": 36,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 25,
+      "val_samples": 5,
+      "test_samples": 6,
+      "class_distribution": {
+        "en": 12,
+        "hi": 12,
+        "hinglish": 12
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "sentiment.csv": {
+      "total_samples": 42,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 29,
+      "val_samples": 6,
+      "test_samples": 7,
+      "class_distribution": {
+        "positive": 14,
+        "neutral": 14,
+        "negative": 14
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    },
+    "urgency.csv": {
+      "total_samples": 28,
+      "nulls_removed": 0,
+      "duplicates_dropped": 0,
+      "train_samples": 19,
+      "val_samples": 4,
+      "test_samples": 5,
+      "class_distribution": {
+        "low": 7,
+        "medium": 7,
+        "high": 7,
+        "critical": 7
+      },
+      "data_leakage": {
+        "train_val_overlap": 0,
+        "train_test_overlap": 0,
+        "val_test_overlap": 0
+      }
+    }
+  },
+  "summary": {
+    "total_files_checked": 12,
+    "leakage_detected": false
+  }
+}

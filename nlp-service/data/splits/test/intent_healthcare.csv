@@ -1,0 +1,8 @@
+text,label
+Blood test report status pending for 24 hours.,report_query
+Which specialist doctor is available in evening OPD?,doctor_information
+Hospital staff ke bad behavior par complaint karni hai.,complaint
+Doctor was extremely dismissive and rude during consultation.,complaint
+Doctor forgot to mention syrup dosage on prescription.,prescription_query
+Mediclaim approval status at hospital insurance desk.,insurance_query
+Hospital support executive se connect karein.,human_support_request

@@ -1,0 +1,31 @@
+text,label
+Can I substitute prescribed medicine with generic brand?,prescription_query
+Complaint regarding 2 hour waiting time despite appointment.,complaint
+"Unable to attend doctor appointment, please cancel slot.",appointment_cancellation
+When will my lipid profile blood test report be ready?,report_query
+Find senior cardiologist doctor profile and fees.,doctor_information
+Filthy hospital hygiene condition and uncleaned beds.,complaint
+Is fasting required before full body blood checkup?,general_query
+Vaccination schedule and age limits for toddlers.,general_query
+Book OPD consultation slot with pediatrician.,appointment
+Unable to download MRI scan radiologist report from app.,report_query
+Overcharged on pharmacy medicine bill at discharge.,billing_problem
+TPA desk pre-authorization query for scheduled surgery.,insurance_query
+Kuch alag healthcare assistance query hai.,other
+What are visiting hours for ICU admitted patients?,general_query
+Doctor ki availability aur OPD timing kya hai?,doctor_information
+Lab test report kab tak download ho payegi?,report_query
+Schedule a consultation with orthopedic doctor tomorrow.,appointment
+Ambulance service charges and stretcher availability.,other
+Home nurse care and medical equipment rental inquiry.,other
+What is the qualification and OPD timing of Dr. Sharma?,doctor_information
+Please cancel my doctor consultation appointment for tonight.,appointment_cancellation
+I want to speak with clinic support human representative.,human_support_request
+Dawai kitni baar leni hai prescription me clear nahi hai.,prescription_query
+Discrepancy in ICU bed charges and medication billing.,billing_problem
+Is cashless hospitalization available with Star Health insurance?,insurance_query
+Hospital bill me extra charge lagaya gaya hai dispute karna hai.,billing_problem
+Connect me to hospital helpdesk staff immediately.,human_support_request
+Cancel dental checkup appointment and refund booking fee.,appointment_cancellation
+I want to book an appointment with a dermatologist.,appointment
+How many times a day should I take this antibiotic tablet?,prescription_query

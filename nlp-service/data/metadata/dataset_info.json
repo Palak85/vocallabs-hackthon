@@ -1,0 +1,36 @@
+{
+  "dataset_version": "1.1.0",
+  "created_at": "2026-08-21T13:02:28.322025Z",
+  "source": "Curated Synthetic Multi-Domain Corpus for Hackathon Benchmarking",
+  "is_synthetic": true,
+  "domains_covered": [
+    "ecommerce",
+    "education",
+    "insurance",
+    "banking",
+    "telecom",
+    "travel",
+    "healthcare"
+  ],
+  "total_domain_samples": 168,
+  "total_sentiment_samples": 42,
+  "total_emotion_samples": 42,
+  "total_urgency_samples": 28,
+  "total_language_samples": 36,
+  "intents_per_domain_count": {
+    "ecommerce": 60,
+    "education": 56,
+    "insurance": 56,
+    "banking": 52,
+    "telecom": 52,
+    "travel": 48,
+    "healthcare": 44
+  },
+  "license": "MIT / Academic Hackathon",
+  "language_support": [
+    "English",
+    "Hindi",
+    "Hinglish",
+    "Indian English"
+  ]
+}

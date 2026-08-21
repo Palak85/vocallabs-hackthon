@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  nlp-db:
+    image: postgres:15-alpine
+    container_name: nlp-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: nlp_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nlp-service:
+    build: .
+    container_name: nlp-microservice
+    restart: always
+    depends_on:
+      nlp-db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:password@nlp-db:5432/nlp_db
+      DOMAIN_CONFIDENCE_THRESHOLD: "0.28"
+      INTENT_CONFIDENCE_THRESHOLD: "0.15"
+      LANGUAGE_CONFIDENCE_THRESHOLD: "0.40"
+      LOG_LEVEL: INFO
+      STORE_RAW_TEXT: "true"
+    ports:
+      - "8000:8000"
+
+volumes:
+  postgres_data:

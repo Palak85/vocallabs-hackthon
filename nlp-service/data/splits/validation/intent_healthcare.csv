@@ -1,0 +1,8 @@
+text,label
+Hospital admission bill includes unavailed nursing charges.,billing_problem
+Hospital me cashless mediclaim facility hai ya nahi?,insurance_query
+General question about diagnostic lab operating hours.,general_query
+Transfer this chat to hospital emergency desk or human agent.,human_support_request
+Doctor appointment cancel karke refund process karein.,appointment_cancellation
+Doctor ka appointment book karna hai kal ke liye.,appointment
+Other clinical or hospital related inquiries.,other

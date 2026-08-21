@@ -1,0 +1,45 @@
+text,label
+I want to book an appointment with a dermatologist.,appointment
+Schedule a consultation with orthopedic doctor tomorrow.,appointment
+Book OPD consultation slot with pediatrician.,appointment
+Doctor ka appointment book karna hai kal ke liye.,appointment
+Please cancel my doctor consultation appointment for tonight.,appointment_cancellation
+Cancel dental checkup appointment and refund booking fee.,appointment_cancellation
+"Unable to attend doctor appointment, please cancel slot.",appointment_cancellation
+Doctor appointment cancel karke refund process karein.,appointment_cancellation
+How many times a day should I take this antibiotic tablet?,prescription_query
+Doctor forgot to mention syrup dosage on prescription.,prescription_query
+Can I substitute prescribed medicine with generic brand?,prescription_query
+Dawai kitni baar leni hai prescription me clear nahi hai.,prescription_query
+Hospital admission bill includes unavailed nursing charges.,billing_problem
+Discrepancy in ICU bed charges and medication billing.,billing_problem
+Overcharged on pharmacy medicine bill at discharge.,billing_problem
+Hospital bill me extra charge lagaya gaya hai dispute karna hai.,billing_problem
+When will my lipid profile blood test report be ready?,report_query
+Unable to download MRI scan radiologist report from app.,report_query
+Blood test report status pending for 24 hours.,report_query
+Lab test report kab tak download ho payegi?,report_query
+Is cashless hospitalization available with Star Health insurance?,insurance_query
+TPA desk pre-authorization query for scheduled surgery.,insurance_query
+Mediclaim approval status at hospital insurance desk.,insurance_query
+Hospital me cashless mediclaim facility hai ya nahi?,insurance_query
+What is the qualification and OPD timing of Dr. Sharma?,doctor_information
+Which specialist doctor is available in evening OPD?,doctor_information
+Find senior cardiologist doctor profile and fees.,doctor_information
+Doctor ki availability aur OPD timing kya hai?,doctor_information
+Complaint regarding 2 hour waiting time despite appointment.,complaint
+Doctor was extremely dismissive and rude during consultation.,complaint
+Filthy hospital hygiene condition and uncleaned beds.,complaint
+Hospital staff ke bad behavior par complaint karni hai.,complaint
+Transfer this chat to hospital emergency desk or human agent.,human_support_request
+I want to speak with clinic support human representative.,human_support_request
+Connect me to hospital helpdesk staff immediately.,human_support_request
+Hospital support executive se connect karein.,human_support_request
+What are visiting hours for ICU admitted patients?,general_query
+Is fasting required before full body blood checkup?,general_query
+Vaccination schedule and age limits for toddlers.,general_query
+General question about diagnostic lab operating hours.,general_query
+Home nurse care and medical equipment rental inquiry.,other
+Other clinical or hospital related inquiries.,other
+Ambulance service charges and stretcher availability.,other
+Kuch alag healthcare assistance query hai.,other

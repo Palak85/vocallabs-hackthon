@@ -1,0 +1,53 @@
+text,label
+My account is locked due to incorrect netbanking passwords.,account_problem
+Unable to access mobile banking application.,account_problem
+"Net banking user ID is deactivated, how to unlock?",account_problem
+Mobile banking app login nahi ho raha account locked hai.,account_problem
+My UPI payment failed but amount was debited from account.,transaction_failed
+ATM transaction failed to dispense cash but balance reduced.,transaction_failed
+Card swipe failed at merchant machine but money deducted.,transaction_failed
+Paise kat gaye par UPI payment fail dikha raha hai.,transaction_failed
+NEFT money transfer is pending for last 8 hours.,transaction_pending
+Transaction status shows pending at beneficiary bank.,transaction_pending
+IMPS fund transfer is processing and money not received.,transaction_pending
+Transaction pending hai kab tak clear hoga?,transaction_pending
+When will money reversed from failed payment be credited?,transaction_reversed
+Merchant reversed transaction but bank balance not updated.,transaction_reversed
+Reversal reference number generated but amount not back.,transaction_reversed
+Refund reversal amount kab account me aayega?,transaction_reversed
+I was charged twice for the same restaurant POS swipe.,duplicate_transaction
+Double deduction observed on savings account statement.,duplicate_transaction
+Single online order charged twice on credit card.,duplicate_transaction
+Ek hi payment ke liye do baar paise cut ho gaye.,duplicate_transaction
+"My credit card was blocked for suspicious activity, unblock it.",card_problem
+Debit card chip not working at ATM machines.,card_problem
+Request new contactless debit card replacement.,card_problem
+Card block ho gaya hai unblock kaise karein?,card_problem
+UPI PIN set error and daily UPI transaction limit exceeded.,upi_problem
+Google Pay UPI server error on bank side.,upi_problem
+UPI auto-pay mandate cancel request failing.,upi_problem
+UPI transactions nahi chal rahi server error aa raha hai.,upi_problem
+Refund for failed online merchant transaction not received.,refund_request
+Requesting refund of wrongful penalty charges.,refund_request
+Annual debit card maintenance charge refund query.,refund_request
+Wrong charge laga diya bank ne refund chahiye.,refund_request
+How to get password-protected bank account statement PDF?,account_statement
+Need annual interest certificate for income tax filing.,account_statement
+Download e-statement for last 3 months savings account.,account_statement
+Account statement PDF download kaise karein?,account_statement
+Filing formal complaint regarding unauthorized debit charge.,complaint
+"Worst banking branch service, staff refused assistance.",complaint
+Complaint against rude branch manager and long queues.,complaint
+Bank branch service ke khilaaf complaint darj karni hai.,complaint
+Please connect me to bank customer care executive.,human_support_request
+Transfer to a human banking representative.,human_support_request
+I need to speak to a phone banking officer.,human_support_request
+Bank executive se baat karni hai urgent.,human_support_request
+What are the current interest rates for fixed deposits?,general_query
+What is the minimum average balance requirement for savings?,general_query
+Home loan interest rates for existing customers.,general_query
+General question about bank working hours on Saturday.,general_query
+Query about locker availability in local branch.,other
+Other banking service related inquiries.,other
+Cheque book requisition tracking status.,other
+Kuch miscellaneous bank queries hain.,other

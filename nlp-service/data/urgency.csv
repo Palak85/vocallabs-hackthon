@@ -1,0 +1,29 @@
+text,label
+What are the upcoming discounts next month?,low
+Just wondering how reward points can be redeemed.,low
+"No rush, please reply whenever convenient regarding syllabus.",low
+Inquiring about routine policy renewal due next quarter.,low
+"Kabhi bhi reply kar sakte hain, bas information chahiye thi.",low
+Curious about general return policies for future orders.,low
+Looking for routine brochure information on courses.,low
+Please check why my delivery is delayed by a day.,medium
+I need to update my email address in account profile.,medium
+When can I expect my lab test blood report?,medium
+My broadband speed seems slower than usual today.,medium
+Kal tak bata dijiye ga mera status kya hai.,medium
+Need assistance with fee payment receipt download within 2 days.,medium
+Kindly verify the status of my claim submission by tomorrow.,medium
+My flight departs in 3 hours and boarding pass is not downloading!,high
+"Fee portal closes in 2 hours and payment is stuck, please help!",high
+"Patient admitted in ICU, need immediate cashless insurance approval!",high
+My card was stolen and unauthorized charges are occurring right now!,high
+Flight 2 ghante me hai aur ticket confirm nahi hua jaldi help karo!,high
+"Emergency surgery scheduled today, need cashless authorization instantly!",high
+Need access urgently to my bank account for hospital deposit.,high
+"EMERGENCY: Cash deducted 50,000 fraud happening right now, BLOCK ACCOUNT IMMEDIATELY!",critical
+CRITICAL MEDICAL EMERGENCY: Ambulance required immediately at location!,critical
+"STRANDED AT NIGHT ON HIGHWAY: Cab driver abandoned vehicle, need emergency response!",critical
+SEVERE SAFETY ISSUE: Hazardous electrical spark from delivered electronic device!,critical
+"URGENT EMERGENCY: Sab block karo turant, hacking ho rahi hai account me!",critical
+"LIFE THREATENING SITUATION: Oxygen cylinder delivery failed, immediate action needed!",critical
+CRITICAL SECURITY BREACH: Unauthorized access to corporate database reported now!,critical

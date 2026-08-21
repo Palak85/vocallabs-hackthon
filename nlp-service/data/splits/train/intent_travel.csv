@@ -1,0 +1,34 @@
+text,label
+Flight departure time postponed by 6 hours.,flight_delay
+Flight bahut delay ho gayi hai update batayein.,flight_delay
+Book train ticket in executive chair car class.,booking
+Airlines staff ke rude behavior ke khilaaf complaint.,complaint
+Refund amount credited is less than airline policy.,refund
+Please connect me to travel agent or human support.,human_support_request
+Terrible airport transfer experience and missed tour.,complaint
+How to confirm hotel room reservation for 3 nights?,booking
+What is the free cabin baggage weight limit per passenger?,general_query
+Cancelled flight alternative travel arrangements.,flight_cancellation
+Other travel and booking inquiries.,other
+Travel desk executive se baat karwayein.,human_support_request
+When will hotel cancellation refund reach my account?,refund
+My checked baggage was damaged and torn on conveyor belt.,baggage_problem
+Kuch aur jaankari chahiye travel packages ke baare me.,other
+Baggage tag missing and lost suitcase claim.,baggage_problem
+Transfer this chat to human booking agent.,human_support_request
+Cancel round trip booking and release seat.,booking_cancellation
+"Flight cancelled by airline, need emergency rebooking.",flight_cancellation
+Web check-in boarding pass PDF not generating.,ticket_problem
+"Connecting flight delayed, will I miss next flight?",flight_delay
+Hotel room AC was broken and bathroom was dirty.,hotel_problem
+Luggage bag did not arrive at destination airport.,baggage_problem
+Seat number not allocated after web check-in.,ticket_problem
+Boarding pass download nahi ho raha error aa raha.,ticket_problem
+Where is my flight cancellation refund?,refund
+Airline cancelled my flight without prior notice.,flight_cancellation
+Wheelchair assistance and pet travel policies query.,other
+Flight ticket booking karni hai kal ke liye.,booking
+Are infant meals provided on international flights?,general_query
+Please cancel my flight ticket reservation PNR-8812.,booking_cancellation
+How to cancel hotel room booking without penalty?,booking_cancellation
+Hotel me check-in nahi de rahe booking mil nahi rahi.,hotel_problem

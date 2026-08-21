@@ -1,0 +1,57 @@
+text,label
+How to pay semester tuition fees online?,fee_payment
+Need payment link for hostel and mess fees.,fee_payment
+Where can I pay my term tuition installments?,fee_payment
+Online fee payment link open nahi ho raha.,fee_payment
+I paid school fees but portal still shows unpaid.,fee_payment_not_updated
+Fee payment successful but fee status not updated.,fee_payment_not_updated
+Bank debited fee amount but college portal is unpaid.,fee_payment_not_updated
+Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
+Where can I download the tuition fee receipt?,fee_receipt
+Need official stamp on my fee payment receipt PDF.,fee_receipt
+Download link for semester fee tax receipt.,fee_receipt
+Fee receipt download kaise karein portal se?,fee_receipt
+How to apply for refund of security deposit fee?,fee_refund
+"Withdrew admission, when will fee refund be credited?",fee_refund
+Excess fee paid refund application form.,fee_refund
+College admission cancel kiya fee refund kab aayega?,fee_refund
+What is the admission procedure for B.Tech program?,admission
+Last date for submission of entrance admission form.,admission
+Direct admission eligibility criteria and cutoff marks.,admission
+Admission form fill karne ki last date kya hai?,admission
+Eligibility criteria for state government scholarship.,scholarship
+Disbursement date for national merit scholarship.,scholarship
+How to apply for fee waiver and student scholarship?,scholarship
+Scholarship amount kab tak account me aayega?,scholarship
+When is the final semester exam timetable coming?,exam
+Admit card download error for upcoming university exam.,exam
+Exam hall ticket center name correction request.,exam
+Semester exam date sheet kab release hogi?,exam
+Attendance marked absent even though I was in lecture.,attendance
+Minimum attendance percentage required to sit in exams.,attendance
+Attendance shortage warning email discrepancy.,attendance
+Class me present hone ke baad bhi absent laga diya.,attendance
+Syllabus and course curriculum details for MBA.,course_information
+Can I change elective subjects in second year?,course_information
+Credit requirements for graduation in computer science.,course_information
+Course structure aur syllabus details chahiye.,course_information
+College bus route and monthly transport pass fees.,transport
+College transport bus was late and missed morning lab.,transport
+Bus route stop change request for next term.,transport
+College bus timings aur stop location janni hai.,transport
+Complaint regarding rude behavior of college administration.,complaint
+Filing complaint against mess food hygiene quality.,complaint
+Poor classroom facilities and broken air conditioning.,complaint
+College administration ke against complaint karni hai.,complaint
+Connect me to university admission counselor or human.,human_support_request
+I need to speak with human helpdesk officer.,human_support_request
+Transfer this chat to student support representative.,human_support_request
+Helpdesk support executive se baat karaiye.,human_support_request
+What are library working hours on weekends?,general_query
+Is campus sports complex open for day scholars?,general_query
+Hostel curfew timings and visitor rules query.,general_query
+General question about university holiday calendar.,general_query
+Query regarding student identity card reissue.,other
+Other miscellaneous college campus inquiries.,other
+Lost property inquiry in college auditorium.,other
+Kuch miscellaneous query hai campus facilities ke baare me.,other

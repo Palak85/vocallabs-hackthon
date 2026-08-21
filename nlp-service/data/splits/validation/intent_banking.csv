@@ -1,0 +1,9 @@
+text,label
+Ek hi payment ke liye do baar paise cut ho gaye.,duplicate_transaction
+Transaction pending hai kab tak clear hoga?,transaction_pending
+Card swipe failed at merchant machine but money deducted.,transaction_failed
+Other banking service related inquiries.,other
+I need to speak to a phone banking officer.,human_support_request
+Bank executive se baat karni hai urgent.,human_support_request
+When will money reversed from failed payment be credited?,transaction_reversed
+Requesting refund of wrongful penalty charges.,refund_request

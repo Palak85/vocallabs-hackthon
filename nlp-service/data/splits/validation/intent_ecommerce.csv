@@ -1,0 +1,10 @@
+text,label
+"Delivery partner is late, please expedite.",delivery_delay
+Random feedback about app theme design.,other
+Payment ho gaya par order place nahi hua.,payment_failure
+General question regarding available payment modes.,general_query
+Login nahi ho raha account me error aa raha hai.,account_problem
+Where is my refund for returned shoes?,refund_request
+Please transfer this chat to human customer agent.,human_support_request
+Defective unit ko replace karwana hai.,replacement_request
+My package delivery is delayed by 3 days.,delivery_delay
