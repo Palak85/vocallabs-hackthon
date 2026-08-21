@@ -1,14 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <nav className="bg-surface/80 backdrop-blur-md shadow-sm transition-all duration-200 ease-in-out fixed top-0 left-0 w-full z-50">
       <div className="flex justify-between items-center px-6 py-4 max-w-7xl mx-auto bg-surface">
         {/* Logo */}
-        <div className="text-headline-sm font-bold text-primary">
-          Luminous Support
+        <div
+          className="text-headline-sm font-bold text-primary cursor-pointer"
+          onClick={() => navigate("/")}
+        >
+          SuperviseAI Hub
         </div>
 
         {/* Desktop Nav Links */}
@@ -24,15 +29,12 @@ export default function Navbar() {
           ))}
         </div>
 
-        {/* Desktop Auth Buttons */}
+        {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-4">
-          <a
-            href="#"
-            className="text-label-md font-semibold text-on-surface-variant hover:text-primary transition-colors"
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-primary text-on-primary font-semibold text-label-md px-4 py-2 rounded-lg shadow-sm hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer"
           >
-            Log In
-          </a>
-          <button className="bg-primary text-on-primary font-semibold text-label-md px-4 py-2 rounded-lg shadow-sm hover:bg-primary-container hover:text-on-primary-container transition-colors cursor-pointer">
             Get Started
           </button>
         </div>
@@ -51,7 +53,7 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {mobileOpen && (
-        <div className="md:hidden bg-surface border-t border-outline-variant px-6 py-4 space-y-4 animate-in">
+        <div className="md:hidden bg-surface border-t border-outline-variant px-6 py-4 space-y-4">
           {["Platform", "Solutions", "Resources", "Pricing"].map((item) => (
             <a
               key={item}
@@ -62,13 +64,13 @@ export default function Navbar() {
             </a>
           ))}
           <hr className="border-outline-variant" />
-          <a
-            href="#"
-            className="block text-label-md font-semibold text-on-surface-variant hover:text-primary transition-colors"
+          <button
+            onClick={() => {
+              navigate("/dashboard");
+              setMobileOpen(false);
+            }}
+            className="w-full bg-primary text-on-primary font-semibold text-label-md px-4 py-2 rounded-lg shadow-sm hover:bg-primary-container transition-colors cursor-pointer"
           >
-            Log In
-          </a>
-          <button className="w-full bg-primary text-on-primary font-semibold text-label-md px-4 py-2 rounded-lg shadow-sm hover:bg-primary-container transition-colors cursor-pointer">
             Get Started
           </button>
         </div>

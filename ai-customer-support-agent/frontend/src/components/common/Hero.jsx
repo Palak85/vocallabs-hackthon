@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 export default function Hero() {
+  const navigate = useNavigate();
+
   return (
     <section className="max-w-7xl mx-auto px-6 py-16 md:py-24 grid md:grid-cols-2 gap-12 items-center">
       {/* Left Column — Copy */}
@@ -25,7 +29,10 @@ export default function Hero() {
 
         {/* CTAs */}
         <div className="flex flex-col sm:flex-row gap-4">
-          <button className="bg-primary text-on-primary font-semibold text-label-md px-6 py-3 rounded-lg shadow-lg shadow-primary/20 hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center justify-center gap-2 cursor-pointer">
+          <button
+            onClick={() => navigate("/dashboard")}
+            className="bg-primary text-on-primary font-semibold text-label-md px-6 py-3 rounded-lg shadow-lg shadow-primary/20 hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center justify-center gap-2 cursor-pointer"
+          >
             Start Your Free Trial
             <span className="material-symbols-outlined text-[18px]">
               arrow_forward
