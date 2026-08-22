@@ -10,6 +10,7 @@ router = APIRouter(tags=["Model Info"])
 
 
 @router.get("/api/model-info", response_model=ModelInfoResponse)
+@router.get("/api/models", response_model=ModelInfoResponse)
 def get_model_info():
     return ModelInfoResponse(
         service="nlp-service",

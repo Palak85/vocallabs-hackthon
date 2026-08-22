@@ -47,6 +47,16 @@ app.add_middleware(
 )
 
 # Mount Routes
+@app.get("/", tags=["Root"])
+def root_index():
+    return {
+        "service": "AI-Powered Customer Support NLP Microservice",
+        "status": "running",
+        "documentation": "/docs",
+        "openapi_schema": "/openapi.json",
+        "health": "/api/health"
+    }
+
 app.include_router(health_router)
 app.include_router(model_info_router)
 app.include_router(nlp_router)
