@@ -4,36 +4,13 @@ import { api } from "../../services/api";
 const initialMessages = [
   {
     id: 1,
-    sender: "customer",
-    text: "Hi, I've been charged twice this month for my pro subscription. I need a refund immediately.",
-    time: "10:42 AM",
-  },
-  {
-    id: 2,
     sender: "ai",
-    text: "Hello Maria. I apologize for the inconvenience. Let me check your billing history right away to see what happened.",
-    time: "10:42 AM",
-  },
-  {
-    id: 3,
-    sender: "system",
-    text: "Executing API: GET /billing/v2/history?user=98421",
-  },
-  {
-    id: 4,
-    sender: "ai",
-    text: "I see the duplicate charge on Oct 24th for $49.99. This appears to be a system error during our payment gateway update. I can process a refund for the duplicate charge right now.",
-    time: "10:43 AM",
-  },
-  {
-    id: 5,
-    sender: "customer",
-    text: "Yes, please do. When will it show up in my account?",
-    time: "10:44 AM",
-  },
+    text: "Hello! Welcome to AI Multi-Domain Customer Support. How can I assist you with your order, banking, education, insurance, telecom, travel, or healthcare query today?",
+    time: "10:00 AM",
+  }
 ];
 
-export default function ActiveChat() {
+export default function ActiveChat({ isEscalated, onTurnComplete }) {
   const [messages, setMessages] = useState(initialMessages);
   const [inputText, setInputText] = useState("");
   const [isListening, setIsListening] = useState(false);
@@ -102,7 +79,6 @@ export default function ActiveChat() {
     if (file) {
       setSelectedFile(file);
     }
-    // Reset input so same file can be re-selected
     e.target.value = "";
   };
 
@@ -129,12 +105,13 @@ export default function ActiveChat() {
 
     const newMessage = {
       id: Date.now(),
-      sender: "supervisor",
+      sender: "customer",
       text: messageText,
       time: timeString,
     };
 
     setMessages((prev) => [...prev, newMessage]);
+    const textToSend = inputText.trim();
     setInputText("");
     setSelectedFile(null);
     setIsLoading(true);
@@ -151,18 +128,16 @@ export default function ActiveChat() {
         ]);
         
         await api.uploadDocument(currentFile);
-        
         setMessages((prev) => prev.filter(m => !m.text.includes('Uploading document:')));
       }
 
-      const textToSend = inputText.trim();
       if (textToSend) {
         setMessages((prev) => [
           ...prev,
           {
             id: 'loading-indicator',
             sender: "system",
-            text: "Waiting for AI response...",
+            text: "AI Agent analyzing signals & formulating response...",
           }
         ]);
 
@@ -174,14 +149,21 @@ export default function ActiveChat() {
 
         setMessages((prev) => prev.filter(m => m.id !== 'loading-indicator'));
 
+        const aiMessageText = response.response || response.answer || "Your request is being processed.";
         const aiMessage = {
           id: response.messageId || Date.now() + 2,
-          sender: "ai",
-          text: response.answer,
+          sender: response.escalated ? "supervisor" : "ai",
+          text: aiMessageText,
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+          escalated: response.escalated,
+          status: response.status
         };
 
         setMessages((prev) => [...prev, aiMessage]);
+
+        if (onTurnComplete) {
+          onTurnComplete(response);
+        }
       }
     } catch (error) {
       setMessages((prev) => prev.filter(m => m.id !== 'loading-indicator'));
@@ -190,7 +172,7 @@ export default function ActiveChat() {
         {
           id: Date.now() + 3,
           sender: "system",
-          text: `Error: ${error.message}`,
+          text: `Service response: ${error.message}`,
         },
       ]);
     } finally {
@@ -207,33 +189,46 @@ export default function ActiveChat() {
 
   return (
     <section className="flex-1 flex flex-col bg-dash-surface-container-lowest rounded-xl shadow-sm border border-dash-surface-variant overflow-hidden min-w-[300px]">
-      {/* Frustration Warning Banner */}
-      <div className="bg-dash-tertiary-container text-dash-on-tertiary-container px-4 py-2 flex items-center gap-2 text-label-md font-semibold border-b border-dash-tertiary/20">
-        <span className="material-symbols-outlined text-sm">warning</span>
-        User frustration spike detected. Monitoring suggested.
-      </div>
+      {/* Frustration / Escalation Warning Banner */}
+      {isEscalated ? (
+        <div className="bg-red-500/20 text-red-300 px-4 py-2 flex items-center gap-2 text-label-md font-semibold border-b border-red-500/30 animate-pulse">
+          <span className="material-symbols-outlined text-sm">support_agent</span>
+          Human Escalation Active: Conversation routed to Senior Support Specialist.
+        </div>
+      ) : (
+        <div className="bg-dash-tertiary-container text-dash-on-tertiary-container px-4 py-2 flex items-center gap-2 text-label-md font-semibold border-b border-dash-tertiary/20">
+          <span className="material-symbols-outlined text-sm">smart_toy</span>
+          AI Agent Gateway Active • Real-Time NLP Intelligence & Continuous Monitoring
+        </div>
+      )}
 
       {/* Chat Header */}
       <div className="p-4 border-b border-dash-outline-variant flex justify-between items-center bg-dash-surface-bright shrink-0">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-full bg-dash-surface-container flex items-center justify-center text-dash-on-surface-variant font-bold text-headline-sm">
-            MC
+            CU
           </div>
           <div>
-            <h3 className="font-bold text-body-md text-dash-on-surface">Maria Chen</h3>
+            <h3 className="font-bold text-body-md text-dash-on-surface">Customer Session</h3>
             <p className="text-label-xs text-dash-on-surface-variant flex items-center gap-1">
               <span className="w-2 h-2 rounded-full bg-green-500" />
-              Online • ID: #98421
+              Active • ID: {conversationId ? conversationId : "New Session"}
             </p>
           </div>
         </div>
         <div className="flex gap-2">
           <span className="px-2 py-1 bg-dash-surface-container-high rounded text-label-xs text-dash-on-surface-variant border border-dash-outline-variant">
-            Billing
+            Multi-Domain
           </span>
-          <span className="px-2 py-1 bg-dash-error-container text-dash-on-error-container rounded text-label-xs border border-dash-error/20">
-            High Frustration
-          </span>
+          {isEscalated ? (
+            <span className="px-2 py-1 bg-red-600/30 text-red-300 font-semibold rounded text-label-xs border border-red-500/30 animate-pulse">
+              ESCALATED
+            </span>
+          ) : (
+            <span className="px-2 py-1 bg-emerald-500/20 text-emerald-300 font-semibold rounded text-label-xs border border-emerald-500/30">
+              AI MONITORING
+            </span>
+          )}
         </div>
       </div>
 
@@ -262,7 +257,7 @@ export default function ActiveChat() {
           if (isCustomer) {
             bubbleStyles = "bg-dash-surface-container-high text-dash-on-surface rounded-tl-none border border-dash-surface-variant";
           } else if (isSupervisor) {
-            bubbleStyles = "bg-dash-secondary text-dash-on-secondary rounded-tr-none";
+            bubbleStyles = "bg-amber-100 text-amber-950 dark:bg-amber-950/80 dark:text-amber-100 border border-amber-500/60 font-medium rounded-tr-none shadow-sm";
           }
 
           return (
@@ -281,8 +276,9 @@ export default function ActiveChat() {
                 }`}
               >
                 {msg.time}
-                {isAi && " • AI Agent"}
-                {isSupervisor && " • Human Supervisor"}
+                {isAi && " • AI Support Agent"}
+                {isSupervisor && " • Human Escalation Specialist"}
+                {isCustomer && " • Customer"}
               </span>
             </div>
           );
@@ -291,17 +287,6 @@ export default function ActiveChat() {
 
       {/* Chat Input Area */}
       <div className="p-4 border-t border-dash-outline-variant bg-dash-surface-bright shrink-0">
-        <div className="flex gap-2 mb-3">
-          <button className="flex-1 bg-dash-surface-container text-dash-on-surface-variant border border-dash-outline-variant py-2 rounded-lg text-label-md font-semibold hover:bg-dash-surface-variant transition-colors flex items-center justify-center gap-2 cursor-pointer">
-            <span className="material-symbols-outlined text-sm">visibility</span>
-            Private Suggestion
-          </button>
-          <button className="flex-1 bg-dash-primary text-dash-on-primary py-2 rounded-lg text-label-md font-semibold hover:opacity-90 transition-colors shadow-sm flex items-center justify-center gap-2 cursor-pointer">
-            <span className="material-symbols-outlined text-sm">front_hand</span>
-            Take Over
-          </button>
-        </div>
-
         {/* File Preview Chip */}
         {selectedFile && (
           <div className="flex items-center gap-2 mb-2 px-3 py-1.5 bg-dash-surface-container rounded-lg border border-dash-outline-variant w-fit">
@@ -341,7 +326,7 @@ export default function ActiveChat() {
               isListening ? "ring-2 ring-emerald-500 border-emerald-500" : ""
             }`}
             placeholder={
-              isListening ? "Listening... Speak now..." : "Type a message to take over..."
+              isListening ? "Listening... Speak now..." : "Type customer message or voice query..."
             }
             type="text"
             value={inputText}
@@ -390,4 +375,3 @@ export default function ActiveChat() {
     </section>
   );
 }
-

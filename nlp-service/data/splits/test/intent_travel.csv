@@ -1,9 +1,5 @@
 text,label
-Other travel and booking inquiries.,other
-I need to speak directly to airline desk representative.,human_support_request
-Airlines staff ke rude behavior ke khilaaf complaint.,complaint
-Flight ticket booking karni hai kal ke liye.,booking
-"Connecting flight delayed, will I miss next flight?",flight_delay
-Filing consumer complaint against travel portal for fraud.,complaint
-Hotel overbooked and denied confirmed room.,hotel_problem
-Please cancel my flight ticket reservation PNR-8812.,booking_cancellation
+Hotel refused check-in saying booking is not found.,hotel_problem
+Reschedule hotel check-in date to next weekend.,rescheduling
+Flight date change fee and rescheduling charges.,rescheduling
+How to confirm hotel room reservation for 3 nights?,booking

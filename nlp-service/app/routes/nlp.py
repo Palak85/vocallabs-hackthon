@@ -22,15 +22,18 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
     if not req.text.strip():
         raise HTTPException(status_code=400, detail="Customer text cannot be empty.")
 
+    conv_id = req.conversation_id if req.conversation_id and req.conversation_id.strip() else f"conv_{uuid.uuid4().hex[:10]}"
+    msg_id = req.message_id if req.message_id and req.message_id.strip() else f"msg_{uuid.uuid4().hex[:10]}"
+
     try:
         # Retrieve previous frustration scores from conversation history in DB
         prev_scores = []
-        existing_conv = db.query(Conversation).filter(Conversation.conversation_id == req.conversation_id).first()
+        existing_conv = db.query(Conversation).filter(Conversation.conversation_id == conv_id).first()
         if existing_conv:
             prev_results = (
                 db.query(NLPResult)
                 .join(Message, Message.message_id == NLPResult.message_id)
-                .filter(Message.conversation_id == req.conversation_id)
+                .filter(Message.conversation_id == conv_id)
                 .order_by(Message.created_at.asc())
                 .all()
             )
@@ -49,7 +52,7 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
         # Persist / Update Conversation
         if not existing_conv:
             conv_record = Conversation(
-                conversation_id=req.conversation_id,
+                conversation_id=conv_id,
                 customer_id=req.customer_id or "anonymous",
                 started_at=datetime.utcnow(),
                 last_message_at=datetime.utcnow()
@@ -59,11 +62,11 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
             existing_conv.last_message_at = datetime.utcnow()
 
         # Check for existing message_id to support idempotent calls
-        existing_msg = db.query(Message).filter(Message.message_id == req.message_id).first()
+        existing_msg = db.query(Message).filter(Message.message_id == msg_id).first()
         if not existing_msg:
             msg_record = Message(
-                conversation_id=req.conversation_id,
-                message_id=req.message_id,
+                conversation_id=conv_id,
+                message_id=msg_id,
                 sender="customer",
                 text=req.text,
                 timestamp=datetime.utcnow()
@@ -71,7 +74,7 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
             db.add(msg_record)
 
             nlp_record = NLPResult(
-                message_id=req.message_id,
+                message_id=msg_id,
                 language=nlp_data["language"]["label"],
                 language_confidence=nlp_data["language"]["confidence"],
                 domain=nlp_data["domain"]["label"],
@@ -92,7 +95,7 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
 
             for ent in nlp_data["entities"]:
                 ent_record = Entity(
-                    message_id=req.message_id,
+                    message_id=msg_id,
                     entity_type=ent["type"],
                     entity_value=ent["value"],
                     confidence=ent["confidence"]
@@ -103,8 +106,8 @@ def analyze_message(req: NLPAnalyzeRequest, db: Session = Depends(get_db)):
 
         return NLPAnalyzeResponse(
             success=True,
-            conversation_id=req.conversation_id,
-            message_id=req.message_id,
+            conversation_id=conv_id,
+            message_id=msg_id,
             nlp=nlp_data,
             conversation_analysis=conv_data
         )

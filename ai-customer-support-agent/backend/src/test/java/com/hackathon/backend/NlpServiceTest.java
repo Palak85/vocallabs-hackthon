@@ -42,7 +42,7 @@ class NlpServiceTest {
         assertTrue(response.isSuccess());
         assertEquals("insurance", response.getNlp().getDomain().getLabel());
         assertEquals("claim_delay", response.getNlp().getIntent().getLabel());
-        assertEquals("CLM-99882", response.getNlp().getEntities().get("claim_number"));
+        assertEquals("CLM-99882", response.getNlp().getFirstEntityValue("claim_number"));
         assertEquals("high", response.getNlp().getUrgency().getLevel());
     }
 

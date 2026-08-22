@@ -20,6 +20,11 @@ public class MockNlpService implements NlpService {
 
     @Override
     public NlpAnalysisResponse analyze(String text) {
+        return analyze(text, null, null);
+    }
+
+    @Override
+    public NlpAnalysisResponse analyze(String text, String conversationId, String messageId) {
         String lower = text != null ? text.toLowerCase() : "";
 
         String domain = "general";

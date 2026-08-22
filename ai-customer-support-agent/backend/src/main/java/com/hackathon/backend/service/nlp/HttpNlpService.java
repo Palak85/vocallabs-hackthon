@@ -6,9 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.MediaType;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
+import java.time.Duration;
+import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
@@ -20,20 +23,38 @@ public class HttpNlpService implements NlpService {
     private final String nlpServiceUrl;
 
     public HttpNlpService(
-            RestClient.Builder restClientBuilder,
             @Value("${nlp.service.url:http://localhost:8000/api/nlp/analyze}") String nlpServiceUrl) {
         this.nlpServiceUrl = nlpServiceUrl;
-        this.restClient = restClientBuilder.build();
+        SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+        requestFactory.setConnectTimeout(Duration.ofSeconds(5));
+        requestFactory.setReadTimeout(Duration.ofSeconds(15));
+        this.restClient = RestClient.builder()
+                .requestFactory(requestFactory)
+                .build();
     }
 
     @Override
     public NlpAnalysisResponse analyze(String text) {
+        return analyze(text, null, null);
+    }
+
+    @Override
+    public NlpAnalysisResponse analyze(String text, String conversationId, String messageId) {
         try {
-            log.info("Sending text to external NLP Service at: {}", nlpServiceUrl);
+            log.info("Sending text to external NLP Service at: {} (convId={}, msgId={})", nlpServiceUrl, conversationId, messageId);
+            Map<String, Object> payload = new HashMap<>();
+            payload.put("text", text != null ? text : "");
+            if (conversationId != null && !conversationId.isBlank()) {
+                payload.put("conversation_id", conversationId);
+            }
+            if (messageId != null && !messageId.isBlank()) {
+                payload.put("message_id", messageId);
+            }
+
             return restClient.post()
                     .uri(nlpServiceUrl)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .body(Map.of("text", text != null ? text : ""))
+                    .body(payload)
                     .retrieve()
                     .body(NlpAnalysisResponse.class);
         } catch (Exception e) {

@@ -1,41 +1,21 @@
 text,label
-"Frequent call drops in my area, please fix network tower.",call_problem
-Other mobile network inquiries.,other
-Transfer me to a live telecom operator executive.,human_support_request
-Wrong late fee added to my monthly telecom bill.,billing_problem
-Change active billing plan to annual recharge pack.,plan_change
-I want to downgrade my postpaid plan to lower rental.,plan_change
-My recharge succeeded but mobile data is not working.,data_problem
-My recharge succeeded but balance is missing.,recharge_problem
-Unlimited 5G pack active but throttling to 2G speed.,data_problem
-Signal bar dropping constantly inside my home.,network_problem
-Procedure to convert physical SIM to eSIM.,general_query
-I recharged for 365 days pack but validity not updated.,recharge_not_updated
-My mobile data is not working.,data_problem
-Recharge ho gaya par pack activate nahi hua.,recharge_problem
-Outgoing and incoming calls are disconnecting automatically.,call_problem
-No network signal on my SIM card since morning.,network_problem
-Plan validity date still shows yesterday after recharge.,recharge_not_updated
-No network signal or emergency calls only showing.,network_problem
+Recharge done on wrong mobile number by mistake.,wrong_recharge
+I recharged for 299 pack but unlimited 5G is inactive.,plan_activation_issue
+Failed recharge refund not credited back to bank account.,recharge_refund_not_received
+My mobile data is not working.,data_not_working
+"Bhai maine ₹599 ka recharge kiya tha. Payment successful hai aur bank se paise deduct ho gaye, lekin telecom account mein recharge update nahi hua. Purana plan hi show ho raha hai.",recharge_not_updated
+Plan validity date still shows yesterday after successful recharge.,recharge_not_updated
 Recharge validity portal par update nahi hui.,recharge_not_updated
-Incoming SMS for OTP is not arriving on my number.,sms_problem
-Outgoing SMS failing with error code 38.,sms_problem
-How to port my mobile number to another operator?,general_query
-Recharge done on wrong mobile number by mistake.,recharge_problem
-Bill me galat charges add ho gaye hain dispute karna hai.,billing_problem
-What are the best international roaming packs for Dubai?,plan_information
-"Service is terrible, network has been down for 3 days.",complaint
-Internet data bilkul nahi chal raha speed slow hai.,data_problem
-Complaint regarding non-resolution of network ticket.,complaint
-Best postpaid plans ki details batayein.,plan_information
-How to activate free caller tune on my number?,general_query
-Postpaid plan change karke dusra plan lena hai.,plan_change
-I want to speak with customer care supervisor.,human_support_request
-Postpaid bill has extra unauthorized VAS service charges.,billing_problem
-Kuch alag telecom query hai connection ke baare me.,other
-Filing complaint against broadband installation delay.,complaint
-Mobile 4G/5G data is not opening any website.,data_problem
-Query regarding duplicate SIM replacement procedure.,other
-Calling me problem aa rahi hai voice break ho rahi hai.,call_problem
-Connect this chat to a human telecom agent.,human_support_request
-Bank OTP ka SMS nahi aa raha phone par.,sms_problem
+₹599 recharge successful hai but account me new plan update nahi hua.,recharge_not_updated
+"Frequent call drops in my area, please fix network tower.",network_issue
+I recharged for 365 days pack but validity not updated on SIM.,recharge_not_updated
+No network signal on my SIM card since morning.,network_issue
+eSIM activation QR code expired before scanning.,sim_issue
+My mobile data isn't working.,data_not_working
+What are the best prepaid international roaming plans?,other
+Internet data bilkul nahi chal raha speed slow hai.,data_not_working
+Payment failed during mobile recharge transaction.,recharge_failed
+Mobile recharge processing state me atka hua hai.,recharge_pending
+Galat number par recharge ho gaya reverse kaise karein?,wrong_recharge
+My recharge succeeded but mobile data is not working.,data_not_working
+Recharge failed but money deducted from bank account.,recharge_failed

@@ -12,11 +12,11 @@ from typing import Dict, Any
 MODEL_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "models", "urgency", "urgency_model.joblib"))
 
 EMERGENCY_CRITICAL_PATTERNS = [
-    r"\b(?:emergency|ambulance|icu|life\s+threatening|oxygen|stolen\s+card|fraud\s+happening|hacking|breach)\b"
+    r"\b(?:medical\s+emergency|life\s+threatening|ambulance|cardiac\s+arrest|heart\s+attack|icu\s+admission|severe\s+bleeding|breathing\s+difficulty|unconscious|fraud\s+happening|account\s+hacked|card\s+stolen|security\s+breach)\b"
 ]
 
 HIGH_URGENCY_PATTERNS = [
-    r"\b(?:immediately|urgent|urgently|right\s+now|asap|within\s+\d+\s+hours?|flight\s+departs|portal\s+closes)\b"
+    r"\b(?:immediately|urgent|urgently|right\s+now|asap|within\s+\d+\s+hours?|flight\s+departs|portal\s+closes|emergency)\b"
 ]
 
 

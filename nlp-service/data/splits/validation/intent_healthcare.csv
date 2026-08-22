@@ -1,8 +1,6 @@
 text,label
-Doctor appointment cancel karke refund process karein.,appointment_cancellation
-I want to book an appointment with a dermatologist.,appointment
-Transfer this chat to hospital emergency desk or human agent.,human_support_request
-What is the qualification and OPD timing of Dr. Sharma?,doctor_information
-Blood test report status pending for 24 hours.,report_query
-Doctor ka appointment book karna hai kal ke liye.,appointment
-Which specialist doctor is available in evening OPD?,doctor_information
+Severe bleeding and critical condition need immediate emergency medical help.,emergency_medical_assistance
+I need to book a doctor appointment with cardiologist.,appointment_booking
+i have emergency to go out so cancel me appointment with dr harsh,appointment_cancellation
+Reschedule my clinic consultation to next Monday afternoon.,appointment_rescheduling
+Doctor ka appointment book karna hai kal ke liye.,appointment_booking

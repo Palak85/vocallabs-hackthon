@@ -1,51 +1,25 @@
 text,label
 I want to book a one-way flight from Delhi to Mumbai.,booking
 How to confirm hotel room reservation for 3 nights?,booking
-Book train ticket in executive chair car class.,booking
 Flight ticket booking karni hai kal ke liye.,booking
-Please cancel my flight ticket reservation PNR-8812.,booking_cancellation
-How to cancel hotel room booking without penalty?,booking_cancellation
-Cancel round trip booking and release seat.,booking_cancellation
-Flight ticket cancel karna hai refund ke sath.,booking_cancellation
-"My flight AI-102 is delayed by 4 hours, what to do?",flight_delay
-"Connecting flight delayed, will I miss next flight?",flight_delay
-Flight departure time postponed by 6 hours.,flight_delay
-Flight bahut delay ho gayi hai update batayein.,flight_delay
-My flight was cancelled.,flight_cancellation
-"My flight 6E-412 was cancelled, need full refund.",flight_cancellation
-"Flight cancelled by airline, need emergency rebooking.",flight_cancellation
-Airline cancelled my flight without prior notice.,flight_cancellation
-Cancelled flight alternative travel arrangements.,flight_cancellation
-Airline ne flight cancel kar di alternative flight do.,flight_cancellation
+Book train ticket under tatkal quota.,booking
+Please cancel my flight ticket reservation PNR-8812.,cancellation
+Flight ticket cancel karna hai refund ke sath.,cancellation
+Cancel hotel room booking with zero cancellation charges.,cancellation
+I want to reschedule my flight departure date to next Monday.,rescheduling
+Flight date change fee and rescheduling charges.,rescheduling
+Reschedule hotel check-in date to next weekend.,rescheduling
 Where is my flight cancellation refund?,refund
-Refund amount credited is less than airline policy.,refund
-When will hotel cancellation refund reach my account?,refund
-Ticket cancellation refund kab tak account me aayega?,refund
-My checked baggage was damaged and torn on conveyor belt.,baggage_problem
-Luggage bag did not arrive at destination airport.,baggage_problem
-Baggage tag missing and lost suitcase claim.,baggage_problem
-Luggage airport par kho gaya hai bag nahi mila.,baggage_problem
-Passenger name spelling error on international e-ticket.,ticket_problem
-Web check-in boarding pass PDF not generating.,ticket_problem
-Seat number not allocated after web check-in.,ticket_problem
-Boarding pass download nahi ho raha error aa raha.,ticket_problem
-Hotel room AC was broken and bathroom was dirty.,hotel_problem
+My flight was cancelled and I need a refund.,refund
+"My flight 6E-412 was cancelled, need full refund.",refund
+Refund status for train ticket cancellation PNR.,refund
+"My flight AI-102 is delayed by 4 hours, what to do?",flight_issue
+Flight departure terminal changed at airport gate.,flight_issue
 Hotel refused check-in saying booking is not found.,hotel_problem
-Hotel overbooked and denied confirmed room.,hotel_problem
-Hotel me check-in nahi de rahe booking mil nahi rahi.,hotel_problem
-Complaint against rude cabin crew and terrible ground staff.,complaint
-Filing consumer complaint against travel portal for fraud.,complaint
-Terrible airport transfer experience and missed tour.,complaint
-Airlines staff ke rude behavior ke khilaaf complaint.,complaint
-Please connect me to travel agent or human support.,human_support_request
-I need to speak directly to airline desk representative.,human_support_request
-Transfer this chat to human booking agent.,human_support_request
-Travel desk executive se baat karwayein.,human_support_request
-What is the free cabin baggage weight limit per passenger?,general_query
-Are infant meals provided on international flights?,general_query
-Visa requirements for transit passengers in Singapore.,general_query
-General question regarding airport terminal departure gates.,general_query
-Wheelchair assistance and pet travel policies query.,other
-Other travel and booking inquiries.,other
-Special meal preference selection on flight.,other
-Kuch aur jaankari chahiye travel packages ke baare me.,other
+Hotel room air conditioning and cleanliness complaint.,hotel_problem
+Luggage bag did not arrive at destination airport.,baggage
+Baggage missing from luggage carousel at baggage claim.,baggage
+Seat selection charges deducted twice during web check-in.,payment_issue
+Flight booking payment debited but ticket not generated.,payment_issue
+What is the free cabin baggage weight limit per passenger?,other
+In-flight meal selection and wheelchair assistance request.,other

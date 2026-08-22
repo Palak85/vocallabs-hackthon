@@ -1,10 +1,5 @@
 text,label
-Unable to make voice calls to landline numbers.,call_problem
-Broadband router password reset instructions.,other
-Recharge failed but money deducted from bank.,recharge_problem
-Data speeds are extremely slow under 100 kbps.,data_problem
-Customer care representative se connect karein.,human_support_request
-How to switch from postpaid connection to prepaid?,plan_change
-Network coverage issue and frequent call drop in area.,network_problem
-Prepaid balance and validity not refreshed after top-up.,recharge_not_updated
-General question about DND activation process.,general_query
+Where is my refund for the cancelled mobile recharge?,recharge_refund_not_received
+bhai mera recharge nahi hua paisa cut gaya,recharge_failed
+"SMS service not working, unable to send bank verification SMS.",sms_issue
+Outgoing and incoming calls are disconnecting automatically.,call_issue

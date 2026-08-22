@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg17
+    container_name: ai-chat-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ai_chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ai_chat"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  nlp-service:
+    build:
+      context: ./nlp-service
+      dockerfile: Dockerfile
+    container_name: nlp-microservice
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ai_chat
+      DOMAIN_CONFIDENCE_THRESHOLD: "0.28"
+      INTENT_CONFIDENCE_THRESHOLD: "0.15"
+      LANGUAGE_CONFIDENCE_THRESHOLD: "0.40"
+      LOG_LEVEL: INFO
+      STORE_RAW_TEXT: "true"
+    ports:
+      - "8000:8000"
+
+  backend:
+    build:
+      context: ./ai-customer-support-agent/backend
+      dockerfile: Dockerfile
+    container_name: ai-chat-backend
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      nlp-service:
+        condition: service_started
+    environment:
+      DATABASE_URL: jdbc:postgresql://postgres:5432/ai_chat
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      NLP_SERVICE_URL: http://nlp-service:8000/api/nlp/analyze
+      NLP_MOCK_ENABLED: "false"
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-mock_key}
+    ports:
+      - "8081:8081"
+
+  frontend:
+    build:
+      context: ./ai-customer-support-agent/frontend
+      dockerfile: Dockerfile
+    container_name: ai-chat-frontend
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:5173"
+
+volumes:
+  postgres_data:

@@ -25,7 +25,8 @@ REPETITION_PATTERNS = [
 
 CRITICAL_THREAT_PATTERNS = [
     r"\b(?:police|court|legal\s+action|consumer\s+court|consumer\s+forum|lawyer|sue|cheating|scam|fraud|loot)\b",
-    r"\b(?:stop\s+giving\s+excuses|talk\s+to\s+manager|shut\s+down)\b"
+    r"\b(?:stop\s+giving\s+excuses|talk\s+to\s+manager|shut\s+down)\b",
+    r"\b(?:extremely\s+frustrating|very\s+frustrated|completely\s+unacceptable|worst\s+experience|horrible\s+service)\b"
 ]
 
 

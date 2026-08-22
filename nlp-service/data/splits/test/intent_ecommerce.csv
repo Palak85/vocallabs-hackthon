@@ -1,11 +1,6 @@
 text,label
-How to book a return pickup for defective headphones?,return_request
-What are the upcoming festive sale discounts?,general_query
-Parcel me toota hua product mila hai.,damaged_product
-Only 2 out of 3 ordered books were inside package.,missing_product
-General question regarding available payment modes.,general_query
-"Delivery partner is late, please expedite.",delivery_delay
-Check tracking location for my shipment.,order_tracking
-My Blinkit delivery is late.,delivery_delay
-Please cancel order ORD-7788 and initiate refund.,order_cancellation
-Cancel my pending shipment before dispatch.,order_cancellation
+Payment debited twice for single ecommerce order checkout.,payment_issue
+Delivery agent refused doorstep delivery.,delivery_issue
+Received different model shoes than ordered.,wrong_product
+Broken glass item delivered in shipment.,damaged_product
+Galat item deliver ho gaya parcel me replacement do.,wrong_product
