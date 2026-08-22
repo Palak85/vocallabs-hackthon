@@ -60,7 +60,7 @@ public class ChatService {
     @Value("${rag.retrieval.similarity-threshold:0.50}")
     private double similarityThreshold;
 
-    @Value("${spring.ai.google.genai.chat.options.model:gemini-2.5-flash}")
+    @Value("${spring.ai.google.genai.chat.model:gemini-3.6-flash}")
     private String geminiModelName;
 
     @Transactional
@@ -171,8 +171,10 @@ public class ChatService {
                 generatedAnswer = "I'm sorry, I was unable to generate a response at this time.";
             }
         } catch (Exception e) {
-            log.error("Gemini LLM call failed for messageId {}: {}", userMessageId, e.getMessage());
-            generatedAnswer = "I apologize, but I encountered an error while processing your request. Please try again later.";
+//            log.error("Gemini LLM call failed for messageId {}: {}", userMessageId, e.getMessage());
+            log.error("Gemini LLM call failed for messageId {}: ", userMessageId, e);
+            generatedAnswer = "I apologize, but I encountered an error while processing your request. Please try " +
+                    "again later.";
         }
         long latency = System.currentTimeMillis() - startTime;
 

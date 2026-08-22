@@ -1,235 +1,361 @@
-# Conversational QnA Backend — Frontend API Documentation
+# Conversational QnA API Documentation (`backend1`)
 
-This document specifies the REST API endpoints exposed by the Spring Boot Backend for the AI-Powered Chat QnA application.
-
----
-
-## 1. Architectural Overview & Storage Model
-
-### 1.1. Where Are Uploaded Files and Data Stored?
-
-When a user uploads a document through the React frontend, the backend stores the data across **three distinct storage layers**:
-
-1. **Vector Database (`pgvector` in PostgreSQL)**:
-   - The document's textual content is extracted and partitioned into overlapping text chunks (800 characters each).
-   - Google Gemini Embedding Model converts each text chunk into a high-dimensional mathematical vector (embedding).
-   - Each vector is stored in the `vector_store` table in PostgreSQL alongside metadata (`documentId`, `filename`, `chunkIndex`).
-   - *Purpose*: Used at query time for fast cosine similarity search to retrieve the most relevant knowledge base chunks for RAG.
-
-2. **Relational Database (`PostgreSQL`)**:
-   - Stores relational entities: `documents` (metadata such as filename, file size, status, chunk count, timestamps), `ingestion_jobs`, `conversations`, `messages`, and server-side auditing logs (`nlp_analytics`, `retrieval_analytics`, `citation_analytics`, `llm_analytics`).
-
-3. **File System Storage (`uploads/` directory)**:
-   - The original, unmodified binary file (`.pdf`, `.txt`, `.md`, etc.) is saved to the backend server's file system storage path configured by `storage.upload-dir`.
-   - *Purpose*: Allows the frontend and user to view, stream, or download the original source document at any time.
+This document provides the complete API specification for the **AI-Powered Customer Support & Conversational QnA Backend (`backend1`)**.
 
 ---
 
-### 1.2. Frontend & Backend Responsibilities
+## 1. Architectural Overview & Request Flow
 
-> [!IMPORTANT]
-> **Speech-to-Text (STT)** and **Text-to-Speech (TTS)** are **Frontend Responsibilities**.
->
-> * The frontend captures user audio via the microphone, performs speech recognition (STT), and sends clean text to the backend.
-> * The backend processes the question, retrieves relevant knowledge base context, queries Gemini LLM via Spring AI, and returns plain text.
-> * The frontend receives the text response and renders it in the chat UI and/or generates audio via TTS.
+The backend orchestrates customer conversations through an intelligent RAG pipeline enriched with an NLP analysis layer:
 
 ```text
-User Speech -> Frontend (STT) -> POST /api/chat -> Backend (RAG + Gemini) -> Response Text -> Frontend (TTS / UI) -> User Audio
+Customer Input (Text / STT)
+           │
+           ▼
+   [ POST /api/v1/chat/stream ]
+           │
+           ├──► 1. NLP Service (Mocked / HTTP to http://localhost:8000/api/nlp/analyze)
+           │       Extracts: Language, Domain, Intent, Sentiment, Emotion, Frustration, Urgency, Entities
+           │       Dispatches `event: nlp` to Frontend (Live HUD update)
+           │
+           ├──► 2. Query Enrichment
+           │       Combines Customer Query + Intent + Domain + Entities
+           │
+           ├──► 3. Vector Knowledge Base Search (pgvector)
+           │       Performs cosine similarity search using Google Gemini Embeddings
+           │
+           ├──► 4. Grounded LLM Prompt Construction
+           │       Combines: Retrieved Chunks + NLP Insights (Tone/Frustration adaptation) + Query + History
+           │
+           ├──► 5. Gemini 2.5/Flash Stream Generation
+           │       Dispatches `event: token` as text arrives
+           │
+           └──► 6. Finalization & Citations
+                   Dispatches `event: sources` and `event: done`
 ```
 
-### 1.3. Citation & Analytics Privacy
-* The backend automatically records citation logs, vector similarity metrics, and LLM token usage for auditing and evaluation.
-* **Citations and internal metrics are intentionally NOT returned in API responses to the frontend**.
-
 ---
 
-## 2. Base URL & Common Headers
+## 2. Base Configuration & Global Headers
 
 * **Base URL**: `http://localhost:8080`
-* **Default Request Headers**:
-  * `Content-Type: application/json` (for JSON payloads)
-  * `Content-Type: multipart/form-data` (for file uploads)
-  * `Accept: application/json`
+* **Tenant Header (Required)**: All requests must include the `X-Tenant-Id` header (e.g. `default`, `tenant_001`, or user/org ID).
+* **Content Types**:
+  * `application/json` for standard requests
+  * `multipart/form-data` for document uploads
+  * `text/event-stream` for SSE chat streaming
 
 ---
 
-## 3. API Endpoints
+## 3. Endpoints Specification
 
-### 3.1. Send Chat Message
+### 3.1. Stream Chat Message (Recommended for UI)
 
-Processes a user question through NLP analysis, safety and policy checks, pgvector similarity search, and Google Gemini generation.
+Streams real-time LLM tokens and live NLP analysis to the frontend via Server-Sent Events (SSE).
 
 * **Method**: `POST`
-* **URL**: `/api/chat`
-* **Content-Type**: `application/json`
+* **URL**: `/api/v1/chat/stream`
+* **Headers**:
+  * `Content-Type: application/json`
+  * `Accept: text/event-stream`
+  * `X-Tenant-Id: default`
 
 #### Request Body
-| Field | Type | Required | Description |
-| :--- | :--- | :--- | :--- |
-| `message` | `string` | **Yes** | User's question or message (cannot be empty or blank). |
-| `conversationId` | `string` | No | Existing conversation ID. If omitted or not found, a new conversation is started. |
-
-#### Example Request
 ```json
 {
-  "conversationId": "conv_a1b2c3d4",
-  "message": "What is the return policy for defective products?"
+  "conversation_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "text": "My UPI transaction failed but money was deducted. Transaction ID is TXN12345.",
+  "customer_id": "cust_987",
+  "category": "banking"
+}
+```
+
+> **Note**: Field aliases are supported (`conversation_id` or `conversationId`, `text` or `question` or `message`, `customer_id` or `customerId`). If `conversation_id` is omitted, a new conversation is automatically created.
+
+#### Server-Sent Events (SSE) Lifecycle
+
+##### Event 1: `event: nlp`
+Fires immediately after NLP analysis completes (before LLM token generation begins). Use this to populate customer emotion badges, frustration gauges, and detected entities in the UI.
+
+```sse
+event: nlp
+data: {
+  "success": true,
+  "conversation_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "message_id": "a1b2c3d4-0000-0000-0000-000000000001",
+  "nlp": {
+    "language": {
+      "label": "en",
+      "confidence": 0.99
+    },
+    "domain": {
+      "label": "banking",
+      "confidence": 0.96
+    },
+    "intent": {
+      "label": "transaction_failed",
+      "confidence": 0.94
+    },
+    "sentiment": {
+      "label": "negative",
+      "confidence": 0.91
+    },
+    "emotion": {
+      "label": "frustrated",
+      "confidence": 0.88
+    },
+    "frustration": {
+      "score": 72,
+      "level": "high"
+    },
+    "urgency": {
+      "level": "medium",
+      "confidence": 0.82
+    },
+    "entities": [
+      {
+        "type": "transaction_id",
+        "value": "TXN12345",
+        "confidence": 0.95
+      }
+    ]
+  },
+  "conversation_analysis": {
+    "frustration_trend": "increasing"
+  }
+}
+```
+
+##### Event 2: `event: token` (Repeated)
+Fires each time a text token is emitted by the LLM.
+
+```sse
+event: token
+data: I understand 
+
+event: token
+data: your frustration regarding 
+
+event: token
+data: the failed UPI transaction TXN12345.
+```
+
+##### Event 3: `event: sources`
+Fires when the generation completes, delivering citations from the knowledge base.
+
+```sse
+event: sources
+data: [
+  {
+    "title": "UPI Banking FAQs.pdf",
+    "pageNumber": 3,
+    "similarityScore": 0.89,
+    "snippet": "In case of failed UPI transactions where amount is deducted, the amount is automatically reversed within 24 to 48 banking hours."
+  }
+]
+```
+
+##### Event 4: `event: done`
+Signals the end of the SSE stream.
+
+```sse
+event: done
+data: 
+```
+
+##### Event 5: `event: error` (Optional on failure)
+```sse
+event: error
+data: Tenant ID context missing
+```
+
+---
+
+### 3.2. Synchronous Chat Message (Non-Streaming Fallback)
+
+* **Method**: `POST`
+* **URL**: `/api/v1/chat`
+* **Headers**:
+  * `Content-Type: application/json`
+  * `X-Tenant-Id: default`
+
+#### Request Body
+```json
+{
+  "conversationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "question": "What is the return policy for electronics?",
+  "customerId": "cust_123"
 }
 ```
 
 #### Response Body (HTTP 200 OK)
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `messageId` | `string` | Unique identifier for the assistant's generated message. |
-| `conversationId` | `string` | Conversation session identifier. Store this to maintain conversation context. |
-| `answer` | `string` | The grounded answer generated by the assistant. |
-
-#### Example Response
 ```json
 {
-  "messageId": "msg_98f12a34b",
-  "conversationId": "conv_a1b2c3d4",
-  "answer": "According to our policy, defective products can be returned within 30 days of purchase for a full refund or replacement. Please ensure you retain your proof of purchase."
-}
-```
-
-#### Refusal Example (HTTP 200 OK)
-If a question violates policy or contains prohibited exploits/prompts:
-```json
-{
-  "messageId": "msg_98f12a34c",
-  "conversationId": "conv_a1b2c3d4",
-  "answer": "I cannot fulfill this request as it violates our security and safety policies."
+  "answer": "Electronics can be returned within 14 days of delivery provided they are in original packaging and undamaged.",
+  "conversationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "sources": [
+    {
+      "title": "Return_Policy_2026.pdf",
+      "pageNumber": 2,
+      "similarityScore": 0.88,
+      "snippet": "Electronics Category: 14-day return window with receipt."
+    }
+  ],
+  "nlp": {
+    "success": true,
+    "conversation_id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+    "message_id": "msg_001",
+    "nlp": {
+      "language": { "label": "en", "confidence": 0.99 },
+      "domain": { "label": "e-commerce", "confidence": 0.95 },
+      "intent": { "label": "refund_request", "confidence": 0.93 },
+      "sentiment": { "label": "neutral", "confidence": 0.85 },
+      "emotion": { "label": "neutral", "confidence": 0.85 },
+      "frustration": { "score": 20, "level": "low" },
+      "urgency": { "level": "low", "confidence": 0.70 },
+      "entities": []
+    },
+    "conversation_analysis": {
+      "frustration_trend": "stable"
+    }
+  }
 }
 ```
 
 ---
 
-### 3.2. Upload Document for Ingestion
+### 3.3. Upload Document to Knowledge Base
 
-Uploads a document (`.txt`, `.pdf`, `.md`, etc.) for storage and asynchronous background embedding into `pgvector`.
+Uploads and asynchronously ingests a document (PDF, DOCX, TXT, MD) into `pgvector`.
 
 * **Method**: `POST`
-* **URL**: `/api/documents`
-* **Content-Type**: `multipart/form-data`
+* **URL**: `/api/v1/documents`
+* **Headers**:
+  * `Content-Type: multipart/form-data`
+  * `X-Tenant-Id: default`
 
 #### Form Parameters
 | Parameter | Type | Required | Description |
 | :--- | :--- | :--- | :--- |
-| `file` | `binary / File` | **Yes** | The document file to be ingested. |
+| `file` | `File` | **Yes** | File binary (Max 20MB: PDF, DOCX, TXT, MD) |
+| `title` | `String` | No | Custom document title |
+| `category` | `String` | No | Category tag (e.g., `banking`, `policies`, `technical`) |
 
 #### Response Body (HTTP 202 Accepted)
-The HTTP connection returns immediately with status `202 Accepted` while document processing continues in the background.
-
-| Field | Type | Description |
-| :--- | :--- | :--- |
-| `documentId` | `string` | Unique identifier for the uploaded document. |
-| `filename` | `string` | Original file name. |
-| `status` | `string` | Current status (`PENDING`). |
-| `message` | `string` | Informational message. |
-
-#### Example Response
 ```json
 {
-  "documentId": "doc_e789f012",
-  "filename": "warranty_terms.pdf",
-  "status": "PENDING",
-  "message": "Document upload accepted. Processing started in background."
+  "id": "c3a9f024-5717-4562-b3fc-2c963f66afb2",
+  "status": "PROCESSING"
 }
 ```
 
 ---
 
-### 3.3. Check Document Ingestion Status
-
-Allows the frontend to poll or verify the background ingestion progress of a document.
+### 3.4. List Documents
 
 * **Method**: `GET`
-* **URL**: `/api/documents/{id}/status`
-
-#### Path Variables
-| Variable | Type | Description |
-| :--- | :--- | :--- |
-| `id` | `string` | The `documentId` returned during upload. |
-
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "documentId": "doc_e789f012",
-  "filename": "warranty_terms.pdf",
-  "status": "COMPLETED",
-  "chunkCount": 8,
-  "errorMessage": null,
-  "createdAt": "2026-08-21T19:30:00",
-  "updatedAt": "2026-08-21T19:30:04"
-}
-```
-
----
-
-### 3.4. List All Documents
-
-Retrieves the list of all uploaded documents and their processing statuses.
-
-* **Method**: `GET`
-* **URL**: `/api/documents`
+* **URL**: `/api/v1/documents?page=0&size=20`
+* **Headers**: `X-Tenant-Id: default`
 
 #### Response Body (HTTP 200 OK)
 ```json
 [
   {
-    "id": "doc_e789f012",
-    "filename": "warranty_terms.pdf",
+    "id": "c3a9f024-5717-4562-b3fc-2c963f66afb2",
+    "tenantId": "default",
+    "title": "UPI Banking FAQs",
+    "category": "banking",
+    "filename": "upi_faq.pdf",
     "contentType": "application/pdf",
-    "size": 1048576,
+    "sizeBytes": 524288,
     "status": "COMPLETED",
-    "chunkCount": 8,
-    "createdAt": "2026-08-21T19:30:00"
+    "errorMessage": null,
+    "createdAt": "2026-08-22T10:00:00Z",
+    "updatedAt": "2026-08-22T10:00:05Z"
   }
 ]
 ```
 
 ---
 
-### 3.5. View / Stream Original Uploaded File
-
-Retrieves the original uploaded file for in-browser preview (e.g. PDF viewer or text rendering).
+### 3.5. Get Document Details & Status
 
 * **Method**: `GET`
-* **URL**: `/api/documents/{id}/file`
+* **URL**: `/api/v1/documents/{id}`
+* **Headers**: `X-Tenant-Id: default`
 
-#### Response Headers
-* `Content-Type`: MIME type of original document (`application/pdf`, `text/plain`, etc.)
-* `Content-Disposition`: `inline; filename="warranty_terms.pdf"`
-
----
-
-### 3.6. Download Original Uploaded File
-
-Triggers a browser file download of the original uploaded file.
-
-* **Method**: `GET`
-* **URL**: `/api/documents/{id}/download`
-
-#### Response Headers
-* `Content-Type`: `application/octet-stream`
-* `Content-Disposition`: `attachment; filename="warranty_terms.pdf"`
-
----
-
-## 4. Standard Error Format
-
-When a request fails, the API returns a structured, safe JSON response omitting stack traces and sensitive internal configuration:
-
+#### Response Body (HTTP 200 OK)
 ```json
 {
-  "status": 400,
-  "error": "Validation Error",
-  "message": "Invalid request payload",
-  "timestamp": "2026-08-21T19:32:00",
-  "validationErrors": {
-    "message": "Message must not be null, empty, or blank"
-  }
+  "id": "c3a9f024-5717-4562-b3fc-2c963f66afb2",
+  "tenantId": "default",
+  "title": "UPI Banking FAQs",
+  "category": "banking",
+  "filename": "upi_faq.pdf",
+  "contentType": "application/pdf",
+  "sizeBytes": 524288,
+  "status": "COMPLETED",
+  "errorMessage": null,
+  "createdAt": "2026-08-22T10:00:00Z",
+  "updatedAt": "2026-08-22T10:00:05Z"
 }
 ```
+
+---
+
+### 3.6. Delete Document
+
+Removes the document metadata and its vector embeddings from pgvector.
+
+* **Method**: `DELETE`
+* **URL**: `/api/v1/documents/{id}`
+* **Headers**: `X-Tenant-Id: default`
+* **Response**: `204 No Content`
+
+---
+
+### 3.7. Conversation History Management
+
+#### List Conversations
+* **Method**: `GET`
+* **URL**: `/api/v1/conversations`
+* **Headers**: `X-Tenant-Id: default`
+
+#### Get Conversation & Full Message History
+* **Method**: `GET`
+* **URL**: `/api/v1/conversations/{id}`
+* **Headers**: `X-Tenant-Id: default`
+
+#### Response Body (HTTP 200 OK)
+```json
+{
+  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+  "title": "UPI transaction issue",
+  "createdAt": "2026-08-22T10:00:00Z",
+  "updatedAt": "2026-08-22T10:05:00Z",
+  "messages": [
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000001",
+      "role": "USER",
+      "content": "My UPI transaction failed but money was deducted.",
+      "createdAt": "2026-08-22T10:00:00Z"
+    },
+    {
+      "id": "a1b2c3d4-0000-0000-0000-000000000002",
+      "role": "ASSISTANT",
+      "content": "Your deducted funds will automatically reverse within 24 to 48 hours.",
+      "createdAt": "2026-08-22T10:00:03Z"
+    }
+  ]
+}
+```
+
+---
+
+## 4. NLP Service Configuration & Toggle
+
+The backend is configured to use the internal high-accuracy `MockNlpService` by default.
+
+When your external Python NLP Microservice is deployed at `http://localhost:8000/api/nlp/analyze`:
+1. Set `NLP_MOCK_ENABLED=false` in environment / properties.
+2. The backend automatically switches to `HttpNlpService` and sends requests using the exact schema.
