@@ -1,20 +1,20 @@
 {
   "datasets": {
     "domain.csv": {
-      "total_samples": 165,
+      "total_samples": 138,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 115,
-      "val_samples": 25,
-      "test_samples": 25,
+      "train_samples": 96,
+      "val_samples": 21,
+      "test_samples": 21,
       "class_distribution": {
-        "ecommerce": 31,
-        "education": 26,
-        "insurance": 25,
-        "banking": 22,
-        "telecom": 22,
-        "travel": 20,
-        "healthcare": 19
+        "education": 23,
+        "ecommerce": 20,
+        "insurance": 20,
+        "banking": 20,
+        "telecom": 20,
+        "healthcare": 18,
+        "travel": 17
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -23,19 +23,21 @@
       }
     },
     "emotion.csv": {
-      "total_samples": 49,
+      "total_samples": 18,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 34,
-      "val_samples": 7,
-      "test_samples": 8,
+      "train_samples": 12,
+      "val_samples": 3,
+      "test_samples": 3,
       "class_distribution": {
-        "neutral": 9,
-        "concerned": 9,
-        "frustrated": 9,
-        "angry": 8,
-        "happy": 7,
-        "sad": 7
+        "concerned": 3,
+        "neutral": 3,
+        "satisfied": 2,
+        "happy": 2,
+        "fearful": 2,
+        "anxious": 2,
+        "frustrated": 2,
+        "angry": 2
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -44,26 +46,25 @@
       }
     },
     "intent_banking.csv": {
-      "total_samples": 57,
+      "total_samples": 55,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 39,
-      "val_samples": 9,
+      "train_samples": 38,
+      "val_samples": 8,
       "test_samples": 9,
       "class_distribution": {
+        "duplicate_transaction": 9,
+        "debit_but_receiver_not_received": 6,
         "transaction_failed": 6,
-        "duplicate_transaction": 5,
-        "card_problem": 5,
-        "account_statement": 5,
-        "account_problem": 4,
-        "transaction_reversed": 4,
+        "refund_not_received": 5,
         "transaction_pending": 4,
-        "upi_problem": 4,
-        "refund_request": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "unauthorized_transaction": 4,
+        "card_payment_issue": 4,
+        "account_statement": 4,
+        "loan_emi": 4,
+        "account_debit_issue": 3,
+        "cash_withdrawal_issue": 3,
+        "other": 3
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -72,28 +73,24 @@
       }
     },
     "intent_ecommerce.csv": {
-      "total_samples": 64,
+      "total_samples": 28,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 44,
-      "val_samples": 10,
-      "test_samples": 10,
+      "train_samples": 19,
+      "val_samples": 4,
+      "test_samples": 5,
       "class_distribution": {
-        "delivery_delay": 8,
-        "order_tracking": 4,
-        "order_cancellation": 4,
-        "refund_request": 4,
-        "payment_failure": 4,
-        "damaged_product": 4,
-        "wrong_product": 4,
-        "missing_product": 4,
-        "return_request": 4,
-        "replacement_request": 4,
-        "account_problem": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "order_delayed": 4,
+        "order_not_received": 3,
+        "damaged_product": 3,
+        "wrong_product": 3,
+        "return_request": 3,
+        "missing_item": 2,
+        "refund_not_received": 2,
+        "cancellation": 2,
+        "payment_issue": 2,
+        "delivery_issue": 2,
+        "other": 2
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -102,27 +99,25 @@
       }
     },
     "intent_education.csv": {
-      "total_samples": 60,
+      "total_samples": 39,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 42,
-      "val_samples": 9,
-      "test_samples": 9,
+      "train_samples": 27,
+      "val_samples": 6,
+      "test_samples": 6,
       "class_distribution": {
-        "fee_payment_not_updated": 7,
-        "fee_payment": 5,
-        "fee_receipt": 4,
-        "fee_refund": 4,
-        "admission": 4,
-        "scholarship": 4,
-        "exam": 4,
-        "attendance": 4,
-        "course_information": 4,
-        "transport": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "duplicate_fee_payment": 8,
+        "fee_payment_not_updated": 5,
+        "fee_payment_refund_pending": 4,
+        "fee_payment": 4,
+        "fee_receipt_not_generated": 3,
+        "fee_deadline_issue": 3,
+        "admission": 3,
+        "scholarship": 3,
+        "exam": 2,
+        "other": 2,
+        "result": 1,
+        "certificate": 1
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -131,24 +126,24 @@
       }
     },
     "intent_healthcare.csv": {
-      "total_samples": 46,
+      "total_samples": 35,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 32,
-      "val_samples": 7,
-      "test_samples": 7,
+      "train_samples": 24,
+      "val_samples": 5,
+      "test_samples": 6,
       "class_distribution": {
-        "appointment": 6,
-        "appointment_cancellation": 4,
-        "prescription_query": 4,
-        "billing_problem": 4,
-        "report_query": 4,
-        "insurance_query": 4,
-        "doctor_information": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "emergency_appointment": 6,
+        "appointment_cancellation": 5,
+        "appointment_booking": 5,
+        "emergency_medical_assistance": 4,
+        "appointment_rescheduling": 3,
+        "doctor_availability": 3,
+        "prescription": 3,
+        "test_report": 3,
+        "billing_issue": 1,
+        "insurance_issue": 1,
+        "other": 1
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -157,27 +152,21 @@
       }
     },
     "intent_insurance.csv": {
-      "total_samples": 60,
+      "total_samples": 21,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 42,
-      "val_samples": 9,
-      "test_samples": 9,
+      "train_samples": 14,
+      "val_samples": 3,
+      "test_samples": 4,
       "class_distribution": {
-        "claim_delay": 7,
-        "premium_payment": 5,
-        "claim_status": 4,
-        "claim_rejection": 4,
         "policy_renewal": 4,
-        "policy_cancellation": 4,
-        "policy_document": 4,
-        "coverage_information": 4,
-        "nominee_information": 4,
-        "refund_request": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "policy_purchase": 3,
+        "claim_status": 3,
+        "claim_rejected": 3,
+        "premium_payment": 2,
+        "policy_document": 2,
+        "reimbursement": 2,
+        "other": 2
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -186,26 +175,27 @@
       }
     },
     "intent_telecom.csv": {
-      "total_samples": 58,
+      "total_samples": 29,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 40,
-      "val_samples": 9,
-      "test_samples": 9,
+      "train_samples": 20,
+      "val_samples": 4,
+      "test_samples": 5,
       "class_distribution": {
-        "data_problem": 7,
-        "recharge_problem": 5,
-        "network_problem": 5,
-        "call_problem": 5,
-        "recharge_not_updated": 4,
-        "sms_problem": 4,
-        "plan_information": 4,
-        "plan_change": 4,
-        "billing_problem": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "recharge_not_updated": 6,
+        "data_not_working": 4,
+        "recharge_failed": 3,
+        "recharge_pending": 2,
+        "wrong_recharge": 2,
+        "recharge_refund_not_received": 2,
+        "plan_activation_issue": 2,
+        "network_issue": 2,
+        "call_issue": 1,
+        "sms_issue": 1,
+        "sim_issue": 1,
+        "number_porting": 1,
+        "billing_issue": 1,
+        "other": 1
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -214,25 +204,22 @@
       }
     },
     "intent_travel.csv": {
-      "total_samples": 50,
+      "total_samples": 24,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 35,
-      "val_samples": 7,
-      "test_samples": 8,
+      "train_samples": 16,
+      "val_samples": 4,
+      "test_samples": 4,
       "class_distribution": {
-        "flight_cancellation": 6,
         "booking": 4,
-        "booking_cancellation": 4,
-        "flight_delay": 4,
         "refund": 4,
-        "baggage_problem": 4,
-        "ticket_problem": 4,
-        "hotel_problem": 4,
-        "complaint": 4,
-        "human_support_request": 4,
-        "general_query": 4,
-        "other": 4
+        "cancellation": 3,
+        "rescheduling": 3,
+        "flight_issue": 2,
+        "hotel_problem": 2,
+        "baggage": 2,
+        "payment_issue": 2,
+        "other": 2
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -241,16 +228,16 @@
       }
     },
     "language.csv": {
-      "total_samples": 41,
+      "total_samples": 15,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 28,
-      "val_samples": 6,
-      "test_samples": 7,
+      "train_samples": 10,
+      "val_samples": 2,
+      "test_samples": 3,
       "class_distribution": {
-        "en": 14,
-        "hinglish": 14,
-        "hi": 13
+        "hinglish": 7,
+        "en": 4,
+        "hi": 4
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -259,16 +246,16 @@
       }
     },
     "sentiment.csv": {
-      "total_samples": 49,
+      "total_samples": 39,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 34,
-      "val_samples": 7,
-      "test_samples": 8,
+      "train_samples": 27,
+      "val_samples": 6,
+      "test_samples": 6,
       "class_distribution": {
-        "negative": 18,
-        "neutral": 17,
-        "positive": 14
+        "negative": 17,
+        "neutral": 12,
+        "positive": 10
       },
       "data_leakage": {
         "train_val_overlap": 0,
@@ -277,17 +264,17 @@
       }
     },
     "urgency.csv": {
-      "total_samples": 34,
+      "total_samples": 16,
       "nulls_removed": 0,
       "duplicates_dropped": 0,
-      "train_samples": 23,
-      "val_samples": 5,
-      "test_samples": 6,
+      "train_samples": 11,
+      "val_samples": 2,
+      "test_samples": 3,
       "class_distribution": {
-        "high": 10,
-        "medium": 9,
-        "low": 8,
-        "critical": 7
+        "low": 4,
+        "medium": 4,
+        "high": 4,
+        "critical": 4
       },
       "data_leakage": {
         "train_val_overlap": 0,

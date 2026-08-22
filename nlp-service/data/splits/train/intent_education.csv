@@ -1,43 +1,28 @@
 text,label
-Direct admission eligibility criteria and cutoff marks.,admission
-What is the admission procedure for B.Tech program?,admission
-"Withdrew admission, when will fee refund be credited?",fee_refund
-Where can I download the tuition fee receipt?,fee_receipt
-Exam hall ticket center name correction request.,exam
-Eligibility criteria for state government scholarship.,scholarship
-Credit requirements for graduation in computer science.,course_information
-Fee payment successful but fee status not updated.,fee_payment_not_updated
-Attendance shortage warning email discrepancy.,attendance
-Transfer this chat to student support representative.,human_support_request
-College bus timings aur stop location janni hai.,transport
-I paid my daughter's school fees yesterday but portal says unpaid.,fee_payment_not_updated
-How to apply for fee waiver and student scholarship?,scholarship
-What are library working hours on weekends?,general_query
-I need to pay my college fees.,fee_payment
-Need payment link for hostel and mess fees.,fee_payment
-Other miscellaneous college campus inquiries.,other
-Fee receipt download kaise karein portal se?,fee_receipt
-Download link for semester fee tax receipt.,fee_receipt
-Scholarship amount kab tak account me aayega?,scholarship
-When is the final semester exam timetable coming?,exam
-I need to speak with human helpdesk officer.,human_support_request
-Bus route stop change request for next term.,transport
-Hostel curfew timings and visitor rules query.,general_query
-Course structure aur syllabus details chahiye.,course_information
-My school payment isn't showing.,fee_payment_not_updated
-Minimum attendance percentage required to sit in exams.,attendance
-College bus route and monthly transport pass fees.,transport
-Helpdesk support executive se baat karaiye.,human_support_request
-Kuch miscellaneous query hai campus facilities ke baare me.,other
+Admission withdrawal fee refund kab tak aayega?,fee_payment_refund_pending
+Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
+Payment ho gayi par receipt generate nahi hui portal par.,fee_receipt_not_generated
 I paid school fees but portal still shows unpaid.,fee_payment_not_updated
-Class me present hone ke baad bhi absent laga diya.,attendance
-How to pay semester tuition fees online?,fee_payment
-Admit card download error for upcoming university exam.,exam
-Lost property inquiry in college auditorium.,other
-Poor classroom facilities and broken air conditioning.,complaint
-Complaint regarding rude behavior of college administration.,complaint
-Is campus sports complex open for day scholars?,general_query
+Scholarship application status and verification.,scholarship
+"Maine aaj subah apni college fees ₹85,000 pay ki dono transactions deduct ho gaye total ₹1,70,000 chala gaya duplicate fee payment refund.",duplicate_fee_payment
+I need to pay my college fees.,fee_payment
+"College fee double debit issue, two times deducted from account.",duplicate_fee_payment
 Bank debited fee amount but college portal is unpaid.,fee_payment_not_updated
+"₹85,000 fee payment do baar debit hui, college ko ek payment mili aur first payment ka refund nahi aaya.",duplicate_fee_payment
+Kaise bhai school ka kya fee h?,other
+Fee deadline today need urgent extension to pay.,fee_deadline_issue
+College fees deducted twice from bank account for same semester.,duplicate_fee_payment
+Admission form fill karne ki last date kya hai?,admission
+Semester examination result declaration date.,result
+"Paid college fees two times by mistake, need refund for second transaction.",duplicate_fee_payment
+Admit card download error for upcoming university exam.,exam
+How to pay semester tuition fees online?,fee_payment
+Disbursement date for national merit scholarship.,scholarship
+Payment successful hai but college portal par fee update nahi hui.,fee_payment_not_updated
+College fee payment submission last date issue.,fee_deadline_issue
+Unable to download fee receipt PDF after successful payment.,fee_receipt_not_generated
+Today is last date to submit college fees and payment gateway failing.,fee_deadline_issue
+Duplicate fee payment reversal request on student accounting portal.,duplicate_fee_payment
+College fee refund for failed payment not credited to bank.,fee_payment_refund_pending
 Last date for submission of entrance admission form.,admission
-How to apply for refund of security deposit fee?,fee_refund
-Filing complaint against mess food hygiene quality.,complaint
+School and college curriculum course structure inquiry.,other

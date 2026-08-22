@@ -1,11 +1,5 @@
 text,label
-Can I get replacement for broken coffee mug?,replacement_request
-Kuch alag query hai regarding store policies.,other
-My package delivery is delayed by 3 days.,delivery_delay
-Login nahi ho raha account me error aa raha hai.,account_problem
-Connect me to a live customer service executive.,human_support_request
-Mera refund status check karke bataiye.,refund_request
-Very bad experience with your delivery guy and service.,complaint
-Payment failed during checkout but money was deducted.,payment_failure
-"Received wrong item, ordered blue shirt got red.",wrong_product
-Where is my refund for returned shoes?,refund_request
+Parcel box was torn and items were broken inside.,damaged_product
+Where is my order ORD-99214 right now?,order_delayed
+Order cancel karke refund process karein.,cancellation
+Return policy window for unworn apparel.,return_request

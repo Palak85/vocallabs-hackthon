@@ -1,10 +1,4 @@
 text,label
-Policy me kya kya cover hota hai details batayein.,coverage_information
-I want to cancel my policy and surrender insurance.,policy_cancellation
-Claim processing delay exceeds promised turnaround time.,claim_delay
-My insurance claim CLM-45672 is still pending for three weeks.,claim_delay
-Disputing rejection of surgery claim on pre-existing grounds.,claim_rejection
-How do I pay my annual term insurance premium?,premium_payment
-Grace period for renewal of health insurance cover.,policy_renewal
-Policy premium online jama kaise karein?,premium_payment
-I want to speak directly to a human support agent.,human_support_request
+"Mera claim number CLM-45612 hai, update batayein.",claim_status
+How to purchase term life insurance coverage online?,policy_purchase
+Claim rejected due to pre-existing disease clause dispute.,claim_rejected

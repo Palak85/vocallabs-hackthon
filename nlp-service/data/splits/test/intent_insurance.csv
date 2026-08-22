@@ -1,10 +1,5 @@
 text,label
-Claim number CLM-7712 ka status batayein.,claim_status
-Please email my health insurance policy schedule copy.,policy_document
-Nominee change karne ka process kya hai?,nominee_information
-Complaint against unfair deduction in hospital claim bill.,complaint
-Critical illness inclusion and sum insured limits.,coverage_information
-Add spouse as secondary nominee in term insurance.,nominee_information
-Kuch aur jaankari chahiye insurance account ke baare me.,other
-How is No Claim Bonus calculated on policy renewal?,general_query
-When will my cancelled policy premium refund arrive?,refund_request
+I want to buy a new comprehensive health insurance policy.,policy_purchase
+Claim reimbursement amount credited is less than approved sum.,reimbursement
+When will my insurance expire?,policy_renewal
+Download soft copy of my active health insurance policy document.,policy_document

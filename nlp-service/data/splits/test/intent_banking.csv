@@ -1,10 +1,10 @@
 text,label
-UPI PIN set error and daily UPI transaction limit exceeded.,upi_problem
-Paise kat gaye par UPI payment fail dikha raha hai.,transaction_failed
-"Net banking user ID is deactivated, how to unlock?",account_problem
-When will money reversed from failed payment be credited?,transaction_reversed
-"My debit card is blocked, how to unblock it immediately?",card_problem
-Debit card chip not working at ATM machines.,card_problem
-My UPI payment failed but amount was debited from account.,transaction_failed
-Download e-statement for last 3 months savings account.,account_statement
-Please connect me to bank customer care executive.,human_support_request
+Card swipe declined at retail store POS machine.,card_payment_issue
+Wrong penalty charges debited from my savings account.,account_debit_issue
+Need annual interest certificate for income tax filing.,account_statement
+UPI payment failed and amount not credited back to bank.,transaction_failed
+Merchant initiated refund but money not showing in bank balance.,refund_not_received
+Mera UPI payment fail ho gaya aur paise kat gaye.,transaction_failed
+Merchant says payment not received though my bank balance is debited.,debit_but_receiver_not_received
+Ek hi payment ke liye do baar paise cut ho gaye refund chahiye.,duplicate_transaction
+Account se paise kat gaye par beneficiary account me credit nahi hua.,debit_but_receiver_not_received

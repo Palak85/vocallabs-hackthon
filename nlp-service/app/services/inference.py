@@ -16,6 +16,7 @@ from app.services.frustration import frustration_analyzer
 from app.services.urgency import UrgencyDetector
 from app.services.ner import entity_extractor
 from app.services.conversation import conversation_analyzer
+from app.services.risk import risk_detector
 from app.utils.logger import get_logger
 
 logger = get_logger("nlp_inference")
@@ -44,7 +45,7 @@ class NLPInferencePipeline:
         # 1. Preprocessing
         cleaned_text, signals = preprocessor.preprocess(raw_text)
 
-        # 2. Language Detection (if not explicitly provided)
+        # 2. Language Detection
         if user_provided_lang:
             lang_result = {"label": user_provided_lang, "confidence": 1.0}
         else:
@@ -54,7 +55,7 @@ class NLPInferencePipeline:
         domain_result = self.domain_detector.predict(cleaned_text)
         detected_domain = domain_result["label"]
 
-        # 4. Intent Classification (Domain-routed)
+        # 4. Intent Classification
         intent_result = self.intent_classifier.predict(cleaned_text, detected_domain)
 
         # 5. Sentiment Analysis
@@ -75,14 +76,37 @@ class NLPInferencePipeline:
         # 8. Urgency Detection
         urgency_result = self.urgency_detector.predict(cleaned_text)
 
-        # 9. Hybrid NER
+        # 9. Hybrid NER Entity Extraction
         entities = entity_extractor.extract(raw_text, detected_domain)
 
-        # 10. Conversation Analysis
+        # 10. Conversation Trend Analysis
         conv_analysis = conversation_analyzer.compute_trend(
             current_score=frustration_result["score"],
             history_scores=history_scores or []
         )
+        trend = conv_analysis["frustration_trend"]
+        frustration_result["trend"] = trend
+        urgency_result["trend"] = trend
+
+        # 11. Risk & Escalation Signal Detection
+        risk_signals = risk_detector.detect_risk_signals(raw_text, detected_domain)
+        escalation_signals = risk_detector.detect_escalation_signals(
+            domain=detected_domain,
+            urgency_level=urgency_result["level"],
+            frustration_score=frustration_result["score"],
+            risk_signals=risk_signals
+        )
+        recommended_status = risk_detector.recommend_status(
+            escalation_signals=escalation_signals,
+            urgency_level=urgency_result["level"],
+            frustration_level=frustration_result["level"]
+        )
+
+        # 12. Composite NLP Confidence
+        dom_conf = domain_result.get("confidence", 0.70)
+        int_conf = intent_result.get("confidence", 0.70)
+        composite_conf = int(min(98, max(45, (dom_conf * 0.5 + int_conf * 0.5) * 100)))
+        clarification_required = composite_conf < 60 or intent_result.get("label") == "other"
 
         elapsed_ms = (time.perf_counter() - start_time) * 1000.0
 
@@ -95,12 +119,17 @@ class NLPInferencePipeline:
                 "emotion": emotion_result,
                 "frustration": frustration_result,
                 "urgency": urgency_result,
-                "entities": entities
+                "entities": entities,
+                "nlp_confidence": composite_conf,
+                "risk_signals": risk_signals,
+                "clarification_required": clarification_required,
+                "escalation_signals": escalation_signals,
+                "recommended_status": recommended_status
             },
             "conversation_analysis": conv_analysis,
             "latency_ms": round(elapsed_ms, 2)
         }
 
 
-# Global pipeline instance initialized on import or lifespan
+# Global pipeline instance
 pipeline = NLPInferencePipeline()

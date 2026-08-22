@@ -1,61 +1,40 @@
 text,label
+"Maine aaj subah apni college fees ₹85,000 pay ki dono transactions deduct ho gaye total ₹1,70,000 chala gaya duplicate fee payment refund.",duplicate_fee_payment
+"₹85,000 fee payment do baar debit hui, college ko ek payment mili aur first payment ka refund nahi aaya.",duplicate_fee_payment
+College fees deducted twice from bank account for same semester.,duplicate_fee_payment
+"Paid college fees two times by mistake, need refund for second transaction.",duplicate_fee_payment
+"Duplicate fee payment deduction on college portal, second payment successful first pending.",duplicate_fee_payment
+"College fee double debit issue, two times deducted from account.",duplicate_fee_payment
+Fees do baar cut ho gayi account se ek hi receipt mili hai refund chahiye.,duplicate_fee_payment
+Duplicate fee payment reversal request on student accounting portal.,duplicate_fee_payment
+I paid my college fee yesterday but it is still showing unpaid.,fee_payment_not_updated
+I paid school fees but portal still shows unpaid.,fee_payment_not_updated
+Payment successful hai but college portal par fee update nahi hui.,fee_payment_not_updated
+Bank debited fee amount but college portal is unpaid.,fee_payment_not_updated
+Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
+Failed fee payment ka refund abhi tak nahi aaya.,fee_payment_refund_pending
+College fee refund for failed payment not credited to bank.,fee_payment_refund_pending
+Excess fee paid refund application status pending.,fee_payment_refund_pending
+Admission withdrawal fee refund kab tak aayega?,fee_payment_refund_pending
+Fee payment successful but fee receipt not generated.,fee_receipt_not_generated
+Unable to download fee receipt PDF after successful payment.,fee_receipt_not_generated
+Payment ho gayi par receipt generate nahi hui portal par.,fee_receipt_not_generated
+Today is last date to submit college fees and payment gateway failing.,fee_deadline_issue
+Fee deadline today need urgent extension to pay.,fee_deadline_issue
+College fee payment submission last date issue.,fee_deadline_issue
 How to pay semester tuition fees online?,fee_payment
 Need payment link for hostel and mess fees.,fee_payment
 I need to pay my college fees.,fee_payment
 Where can I pay my term tuition installments?,fee_payment
-Online fee payment link open nahi ho raha.,fee_payment
-I paid school fees but portal still shows unpaid.,fee_payment_not_updated
-My school payment isn't showing.,fee_payment_not_updated
-I paid my college fees yesterday but the portal still shows unpaid.,fee_payment_not_updated
-I paid my daughter's school fees yesterday but portal says unpaid.,fee_payment_not_updated
-Fee payment successful but fee status not updated.,fee_payment_not_updated
-Bank debited fee amount but college portal is unpaid.,fee_payment_not_updated
-Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
-Where can I download the tuition fee receipt?,fee_receipt
-Need official stamp on my fee payment receipt PDF.,fee_receipt
-Download link for semester fee tax receipt.,fee_receipt
-Fee receipt download kaise karein portal se?,fee_receipt
-How to apply for refund of security deposit fee?,fee_refund
-"Withdrew admission, when will fee refund be credited?",fee_refund
-Excess fee paid refund application form.,fee_refund
-College admission cancel kiya fee refund kab aayega?,fee_refund
-What is the admission procedure for B.Tech program?,admission
+What is the admission procedure for B.Tech computer science?,admission
 Last date for submission of entrance admission form.,admission
-Direct admission eligibility criteria and cutoff marks.,admission
 Admission form fill karne ki last date kya hai?,admission
 Eligibility criteria for state government scholarship.,scholarship
 Disbursement date for national merit scholarship.,scholarship
-How to apply for fee waiver and student scholarship?,scholarship
-Scholarship amount kab tak account me aayega?,scholarship
+Scholarship application status and verification.,scholarship
 When is the final semester exam timetable coming?,exam
 Admit card download error for upcoming university exam.,exam
-Exam hall ticket center name correction request.,exam
-Semester exam date sheet kab release hogi?,exam
-Attendance marked absent even though I was in lecture.,attendance
-Minimum attendance percentage required to sit in exams.,attendance
-Attendance shortage warning email discrepancy.,attendance
-Class me present hone ke baad bhi absent laga diya.,attendance
-Syllabus and course curriculum details for MBA.,course_information
-Can I change elective subjects in second year?,course_information
-Credit requirements for graduation in computer science.,course_information
-Course structure aur syllabus details chahiye.,course_information
-College bus route and monthly transport pass fees.,transport
-College transport bus was late and missed morning lab.,transport
-Bus route stop change request for next term.,transport
-College bus timings aur stop location janni hai.,transport
-Complaint regarding rude behavior of college administration.,complaint
-Filing complaint against mess food hygiene quality.,complaint
-Poor classroom facilities and broken air conditioning.,complaint
-College administration ke against complaint karni hai.,complaint
-Connect me to university admission counselor or human.,human_support_request
-I need to speak with human helpdesk officer.,human_support_request
-Transfer this chat to student support representative.,human_support_request
-Helpdesk support executive se baat karaiye.,human_support_request
-What are library working hours on weekends?,general_query
-Is campus sports complex open for day scholars?,general_query
-Hostel curfew timings and visitor rules query.,general_query
-General question about university holiday calendar.,general_query
-Query regarding student identity card reissue.,other
-Other miscellaneous college campus inquiries.,other
-Lost property inquiry in college auditorium.,other
-Kuch miscellaneous query hai campus facilities ke baare me.,other
+Semester examination result declaration date.,result
+Degree certificate and provisional mark sheet request.,certificate
+Kaise bhai school ka kya fee h?,other
+School and college curriculum course structure inquiry.,other

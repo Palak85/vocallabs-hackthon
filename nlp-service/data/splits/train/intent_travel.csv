@@ -1,36 +1,17 @@
 text,label
-Flight departure time postponed by 6 hours.,flight_delay
-"My flight AI-102 is delayed by 4 hours, what to do?",flight_delay
-How to confirm hotel room reservation for 3 nights?,booking
-Complaint against rude cabin crew and terrible ground staff.,complaint
-Special meal preference selection on flight.,other
-Hotel refused check-in saying booking is not found.,hotel_problem
-Terrible airport transfer experience and missed tour.,complaint
-Book train ticket in executive chair car class.,booking
-Are infant meals provided on international flights?,general_query
-Airline ne flight cancel kar di alternative flight do.,flight_cancellation
-Transfer this chat to human booking agent.,human_support_request
-Hotel room AC was broken and bathroom was dirty.,hotel_problem
+Flight booking payment debited but ticket not generated.,payment_issue
+Flight ticket cancel karna hai refund ke sath.,cancellation
+Flight ticket booking karni hai kal ke liye.,booking
+"My flight 6E-412 was cancelled, need full refund.",refund
+Flight departure terminal changed at airport gate.,flight_issue
+Book train ticket under tatkal quota.,booking
+Please cancel my flight ticket reservation PNR-8812.,cancellation
+What is the free cabin baggage weight limit per passenger?,other
+Hotel room air conditioning and cleanliness complaint.,hotel_problem
+Seat selection charges deducted twice during web check-in.,payment_issue
+In-flight meal selection and wheelchair assistance request.,other
+I want to reschedule my flight departure date to next Monday.,rescheduling
 Where is my flight cancellation refund?,refund
-Baggage tag missing and lost suitcase claim.,baggage_problem
-Wheelchair assistance and pet travel policies query.,other
-My checked baggage was damaged and torn on conveyor belt.,baggage_problem
-Please connect me to travel agent or human support.,human_support_request
-Cancel round trip booking and release seat.,booking_cancellation
-"Flight cancelled by airline, need emergency rebooking.",flight_cancellation
-Ticket cancellation refund kab tak account me aayega?,refund
-My flight was cancelled.,flight_cancellation
-Visa requirements for transit passengers in Singapore.,general_query
-Luggage bag did not arrive at destination airport.,baggage_problem
-Seat number not allocated after web check-in.,ticket_problem
-Web check-in boarding pass PDF not generating.,ticket_problem
-Refund amount credited is less than airline policy.,refund
-Cancelled flight alternative travel arrangements.,flight_cancellation
-Kuch aur jaankari chahiye travel packages ke baare me.,other
-Travel desk executive se baat karwayein.,human_support_request
-I want to book a one-way flight from Delhi to Mumbai.,booking
-Flight bahut delay ho gayi hai update batayein.,flight_delay
-Passenger name spelling error on international e-ticket.,ticket_problem
-How to cancel hotel room booking without penalty?,booking_cancellation
-What is the free cabin baggage weight limit per passenger?,general_query
-Flight ticket cancel karna hai refund ke sath.,booking_cancellation
+"My flight AI-102 is delayed by 4 hours, what to do?",flight_issue
+Baggage missing from luggage carousel at baggage claim.,baggage
+Cancel hotel room booking with zero cancellation charges.,cancellation

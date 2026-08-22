@@ -1,10 +1,7 @@
 text,label
-Can I change elective subjects in second year?,course_information
-College admission cancel kiya fee refund kab aayega?,fee_refund
-Excess fee paid refund application form.,fee_refund
-Semester exam date sheet kab release hogi?,exam
-Admission form fill karne ki last date kya hai?,admission
-General question about university holiday calendar.,general_query
-Where can I pay my term tuition installments?,fee_payment
-Connect me to university admission counselor or human.,human_support_request
-Syllabus and course curriculum details for MBA.,course_information
+Degree certificate and provisional mark sheet request.,certificate
+I paid my college fee yesterday but it is still showing unpaid.,fee_payment_not_updated
+Eligibility criteria for state government scholarship.,scholarship
+What is the admission procedure for B.Tech computer science?,admission
+Failed fee payment ka refund abhi tak nahi aaya.,fee_payment_refund_pending
+Fees do baar cut ho gayi account se ek hi receipt mili hai refund chahiye.,duplicate_fee_payment

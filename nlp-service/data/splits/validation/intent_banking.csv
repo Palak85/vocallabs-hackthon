@@ -1,10 +1,9 @@
 text,label
-Need annual interest certificate for income tax filing.,account_statement
+Payment pending show ho rahi hai confirm nahi hui.,transaction_pending
+ATM machine me cash atak gaya aur balance cut gaya.,cash_withdrawal_issue
+Refund not credited back to account after 7 working days.,refund_not_received
+Hey I have to pay EMI this month from my bank.,loan_emi
+"₹75,000 payment was deducted twice for a single order swipe.",duplicate_transaction
+I was charged twice for the same restaurant POS swipe.,duplicate_transaction
+Credit card unauthorized international transaction alert received.,unauthorized_transaction
 Cheque book requisition tracking status.,other
-Transaction pending hai kab tak clear hoga?,transaction_pending
-Bank branch service ke khilaaf complaint darj karni hai.,complaint
-Money was deducted twice for a single grocery transaction.,duplicate_transaction
-Requesting refund of wrongful penalty charges.,refund_request
-General question about bank working hours on Saturday.,general_query
-NEFT money transfer is pending for last 8 hours.,transaction_pending
-Single online order charged twice on credit card.,duplicate_transaction

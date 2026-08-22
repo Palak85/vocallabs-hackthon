@@ -1,10 +1,7 @@
 text,label
-Attendance marked absent even though I was in lecture.,attendance
-Need official stamp on my fee payment receipt PDF.,fee_receipt
-Online fee payment link open nahi ho raha.,fee_payment
-College administration ke against complaint karni hai.,complaint
-I paid my college fees yesterday but the portal still shows unpaid.,fee_payment_not_updated
-Query regarding student identity card reissue.,other
-Fees pay ho gayi par portal par update nahi hui.,fee_payment_not_updated
-College transport bus was late and missed morning lab.,transport
-Disbursement date for national merit scholarship.,scholarship
+Fee payment successful but fee receipt not generated.,fee_receipt_not_generated
+Excess fee paid refund application status pending.,fee_payment_refund_pending
+When is the final semester exam timetable coming?,exam
+Need payment link for hostel and mess fees.,fee_payment
+Where can I pay my term tuition installments?,fee_payment
+"Duplicate fee payment deduction on college portal, second payment successful first pending.",duplicate_fee_payment
