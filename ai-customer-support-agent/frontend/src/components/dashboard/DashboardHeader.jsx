@@ -4,72 +4,51 @@ export default function DashboardHeader() {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-dash-surface-container-lowest shadow-sm flex justify-between items-center px-4 w-full h-16 sticky top-0 z-50">
+    <header className="bg-white border-b border-slate-200 shadow-xs flex justify-between items-center px-6 w-full h-16 sticky top-0 z-50 shrink-0">
       <div className="flex items-center gap-6">
-        {/* Logo */}
-        <div className="flex items-center gap-2">
-          <span
-            className="material-symbols-outlined text-dash-primary text-2xl"
-            style={{ fontVariationSettings: "'FILL' 1" }}
-          >
-            support_agent
-          </span>
-          <span
-            className="text-headline-sm font-bold text-dash-primary cursor-pointer"
-            onClick={() => navigate("/")}
-          >
-            SuperviseAI Hub
-          </span>
+        {/* Brand */}
+        <div
+          onClick={() => navigate("/")}
+          className="flex items-center gap-2 cursor-pointer hover:opacity-90 transition-opacity"
+        >
+          <div className="w-8 h-8 rounded-lg bg-[#006a6a] flex items-center justify-center text-white">
+            <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
+          </div>
+          <div>
+            <span className="text-sm font-bold text-[#006a6a] block leading-tight">
+              SUPERVISOR & MONITORING CONSOLE
+            </span>
+            <span className="text-[10px] text-slate-500 block">
+              Human Escalation & Ingestion Hub
+            </span>
+          </div>
         </div>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex gap-6 h-full items-center">
-          {["Dashboard", "Analytics", "Team", "Settings"].map((item) => (
-            <a
-              key={item}
-              href="#"
-              className="text-dash-on-surface-variant font-medium hover:text-dash-primary transition-colors cursor-pointer active:opacity-80 text-label-md"
-            >
-              {item}
-            </a>
-          ))}
-        </nav>
+        {/* Tenant Selector */}
+        <div className="hidden sm:flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg border border-slate-200 text-xs">
+          <span className="text-slate-500 font-medium">Tenant:</span>
+          <span className="font-bold text-slate-800 flex items-center gap-1">
+            default
+            <span className="material-symbols-outlined text-sm">arrow_drop_down</span>
+          </span>
+        </div>
       </div>
 
-      <div className="flex items-center gap-4">
-        {/* Live Monitor Badge */}
-        <div className="hidden md:flex items-center px-3 py-1.5 bg-dash-error-container text-dash-on-error-container rounded-full gap-2">
-          <span className="w-2 h-2 rounded-full bg-error animate-pulse" />
-          <span className="text-label-md font-semibold">Live Monitor Active</span>
-        </div>
-
-        {/* Live Monitor Button */}
-        <button className="bg-dash-primary text-dash-on-primary px-4 py-2 rounded-lg text-label-md font-semibold hover:opacity-90 transition-colors shadow-sm hidden md:block cursor-pointer">
-          Live Monitor
+      <div className="flex items-center gap-3">
+        {/* Switch to Customer Portal Button */}
+        <button
+          onClick={() => navigate("/customer")}
+          className="bg-emerald-50 text-emerald-800 border border-emerald-300 px-3 py-1.5 rounded-lg text-xs font-semibold hover:bg-emerald-100 transition-all flex items-center gap-1.5 cursor-pointer shadow-2xs"
+        >
+          <span className="material-symbols-outlined text-sm">support_agent</span>
+          Open Customer Portal
         </button>
 
-        {/* Icon Buttons */}
-        <div className="flex gap-2">
-          <button
-            aria-label="Notifications"
-            className="p-2 text-dash-on-surface-variant hover:text-dash-primary transition-colors rounded-full hover:bg-dash-surface-container-high cursor-pointer"
-          >
-            <span className="material-symbols-outlined">notifications</span>
-          </button>
-          <button
-            aria-label="History"
-            className="p-2 text-dash-on-surface-variant hover:text-dash-primary transition-colors rounded-full hover:bg-dash-surface-container-high cursor-pointer"
-          >
-            <span className="material-symbols-outlined">history_toggle_off</span>
-          </button>
+        {/* Live Status Badge */}
+        <div className="flex items-center px-3 py-1.5 bg-emerald-100 text-emerald-800 rounded-full gap-2 text-xs font-bold border border-emerald-300">
+          <span className="w-2 h-2 rounded-full bg-emerald-600 animate-pulse" />
+          <span>Real-time Stream Active</span>
         </div>
-
-        {/* Profile */}
-        <img
-          alt="Agent Profile"
-          className="w-8 h-8 rounded-full border-2 border-dash-surface object-cover"
-          src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfDVs5RYEc28HIPOh5JhP2CanZUvdOkWfb70VofsMFjXgsTW4Cz1eeaEI_AQfh16Wxy2gloQqFOUsU9dWTJoaiEhkRRs_h1LCZEW4M6z07vpwa8mHbmLL6kdbwNAdNh2BZwoDxstm5Ftn6mRMpnDH0iZZdQ0lVS6dmjAjEVUqIBqZljDVYsn0FwZM0ZFEkjfLUnSk2lNPFwNjm2OyPUtWNTfeTN9lUK_PS3t4r6okgN2XuscjNdv0N"
-        />
       </div>
     </header>
   );

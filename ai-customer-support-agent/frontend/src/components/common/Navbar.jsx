@@ -53,9 +53,18 @@ export default function Navbar() {
         </div>
 
         {/* Desktop CTA */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="hidden md:flex items-center gap-3">
           <button
             onClick={() => navigate("/dashboard")}
+            className="text-on-surface-variant hover:text-primary hover:bg-surface-container font-semibold text-label-md px-3.5 py-2 rounded-lg border border-outline-variant/60 transition-all flex items-center gap-1.5 cursor-pointer"
+          >
+            <span className="material-symbols-outlined text-[16px]">
+              admin_panel_settings
+            </span>
+            Admin Dashboard
+          </button>
+          <button
+            onClick={() => navigate("/customer")}
             className="bg-primary text-on-primary font-semibold text-label-md px-5 py-2.5 rounded-lg shadow-sm hover:bg-primary-container hover:text-on-primary-container transition-all flex items-center gap-1.5 cursor-pointer"
           >
             Get Started
@@ -98,18 +107,32 @@ export default function Navbar() {
             );
           })}
           <hr className="border-outline-variant" />
-          <button
-            onClick={() => {
-              navigate("/dashboard");
-              setMobileOpen(false);
-            }}
-            className="w-full bg-primary text-on-primary font-semibold text-label-md px-4 py-3 rounded-lg shadow-sm hover:bg-primary-container transition-colors cursor-pointer flex items-center justify-center gap-2"
-          >
-            Get Started
-            <span className="material-symbols-outlined text-[16px]">
-              arrow_forward
-            </span>
-          </button>
+          <div className="flex flex-col gap-2">
+            <button
+              onClick={() => {
+                navigate("/dashboard");
+                setMobileOpen(false);
+              }}
+              className="w-full bg-surface-container text-on-surface font-semibold text-label-md px-4 py-2.5 rounded-lg border border-outline-variant transition-colors cursor-pointer flex items-center justify-center gap-2"
+            >
+              <span className="material-symbols-outlined text-[16px]">
+                admin_panel_settings
+              </span>
+              Admin Dashboard
+            </button>
+            <button
+              onClick={() => {
+                navigate("/customer");
+                setMobileOpen(false);
+              }}
+              className="w-full bg-primary text-on-primary font-semibold text-label-md px-4 py-3 rounded-lg shadow-sm hover:bg-primary-container transition-colors cursor-pointer flex items-center justify-center gap-2"
+            >
+              Get Started
+              <span className="material-symbols-outlined text-[16px]">
+                arrow_forward
+              </span>
+            </button>
+          </div>
         </div>
       )}
     </nav>
