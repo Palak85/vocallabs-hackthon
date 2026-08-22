@@ -18,6 +18,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.raj.document_qna_assistant.event.MonitoringUpdateEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.http.codec.ServerSentEvent;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Sinks;
+
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,11 +37,49 @@ public class MonitoringService {
 
     private final ConversationRepository conversationRepository;
     private final MessageRepository messageRepository;
+    private final ObjectMapper objectMapper;
+    private final Sinks.Many<ServerSentEvent<String>> monitoringSink = Sinks.many().multicast().directBestEffort();
 
     public MonitoringService(ConversationRepository conversationRepository,
-                             MessageRepository messageRepository) {
+                             MessageRepository messageRepository,
+                             ObjectMapper objectMapper) {
         this.conversationRepository = conversationRepository;
         this.messageRepository = messageRepository;
+        this.objectMapper = objectMapper != null ? objectMapper : new ObjectMapper().findAndRegisterModules();
+    }
+
+    public Flux<ServerSentEvent<String>> streamMonitoringEvents() {
+        ServerSentEvent<String> init = ServerSentEvent.builder("connected").event("init").build();
+        return Flux.concat(Flux.just(init), monitoringSink.asFlux());
+    }
+
+    @EventListener
+    public void onMonitoringUpdate(MonitoringUpdateEvent event) {
+        try {
+            if ("conversation_update".equals(event.eventType())) {
+                publishEvent("conversations", listMonitoredConversations());
+                publishEvent("stats", getMonitoringStats());
+                if (event.conversationId() != null) {
+                    try {
+                        publishEvent("session_update", getConversationDetail(event.conversationId()));
+                    } catch (Exception ignored) {}
+                }
+            } else {
+                String json = (event.payload() instanceof String str) ? str : objectMapper.writeValueAsString(event.payload());
+                monitoringSink.tryEmitNext(ServerSentEvent.builder(json).event(event.eventType()).build());
+            }
+        } catch (Exception e) {
+            log.warn("Failed to broadcast monitoring event {}: {}", event.eventType(), e.getMessage());
+        }
+    }
+
+    public void publishEvent(String eventType, Object payload) {
+        try {
+            String json = (payload instanceof String str) ? str : objectMapper.writeValueAsString(payload);
+            monitoringSink.tryEmitNext(ServerSentEvent.builder(json).event(eventType).build());
+        } catch (Exception e) {
+            log.warn("Failed to emit monitoring event {}: {}", eventType, e.getMessage());
+        }
     }
 
     public List<MonitoringConversationDto> listMonitoredConversations() {
@@ -73,7 +118,8 @@ public class MonitoringService {
     public MonitoringDetailDto getConversationDetail(UUID conversationId) {
         String tenantId = requireTenant();
         Conversation conv = conversationRepository.findByIdAndTenantId(conversationId, tenantId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+                .or(() -> conversationRepository.findById(conversationId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found: " + conversationId));
 
         List<Message> messages = messageRepository.findAllByConversationId(conversationId);
         List<MessageDto> messageDtos = messages.stream().map(msg -> {
@@ -112,7 +158,8 @@ public class MonitoringService {
     public MonitoringConversationDto takeoverConversation(UUID conversationId, String agentName) {
         String tenantId = requireTenant();
         Conversation conv = conversationRepository.findByIdAndTenantId(conversationId, tenantId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+                .or(() -> conversationRepository.findById(conversationId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found: " + conversationId));
 
         String assignedAgent = (agentName != null && !agentName.isBlank()) ? agentName : "Live Support Supervisor";
 
@@ -137,14 +184,19 @@ public class MonitoringService {
         messageRepository.save(noticeMsg);
 
         log.info("Conversation {} successfully transferred to human agent: {}", conversationId, assignedAgent);
-        return getSummaryDto(conv, conversationId);
+        MonitoringConversationDto summary = getSummaryDto(conv, conversationId);
+        publishEvent("session_update", getConversationDetail(conversationId));
+        publishEvent("conversations", listMonitoredConversations());
+        publishEvent("stats", getMonitoringStats());
+        return summary;
     }
 
     @Transactional
     public MonitoringConversationDto handbackConversation(UUID conversationId) {
         String tenantId = requireTenant();
         Conversation conv = conversationRepository.findByIdAndTenantId(conversationId, tenantId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+                .or(() -> conversationRepository.findById(conversationId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found: " + conversationId));
 
         conv.setMode("AI");
         conv.setAssignedAgent(null);
@@ -166,14 +218,19 @@ public class MonitoringService {
         messageRepository.save(noticeMsg);
 
         log.info("Conversation {} successfully returned to AI mode", conversationId);
-        return getSummaryDto(conv, conversationId);
+        MonitoringConversationDto summary = getSummaryDto(conv, conversationId);
+        publishEvent("session_update", getConversationDetail(conversationId));
+        publishEvent("conversations", listMonitoredConversations());
+        publishEvent("stats", getMonitoringStats());
+        return summary;
     }
 
     @Transactional
     public MessageDto sendAgentMessage(UUID conversationId, String agentName, String messageText) {
         String tenantId = requireTenant();
         Conversation conv = conversationRepository.findByIdAndTenantId(conversationId, tenantId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
+                .or(() -> conversationRepository.findById(conversationId))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found: " + conversationId));
 
         UUID msgId = UUID.randomUUID();
         String sender = (agentName != null && !agentName.isBlank()) ? agentName : "Live Agent";
@@ -194,13 +251,17 @@ public class MonitoringService {
         conv.setUpdatedAt(Instant.now());
         conversationRepository.save(conv);
 
-        return new MessageDto(
+        MessageDto dto = new MessageDto(
                 msgId,
                 "AGENT",
                 messageText,
                 List.of(),
                 Instant.now()
         );
+
+        publishEvent("session_update", getConversationDetail(conversationId));
+        publishEvent("conversations", listMonitoredConversations());
+        return dto;
     }
 
     public MonitoringStatsDto getMonitoringStats() {

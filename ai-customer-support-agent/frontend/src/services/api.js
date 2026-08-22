@@ -3,14 +3,76 @@ const TENANT_HEADER = { 'X-Tenant-Id': 'default' };
 
 export const api = {
   /**
-   * Sends a chat message to the backend (supports v1 and legacy endpoints).
-   * @param {string} message - User's question or message.
-   * @param {string} conversationId - Existing conversation ID (optional).
-   * @param {string} customerId - Customer identifier (optional).
-   * @returns {Promise<Object>} - Response containing messageId, conversationId, and answer.
+   * Streams a chat message from backend via SSE (/api/v1/chat/stream).
+   * Calls onEvent(eventType, data) as events (nlp, escalation_alert, token, sources, human_agent_active, done, error) arrive.
+   */
+  async streamMessage(message, conversationId = null, customerId = 'cust_web_user', onEvent = () => {}) {
+    const payload = {
+      question: message,
+      text: message,
+      message: message,
+      customerId: customerId,
+    };
+    if (conversationId) {
+      payload.conversationId = conversationId;
+      payload.conversation_id = conversationId;
+    }
+
+    const res = await fetch(`${BASE_URL}/v1/chat/stream`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'text/event-stream',
+        ...TENANT_HEADER,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
+      throw new Error(err.message || 'Stream connection failed');
+    }
+
+    const reader = res.body?.getReader();
+    const decoder = new TextDecoder('utf-8');
+    let buffer = '';
+
+    if (!reader) throw new Error('ReadableStream not supported');
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+
+      buffer += decoder.decode(value, { stream: true });
+      const blocks = buffer.split('\n\n');
+      buffer = blocks.pop() || '';
+
+      for (const block of blocks) {
+        if (!block.trim()) continue;
+        const lines = block.split(/\r?\n/);
+        let event = 'message';
+        const dataLines = [];
+
+        for (const line of lines) {
+          if (line.startsWith('event:')) {
+            event = line.substring(6).trim();
+          } else if (line.startsWith('data:')) {
+            // SSE standard: strip only the single optional space after "data:"
+            const val = line.startsWith('data: ') ? line.substring(6) : line.substring(5);
+            dataLines.push(val);
+          }
+        }
+
+        const data = dataLines.join('\n');
+        onEvent(event, data);
+      }
+    }
+  },
+
+  /**
+   * Sends a chat message to the backend synchronously.
    */
   async sendMessage(message, conversationId = null, customerId = 'cust_web_user') {
-    // Try v1 endpoint first
     try {
       const v1Payload = {
         question: message,
@@ -42,14 +104,16 @@ export const api = {
           intent: data.intent,
           emotion: data.emotion,
           frustrationScore: data.frustrationScore,
+          sources: data.sources || [],
+          nlp: data.nlp,
         };
       }
     } catch (e) {
-      console.warn('v1 chat failed, attempting legacy chat...', e);
+      console.warn('v1 chat failed, attempting fallback...', e);
     }
 
     // Fallback to /api/chat
-    const legacyPayload = { message };
+    const legacyPayload = { message, question: message };
     if (conversationId) {
       legacyPayload.conversationId = conversationId;
     }
@@ -74,10 +138,6 @@ export const api = {
 
   /**
    * Uploads a document for ingestion into pgvector knowledge base.
-   * @param {File} file - The file to upload.
-   * @param {string} category - Document category (e.g. banking, ecommerce, general).
-   * @param {string} title - Optional document title.
-   * @returns {Promise<Object>}
    */
   async uploadDocument(file, category = 'general', title = '') {
     const formData = new FormData();
@@ -85,24 +145,19 @@ export const api = {
     if (category) formData.append('category', category);
     if (title || file.name) formData.append('title', title || file.name);
 
-    // Try /api/v1/documents first
-    try {
-      const res = await fetch(`${BASE_URL}/v1/documents`, {
-        method: 'POST',
-        headers: {
-          ...TENANT_HEADER,
-        },
-        body: formData,
-      });
+    const res = await fetch(`${BASE_URL}/v1/documents`, {
+      method: 'POST',
+      headers: {
+        ...TENANT_HEADER,
+      },
+      body: formData,
+    });
 
-      if (res.ok) {
-        return res.json();
-      }
-    } catch (e) {
-      console.warn('v1 upload failed, trying legacy upload...', e);
+    if (res.ok) {
+      return res.json();
     }
 
-    // Fallback to /api/documents
+    // Fallback
     const legacyRes = await fetch(`${BASE_URL}/documents`, {
       method: 'POST',
       headers: {
@@ -121,7 +176,6 @@ export const api = {
 
   /**
    * Lists all uploaded knowledge base documents.
-   * @returns {Promise<Array>}
    */
   async listDocuments() {
     try {
@@ -135,7 +189,7 @@ export const api = {
         return res.json();
       }
     } catch (e) {
-      console.warn('v1 listDocuments failed, trying legacy...', e);
+      console.warn('v1 listDocuments failed, trying fallback...', e);
     }
 
     const legacyRes = await fetch(`${BASE_URL}/documents`, {
@@ -154,7 +208,6 @@ export const api = {
 
   /**
    * Deletes a document by ID.
-   * @param {string} id
    */
   async deleteDocument(id) {
     try {
@@ -166,7 +219,7 @@ export const api = {
       });
       if (res.ok) return true;
     } catch (e) {
-      console.warn('v1 deleteDocument failed, trying legacy...', e);
+      console.warn('v1 deleteDocument failed, trying fallback...', e);
     }
 
     const legacyRes = await fetch(`${BASE_URL}/documents/${id}`, {
@@ -180,7 +233,6 @@ export const api = {
 
   /**
    * Checks the status of a document ingestion.
-   * @param {string} documentId
    */
   async getDocumentStatus(documentId) {
     try {
@@ -285,5 +337,34 @@ export const api = {
 
   getDocumentDownloadUrl(documentId) {
     return `${BASE_URL}/documents/${documentId}/download`;
+  },
+
+  /**
+   * Subscribes to backend SSE stream (/api/v1/monitoring/stream) for real-time updates
+   * (document_status, documents, stats, conversations, session_update) with ZERO polling.
+   */
+  subscribeToMonitoringEvents(onEvent = () => {}) {
+    const url = `${BASE_URL}/v1/monitoring/stream`;
+    const eventSource = new EventSource(url);
+
+    const eventNames = ['init', 'stats', 'conversations', 'session_update', 'document_status', 'documents'];
+    eventNames.forEach((evName) => {
+      eventSource.addEventListener(evName, (e) => {
+        try {
+          const parsed = JSON.parse(e.data);
+          onEvent(evName, parsed);
+        } catch (_) {
+          onEvent(evName, e.data);
+        }
+      });
+    });
+
+    eventSource.onerror = (err) => {
+      console.warn('SSE monitoring stream re-connecting...', err);
+    };
+
+    return () => {
+      eventSource.close();
+    };
   },
 };

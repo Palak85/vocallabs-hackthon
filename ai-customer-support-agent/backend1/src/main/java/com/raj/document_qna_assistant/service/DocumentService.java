@@ -24,10 +24,14 @@ public class DocumentService {
 
     private final DocumentRepository documentRepository;
     private final IngestionPipeline ingestionPipeline;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
-    public DocumentService(DocumentRepository documentRepository, IngestionPipeline ingestionPipeline) {
+    public DocumentService(DocumentRepository documentRepository, 
+                           IngestionPipeline ingestionPipeline,
+                           org.springframework.context.ApplicationEventPublisher eventPublisher) {
         this.documentRepository = documentRepository;
         this.ingestionPipeline = ingestionPipeline;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -76,7 +80,7 @@ public class DocumentService {
                 docId,
                 tenantId,
                 finalTitle,
-                category,
+                category != null ? category : "general",
                 filename,
                 file.getContentType() != null ? file.getContentType() : "application/octet-stream",
                 file.getSize(),
@@ -91,6 +95,11 @@ public class DocumentService {
 
         // Async ingestion
         ingestionPipeline.ingestAsync(docId, tenantId, doc.getTitle(), category, bytes, doc.getContentType(), filename);
+
+        // Broadcast new document event
+        eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                null, "documents", listDocuments(0, 50)
+        ));
 
         return new UploadResponse(docId, DocumentStatus.PROCESSING.name());
     }
@@ -118,6 +127,11 @@ public class DocumentService {
         if (!deleted) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Document not found");
         }
+
+        // Broadcast document deletion event
+        eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                null, "documents", listDocuments(0, 50)
+        ));
     }
 
     private DocumentDetailDto mapToDto(Document doc) {

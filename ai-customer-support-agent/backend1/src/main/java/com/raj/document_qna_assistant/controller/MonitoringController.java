@@ -15,7 +15,8 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/monitoring")
+@CrossOrigin(origins = "*")
+@RequestMapping({"/api/v1/monitoring", "/api/monitoring"})
 public class MonitoringController {
 
     private final MonitoringService monitoringService;
@@ -60,5 +61,10 @@ public class MonitoringController {
     @GetMapping("/stats")
     public ResponseEntity<MonitoringStatsDto> getMonitoringStats() {
         return ResponseEntity.ok(monitoringService.getMonitoringStats());
+    }
+
+    @GetMapping(value = "/stream", produces = org.springframework.http.MediaType.TEXT_EVENT_STREAM_VALUE)
+    public reactor.core.publisher.Flux<org.springframework.http.codec.ServerSentEvent<String>> streamMonitoringEvents() {
+        return monitoringService.streamMonitoringEvents();
     }
 }

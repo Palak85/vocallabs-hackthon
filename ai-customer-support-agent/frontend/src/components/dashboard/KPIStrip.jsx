@@ -22,8 +22,15 @@ export default function KPIStrip() {
 
   useEffect(() => {
     fetchStats();
-    const interval = setInterval(fetchStats, 4000);
-    return () => clearInterval(interval);
+    // Real-time SSE updates for supervisor stats
+    const unsubscribe = api.subscribeToMonitoringEvents((event, data) => {
+      if (event === "stats" && data) {
+        setStats(data);
+      }
+    });
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const totalActive = stats.activeAiConversations + stats.activeHumanConversations;

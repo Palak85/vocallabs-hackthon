@@ -37,17 +37,38 @@ export default function LiveMonitorConsole() {
     }
   };
 
+  const selectedIdRef = useRef(selectedId);
+  useEffect(() => {
+    selectedIdRef.current = selectedId;
+  }, [selectedId]);
+
   useEffect(() => {
     fetchMonitoredConversations();
-    const interval = setInterval(fetchMonitoredConversations, 3000);
-    return () => clearInterval(interval);
+
+    // Subscribe to SSE monitoring stream for zero-latency updates
+    const unsubscribe = api.subscribeToMonitoringEvents((event, data) => {
+      if (event === "conversations" && Array.isArray(data)) {
+        setConversations(data);
+        if (data.length > 0 && !selectedIdRef.current) {
+          setSelectedId(data[0].id);
+        }
+      } else if (event === "session_update" && data) {
+        const updateId = String(data.id || data.conversationId || "").toLowerCase();
+        const currSelected = String(selectedIdRef.current || "").toLowerCase();
+        if (!currSelected || updateId === currSelected) {
+          setSessionDetail(data);
+        }
+      }
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   useEffect(() => {
     if (selectedId) {
       fetchSessionDetail(selectedId);
-      const detailInterval = setInterval(() => fetchSessionDetail(selectedId), 2500);
-      return () => clearInterval(detailInterval);
     }
   }, [selectedId]);
 
@@ -328,8 +349,18 @@ export default function LiveMonitorConsole() {
             <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3">
               {sessionDetail.messages && sessionDetail.messages.length > 0 ? (
                 sessionDetail.messages.map((m, idx) => {
-                  const isUser = m.source === "USER";
-                  const isHuman = m.source === "HUMAN_AGENT";
+                  const role = (m.role || m.source || "").toUpperCase();
+                  const isUser = role === "USER";
+                  const isHuman = role === "AGENT" || role === "HUMAN" || role === "HUMAN_AGENT";
+                  const isSystem = role === "SYSTEM";
+
+                  if (isSystem) {
+                    return (
+                      <div key={idx} className="self-center my-1 px-3 py-1 bg-slate-200/80 rounded-full text-[10px] text-slate-600 border border-slate-300">
+                        ℹ️ {m.content || m.text}
+                      </div>
+                    );
+                  }
 
                   return (
                     <div
@@ -354,7 +385,7 @@ export default function LiveMonitorConsole() {
                             : "bg-[#006a6a] text-white rounded-tr-none"
                         }`}
                       >
-                        {m.text || m.content}
+                        {m.content || m.text}
                       </div>
                     </div>
                   );

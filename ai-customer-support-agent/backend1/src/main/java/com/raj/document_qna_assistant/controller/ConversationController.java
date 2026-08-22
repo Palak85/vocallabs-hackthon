@@ -12,7 +12,8 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/v1/conversations")
+@CrossOrigin(origins = "*")
+@RequestMapping({"/api/v1/conversations", "/api/conversations"})
 public class ConversationController {
 
     private final ConversationService conversationService;
