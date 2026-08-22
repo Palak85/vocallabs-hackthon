@@ -1,74 +1,107 @@
-version: '3.8'
-
 services:
+
+  # -------------------------------------------------------------------------
+  # 1. PostgreSQL Database with pgvector Extension (Port 5432)
+  # -------------------------------------------------------------------------
   postgres:
     image: pgvector/pgvector:pg17
-    container_name: ai-chat-postgres
+    container_name: vocallabs-postgres
     restart: unless-stopped
     environment:
-      POSTGRES_DB: ai_chat
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ${POSTGRES_DB:-ai_chat}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
     ports:
-      - "5432:5432"
+      - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d ai_chat"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-ai_chat}"]
       interval: 5s
       timeout: 5s
       retries: 5
+    networks:
+      - vocallabs-network
 
+  # -------------------------------------------------------------------------
+  # 2. Python NLP Microservice (FastAPI + ML Models) (Port 8000)
+  # -------------------------------------------------------------------------
   nlp-service:
     build:
       context: ./nlp-service
       dockerfile: Dockerfile
-    container_name: nlp-microservice
+    container_name: vocallabs-nlp-service
     restart: unless-stopped
-    depends_on:
-      postgres:
-        condition: service_healthy
-    environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/ai_chat
-      DOMAIN_CONFIDENCE_THRESHOLD: "0.28"
-      INTENT_CONFIDENCE_THRESHOLD: "0.15"
-      LANGUAGE_CONFIDENCE_THRESHOLD: "0.40"
-      LOG_LEVEL: INFO
-      STORE_RAW_TEXT: "true"
     ports:
-      - "8000:8000"
+      - "${NLP_PORT:-8000}:8000"
+    environment:
+      - PORT=8000
+      - HOST=0.0.0.0
+      - DATABASE_URL=sqlite:///./nlp_local.db
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import urllib.request; urllib.request.urlopen(\"http://localhost:8000/health\")' || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - vocallabs-network
 
+  # -------------------------------------------------------------------------
+  # 3. Spring Boot Backend (Spring AI, Gemini RAG, Flyway, SSE) (Port 8080)
+  # -------------------------------------------------------------------------
   backend:
     build:
-      context: ./ai-customer-support-agent/backend
+      context: ./ai-customer-support-agent/backend1
       dockerfile: Dockerfile
-    container_name: ai-chat-backend
+    container_name: vocallabs-backend
     restart: unless-stopped
+    ports:
+      - "${BACKEND_PORT:-8080}:8080"
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=${POSTGRES_DB:-ai_chat}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres}
+      - NLP_MOCK_ENABLED=${NLP_MOCK_ENABLED:-false}
+      - NLP_SERVICE_URL=http://nlp-service:8000/api/nlp/analyze
     depends_on:
       postgres:
         condition: service_healthy
       nlp-service:
         condition: service_started
-    environment:
-      DATABASE_URL: jdbc:postgresql://postgres:5432/ai_chat
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      NLP_SERVICE_URL: http://nlp-service:8000/api/nlp/analyze
-      NLP_MOCK_ENABLED: "false"
-      GEMINI_API_KEY: ${GEMINI_API_KEY:-mock_key}
-    ports:
-      - "8081:8081"
+    volumes:
+      - backend_uploads:/app/uploads
+    networks:
+      - vocallabs-network
 
+  # -------------------------------------------------------------------------
+  # 4. React + Vite Frontend (Nginx Production Reverse Proxy) (Port 5173 / 80)
+  # -------------------------------------------------------------------------
   frontend:
     build:
       context: ./ai-customer-support-agent/frontend
       dockerfile: Dockerfile
-    container_name: ai-chat-frontend
+    container_name: vocallabs-frontend
     restart: unless-stopped
+    ports:
+      - "${FRONTEND_PORT:-5173}:80"
     depends_on:
       - backend
-    ports:
-      - "5173:5173"
+    networks:
+      - vocallabs-network
 
+# -------------------------------------------------------------------------
+# Persistent Volumes & Network Definitions
+# -------------------------------------------------------------------------
 volumes:
   postgres_data:
+    driver: local
+  backend_uploads:
+    driver: local
+
+networks:
+  vocallabs-network:
+    driver: bridge

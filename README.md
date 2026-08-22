@@ -1,5 +1,32 @@
 # AI-Powered Customer Support Agent with Intelligent Human Escalation
 
+## ⚡ 1-Step Quickstart (Docker Compose)
+
+Clone the repository and spin up all microservices (PostgreSQL pgvector, Python NLP Microservice, Spring Boot Java Backend, and React Frontend) with a single command:
+
+```bash
+# 1. Clone repo
+git clone https://github.com/Palak85/vocallabs-hackthon.git
+cd vocallabs-hackthon
+
+# 2. Configure Gemini API Key
+cp .env.example .env
+# Edit .env and paste your GEMINI_API_KEY from https://aistudio.google.com/
+
+# 3. Build & Run all microservices
+docker compose up --build
+```
+
+### 🌐 Accessing the Services
+- **Customer Support Portal (Chat & Voice)**: [http://localhost:5173/customer](http://localhost:5173/customer)
+- **Live Supervisor & Monitoring Console**: [http://localhost:5173/dashboard](http://localhost:5173/dashboard)
+- **Knowledge Base & Document Ingestion**: [http://localhost:5173/dashboard](http://localhost:5173/dashboard)
+- **Spring Boot Backend APIs & Swagger**: [http://localhost:8080](http://localhost:8080)
+- **Python NLP Microservice**: [http://localhost:8000/docs](http://localhost:8000/docs)
+- **PostgreSQL pgvector Database**: `localhost:5432` (`ai_chat`)
+
+---
+
 ## 📌 Overview
 
 This project is an **AI-powered customer support system** designed to autonomously resolve customer problems while continuously monitoring the customer's **sentiment, frustration level, conversation context, and resolution status**.
