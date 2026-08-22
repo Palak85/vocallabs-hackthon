@@ -35,6 +35,9 @@ class MonitoringServiceTest {
     @Mock
     private MessageRepository messageRepository;
 
+    @org.mockito.Spy
+    private com.fasterxml.jackson.databind.ObjectMapper objectMapper = new com.fasterxml.jackson.databind.ObjectMapper().findAndRegisterModules();
+
     @InjectMocks
     private MonitoringService monitoringService;
 

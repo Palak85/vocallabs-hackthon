@@ -48,6 +48,7 @@ public class ChatService {
     private final ObjectMapper objectMapper;
     private final TransactionTemplate transactionTemplate;
     private final NlpService nlpService;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     @Value("${app.chat.top-k:5}")
     private int defaultTopK;
@@ -67,7 +68,8 @@ public class ChatService {
                        MessageRepository messageRepository,
                        ObjectMapper objectMapper,
                        TransactionTemplate transactionTemplate,
-                       NlpService nlpService) {
+                       NlpService nlpService,
+                       org.springframework.context.ApplicationEventPublisher eventPublisher) {
         this.retrievalService = retrievalService;
         this.chatModel = chatModel;
         this.conversationRepository = conversationRepository;
@@ -75,6 +77,7 @@ public class ChatService {
         this.objectMapper = objectMapper;
         this.transactionTemplate = transactionTemplate;
         this.nlpService = nlpService;
+        this.eventPublisher = eventPublisher;
     }
 
     @Transactional
@@ -109,6 +112,11 @@ public class ChatService {
 
         // 4. Update NLP metrics & evaluate escalation
         updateConversationNlpMetrics(conv, nlpResponse);
+
+        // Immediately broadcast new user message to Live Monitor Console & Agents
+        eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                convId, "conversation_update", convId.toString()
+        ));
 
         // 5. Check if Human Takeover Mode is Active
         if ("HUMAN".equalsIgnoreCase(conv.getMode())) {
@@ -166,6 +174,11 @@ public class ChatService {
         conv.setUpdatedAt(Instant.now());
         conversationRepository.save(conv);
 
+        // Broadcast live conversation & session update via SSE
+        eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                convId, "conversation_update", convId.toString()
+        ));
+
         return new ChatResponse(answer, convId, sources, nlpResponse);
     }
 
@@ -204,6 +217,11 @@ public class ChatService {
 
             // 4. Update Conversation with latest NLP metrics & Evaluate Escalation
             boolean escalationAlertTriggered = updateConversationNlpMetrics(conv, nlpResponse);
+
+            // Immediately broadcast new user message to Live Monitor Console & Agents
+            eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                    convId, "conversation_update", convId.toString()
+            ));
 
             // Emit NLP analysis event first
             String nlpJson = objectMapper.writeValueAsString(nlpResponse);
@@ -301,6 +319,10 @@ public class ChatService {
 
                             saveSources(assistantMsgId, chunks, sources);
                         });
+
+                        eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                                convId, "conversation_update", convId.toString()
+                        ));
                     });
 
             Mono<ServerSentEvent<String>> sourcesEvent = Mono.fromCallable(() -> {
@@ -512,7 +534,7 @@ public class ChatService {
             org.springframework.ai.document.Document chunk = chunks.get(i);
             SourceDto src = sources.get(i);
             try {
-                UUID chunkId = UUID.fromString(chunk.getId());
+                UUID chunkId = com.raj.document_qna_assistant.util.UuidUtils.parseSafely(chunk.getId());
                 messageRepository.saveSource(assistantMsgId, chunkId, src.similarityScore());
             } catch (Exception e) {
                 // Ignore invalid UUID string conversions

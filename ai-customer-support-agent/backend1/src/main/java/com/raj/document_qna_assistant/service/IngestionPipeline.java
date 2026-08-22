@@ -25,20 +25,28 @@ public class IngestionPipeline {
     private final VectorStore vectorStore;
     private final DocumentRepository documentRepository;
     private final TransactionTemplate transactionTemplate;
+    private final org.springframework.context.ApplicationEventPublisher eventPublisher;
 
     public IngestionPipeline(TextExtractor textExtractor, 
                              VectorStore vectorStore, 
                              DocumentRepository documentRepository, 
-                             TransactionTemplate transactionTemplate) {
+                             TransactionTemplate transactionTemplate,
+                             org.springframework.context.ApplicationEventPublisher eventPublisher) {
         this.textExtractor = textExtractor;
         this.vectorStore = vectorStore;
         this.documentRepository = documentRepository;
         this.transactionTemplate = transactionTemplate;
+        this.eventPublisher = eventPublisher;
     }
 
     @Async
     public void ingestAsync(UUID docId, String tenantId, String title, String category, byte[] bytes, String contentType, String filename) {
         try {
+            // Notify starting processing
+            eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                    null, "document_status", Map.of("documentId", docId.toString(), "status", "PROCESSING", "title", title, "category", category != null ? category : "general")
+            ));
+
             // 1. Extract text page-by-page
             List<TextExtractor.ExtractedPage> pages = textExtractor.extractText(bytes, contentType, filename);
             
@@ -76,9 +84,28 @@ public class IngestionPipeline {
             // 4. Update status to READY
             documentRepository.updateStatus(docId, DocumentStatus.READY, null);
 
+            // 5. Broadcast SSE event for live UI update without polling
+            eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                    null, "document_status", Map.of(
+                            "documentId", docId.toString(),
+                            "status", "READY",
+                            "chunkCount", aiDocuments.size(),
+                            "title", title,
+                            "category", category != null ? category : "general"
+                    )
+            ));
+
         } catch (Exception e) {
             log.error("Failed to ingest document {}", docId, e);
             documentRepository.updateStatus(docId, DocumentStatus.FAILED, e.getMessage());
+            eventPublisher.publishEvent(new com.raj.document_qna_assistant.event.MonitoringUpdateEvent(
+                    null, "document_status", Map.of(
+                            "documentId", docId.toString(),
+                            "status", "FAILED",
+                            "errorMessage", e.getMessage() != null ? e.getMessage() : "Unknown error",
+                            "title", title
+                    )
+            ));
         }
     }
 

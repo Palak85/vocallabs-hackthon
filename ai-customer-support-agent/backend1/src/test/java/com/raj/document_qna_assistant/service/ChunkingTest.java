@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class ChunkingTest {
 
-    private final IngestionPipeline ingestionPipeline = new IngestionPipeline(null, null, null, null);
+    private final IngestionPipeline ingestionPipeline = new IngestionPipeline(null, null, null, null, null);
 
     @Test
     void testEmptyText() {

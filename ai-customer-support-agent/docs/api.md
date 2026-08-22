@@ -11,6 +11,7 @@ The backend supports two core client dashboards:
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
 │  DASHBOARD 1: CUSTOMER DASHBOARD (Consumer Text & Voice QnA)                           │
+│  • Pure consumer interface — NO document upload or ingestion controls                  │
 │  • Text Mode: Sends user questions to /api/v1/chat/stream                              │
 │  • Voice Mode: Speech-to-Text (STT) -> /api/v1/chat/stream -> Text-to-Speech (TTS)     │
 │  • Displays live transcript and maintains full session history                         │
@@ -24,7 +25,8 @@ The backend supports two core client dashboards:
                                             │
                                             ▼
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  DASHBOARD 2: MONITORING & SUPERVISOR DASHBOARD (Live Call/Chat Control)              │
+│  DASHBOARD 2: MONITORING & SUPERVISOR DASHBOARD (Live Call/Chat Control & Docs)       │
+│  • Knowledge Base Management: Upload, index status & delete documents                  │
 │  • Real-time call monitor with live sentiment, emotion & frustration gauges            │
 │  • Auto-alerts when customer is frustrated: "Recommend switching to live agent"        │
 │  • One-click Human Takeover Button (/api/v1/monitoring/conversations/{id}/takeover)    │
@@ -35,10 +37,16 @@ The backend supports two core client dashboards:
 
 ---
 
-## 2. Base Configuration & Global Headers
+## 2. Base Configuration, Global Headers & Route Aliases
 
 * **Base URL**: `http://localhost:8080`
+* **Route Aliases**: Both versioned (`/api/v1/...`) and unversioned (`/api/...`) paths are supported seamlessly across all controllers:
+  * `/api/v1/chat` and `/api/chat`
+  * `/api/v1/monitoring` and `/api/monitoring`
+  * `/api/v1/documents` and `/api/documents`
+  * `/api/v1/conversations` and `/api/conversations`
 * **Tenant Header (Required)**: All requests must include the `X-Tenant-Id` header (e.g., `X-Tenant-Id: default`).
+* **CORS**: Cross-Origin Resource Sharing (`@CrossOrigin`) is enabled for all origins.
 * **Content Types**:
   * `application/json` for standard requests
   * `multipart/form-data` for file uploads
@@ -48,12 +56,12 @@ The backend supports two core client dashboards:
 
 ## 3. Customer Chat & Voice Endpoints
 
-### 3.1. Stream Chat & Voice Message (`/api/v1/chat/stream`)
+### 3.1. Stream Chat & Voice Message (`POST /api/v1/chat/stream` or `POST /api/chat/stream`)
 
 Streams real-time tokens, live NLP analytics, and escalation alerts via Server-Sent Events (SSE).
 
 * **Method**: `POST`
-* **URL**: `/api/v1/chat/stream`
+* **URL**: `/api/v1/chat/stream` (or `/api/chat/stream`)
 * **Headers**:
   * `Content-Type: application/json`
   * `Accept: text/event-stream`
@@ -72,7 +80,6 @@ Streams real-time tokens, live NLP analytics, and escalation alerts via Server-S
 #### SSE Events Lifecycle
 
 ##### Event 1: `event: nlp`
-Fires immediately after NLP analysis:
 ```sse
 event: nlp
 data: {
@@ -93,7 +100,7 @@ data: {
 }
 ```
 
-##### Event 2: `event: escalation_alert` (Fires if Frustration >= 70 or Escalation Triggered)
+##### Event 2: `event: escalation_alert` (Emitted when Frustration Score >= 70)
 ```sse
 event: escalation_alert
 data: {
@@ -106,13 +113,13 @@ data: {
 }
 ```
 
-##### Event 3: `event: token` (Emitted sequentially during AI generation)
+##### Event 3: `event: token` (AI LLM Token Stream)
 ```sse
 event: token
 data: I understand your frustration regarding transaction TXN12345.
 ```
 
-##### Event 4: `event: human_agent_active` (Fires instead of LLM tokens if Human Takeover is active)
+##### Event 4: `event: human_agent_active` (Emitted when Human Takeover is Active)
 ```sse
 event: human_agent_active
 data: A live support specialist is currently handling this session. Your message has been delivered to the agent.
@@ -139,38 +146,32 @@ data:
 
 ---
 
-### 3.2. Synchronous Chat Message (`/api/v1/chat`)
+## 4. Live Call & Monitoring Endpoints (Supervisor Dashboard)
 
-* **Method**: `POST`
-* **URL**: `/api/v1/chat`
+### 4.1. Live Supervisor Stats (`GET /api/v1/monitoring/stats` or `GET /api/monitoring/stats`)
+
+* **Method**: `GET`
+* **URL**: `/api/v1/monitoring/stats` (or `/api/monitoring/stats`)
+* **Headers**: `X-Tenant-Id: default`
 
 #### Response Body (HTTP 200 OK)
 ```json
 {
-  "answer": "Your deducted funds for transaction TXN12345 will automatically reverse within 24 to 48 hours.",
-  "conversationId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "sources": [
-    {
-      "title": "UPI FAQs.pdf",
-      "pageNumber": 3,
-      "similarityScore": 0.89,
-      "snippet": "In case of failed UPI transactions..."
-    }
-  ],
-  "nlp": { ... }
+  "totalConversations": 24,
+  "activeAiConversations": 19,
+  "activeHumanConversations": 5,
+  "escalationRecommendedCount": 3,
+  "escalatedCount": 2,
+  "averageFrustrationScore": 42.6
 }
 ```
 
 ---
 
-## 4. Live Call & Monitoring Endpoints (Supervisor Dashboard)
-
-### 4.1. List Monitored Conversations
-
-Retrieves all active and past calls/chats with real-time frustration scores, emotion badges, escalation status, and current mode (`AI` vs `HUMAN`).
+### 4.2. List Monitored Calls (`GET /api/v1/monitoring/conversations` or `GET /api/monitoring/conversations`)
 
 * **Method**: `GET`
-* **URL**: `/api/v1/monitoring/conversations`
+* **URL**: `/api/v1/monitoring/conversations` (or `/api/monitoring/conversations`)
 * **Headers**: `X-Tenant-Id: default`
 
 #### Response Body (HTTP 200 OK)
@@ -182,7 +183,7 @@ Retrieves all active and past calls/chats with real-time frustration scores, emo
     "mode": "AI",
     "assignedAgent": null,
     "escalationStatus": "RECOMMENDED",
-    "escalationReason": "Customer frustration score is 72 (high) on intent 'transaction_failed'. AI recommends switching to a live agent.",
+    "escalationReason": "Customer frustration score is 72 (high)...",
     "frustrationScore": 72,
     "frustrationLevel": "high",
     "sentiment": "negative",
@@ -200,178 +201,58 @@ Retrieves all active and past calls/chats with real-time frustration scores, emo
 
 ---
 
-### 4.2. Get Conversation Monitoring Detail & Transcript
-
-Fetches complete live transcript with all `USER`, `ASSISTANT`, `AGENT`, and `SYSTEM` messages.
+### 4.3. Get Conversation Detail (`GET /api/v1/monitoring/conversations/{id}`)
 
 * **Method**: `GET`
 * **URL**: `/api/v1/monitoring/conversations/{id}`
 * **Headers**: `X-Tenant-Id: default`
 
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "UPI transaction issue",
-  "mode": "AI",
-  "assignedAgent": null,
-  "escalationStatus": "RECOMMENDED",
-  "escalationReason": "Customer frustration score is 72 (high)...",
-  "frustrationScore": 72,
-  "frustrationLevel": "high",
-  "sentiment": "negative",
-  "emotion": "frustrated",
-  "intent": "transaction_failed",
-  "domain": "banking",
-  "callStatus": "ACTIVE",
-  "createdAt": "2026-08-22T10:00:00Z",
-  "updatedAt": "2026-08-22T10:05:00Z",
-  "messages": [
-    {
-      "id": "msg_001",
-      "role": "USER",
-      "content": "My UPI transaction failed but money was deducted.",
-      "tokenCount": 12,
-      "model": null,
-      "latencyMs": null,
-      "createdAt": "2026-08-22T10:00:00Z",
-      "sources": []
-    },
-    {
-      "id": "msg_002",
-      "role": "ASSISTANT",
-      "content": "I understand your concern regarding the failed transaction...",
-      "tokenCount": 28,
-      "model": "gemini",
-      "latencyMs": 850,
-      "createdAt": "2026-08-22T10:00:02Z",
-      "sources": [
-        {
-          "title": "UPI FAQs.pdf",
-          "pageNumber": 3,
-          "similarityScore": 0.89,
-          "snippet": "In case of failed UPI transactions..."
-        }
-      ]
-    }
-  ]
-}
-```
-
 ---
 
-### 4.3. Human Agent Takeover
-
-Transfers the conversation/call from AI to a human supervisor. The AI halts automatic responses, and future customer messages route to the human agent queue.
+### 4.4. Human Agent Takeover (`POST /api/v1/monitoring/conversations/{id}/takeover`)
 
 * **Method**: `POST`
 * **URL**: `/api/v1/monitoring/conversations/{id}/takeover`
-* **Headers**:
-  * `Content-Type: application/json`
-  * `X-Tenant-Id: default`
-
-#### Request Body
-```json
-{
-  "agentName": "Sarah Supervisor",
-  "notes": "Taking over due to high frustration on banking transaction"
-}
-```
-
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "UPI transaction issue",
-  "mode": "HUMAN",
-  "assignedAgent": "Sarah Supervisor",
-  "escalationStatus": "ESCALATED",
-  "callStatus": "ACTIVE",
-  "updatedAt": "2026-08-22T10:06:00Z"
-}
-```
+* **Body**: `{"agentName": "Sarah Supervisor"}`
 
 ---
 
-### 4.4. Send Message as Human Agent
-
-Allows the supervisor to post a direct reply into the conversation as `AGENT`.
+### 4.5. Send Human Agent Message (`POST /api/v1/monitoring/conversations/{id}/message`)
 
 * **Method**: `POST`
 * **URL**: `/api/v1/monitoring/conversations/{id}/message`
-* **Headers**:
-  * `Content-Type: application/json`
-  * `X-Tenant-Id: default`
-
-#### Request Body
-```json
-{
-  "message": "Hello, I am Sarah from customer support. I have initiated an instant status check for TXN12345.",
-  "agentName": "Sarah Supervisor"
-}
-```
-
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "id": "msg_agent_001",
-  "role": "AGENT",
-  "content": "Hello, I am Sarah from customer support. I have initiated an instant status check for TXN12345.",
-  "tokenCount": 22,
-  "model": "human:Sarah Supervisor",
-  "createdAt": "2026-08-22T10:06:15Z",
-  "sources": []
-}
-```
+* **Body**: `{"message": "Hello, I am looking into this now.", "agentName": "Sarah Supervisor"}`
 
 ---
 
-### 4.5. Hand Back Call/Chat to AI
-
-Returns the conversation to AI auto-pilot mode.
+### 4.6. Hand Back Call to AI (`POST /api/v1/monitoring/conversations/{id}/handback`)
 
 * **Method**: `POST`
 * **URL**: `/api/v1/monitoring/conversations/{id}/handback`
-* **Headers**: `X-Tenant-Id: default`
-
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-  "title": "UPI transaction issue",
-  "mode": "AI",
-  "assignedAgent": null,
-  "escalationStatus": "RESOLVED",
-  "callStatus": "ACTIVE",
-  "updatedAt": "2026-08-22T10:08:00Z"
-}
-```
 
 ---
 
-### 4.6. Live Supervisor Stats
+## 5. Knowledge Base Document Ingestion (Monitoring Dashboard)
 
+### 5.1. Upload Document (`POST /api/v1/documents` or `POST /api/documents`)
+* **Method**: `POST`
+* **Body**: `multipart/form-data` with `file` and optional `category`, `title`.
+* **Response (HTTP 202 Accepted)**:
+```json
+{
+  "id": "c3a9f024-5717-4562-b3fc-2c963f66afb2",
+  "status": "PROCESSING"
+}
+```
+
+### 5.2. List Documents (`GET /api/v1/documents` or `GET /api/documents`)
 * **Method**: `GET`
-* **URL**: `/api/v1/monitoring/stats`
-* **Headers**: `X-Tenant-Id: default`
+* **Response (HTTP 200 OK)**: Array of document objects with `id`, `filename`, `category`, `status`, `chunkCount`.
 
-#### Response Body (HTTP 200 OK)
-```json
-{
-  "totalConversations": 24,
-  "activeAiConversations": 19,
-  "activeHumanConversations": 5,
-  "escalationRecommendedCount": 3,
-  "escalatedCount": 2,
-  "averageFrustrationScore": 42.6
-}
-```
+### 5.3. Get Document Status (`GET /api/v1/documents/{id}`)
+* **Method**: `GET`
 
----
-
-## 5. Knowledge Base Management Endpoints
-
-* `POST /api/v1/documents`: Upload file (multipart form data). Returns `202 Accepted` with `{ "id": "...", "status": "PROCESSING" }`.
-* `GET /api/v1/documents`: List all documents.
-* `GET /api/v1/documents/{id}`: Check document ingestion status (`PROCESSING`, `COMPLETED`, `FAILED`).
-* `DELETE /api/v1/documents/{id}`: Remove document & delete vector chunks.
+### 5.4. Delete Document (`DELETE /api/v1/documents/{id}` or `DELETE /api/documents/{id}`)
+* **Method**: `DELETE`
+* **URL**: `/api/v1/documents/{id}` (or `/api/documents/{id}`)
+* **Response (HTTP 204 No Content)**

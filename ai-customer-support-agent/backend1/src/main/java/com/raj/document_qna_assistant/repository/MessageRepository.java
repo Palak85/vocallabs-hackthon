@@ -30,8 +30,8 @@ public class MessageRepository {
             VALUES (:id, :conversationId, :role, :content, :tokenCount, :model, :latencyMs, :createdAt)
             """;
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", msg.getId())
-                .addValue("conversationId", msg.getConversationId())
+                .addValue("id", msg.getId().toString())
+                .addValue("conversationId", msg.getConversationId().toString())
                 .addValue("role", msg.getRole())
                 .addValue("content", msg.getContent())
                 .addValue("tokenCount", msg.getTokenCount())
@@ -42,20 +42,20 @@ public class MessageRepository {
     }
 
     public List<Message> findAllByConversationId(UUID conversationId) {
-        String sql = "SELECT * FROM messages WHERE conversation_id = :conversationId ORDER BY created_at ASC";
-        MapSqlParameterSource params = new MapSqlParameterSource("conversationId", conversationId);
+        String sql = "SELECT * FROM messages WHERE conversation_id::text = :conversationId ORDER BY created_at ASC";
+        MapSqlParameterSource params = new MapSqlParameterSource("conversationId", conversationId.toString());
         return jdbcTemplate.query(sql, params, rowMapper);
     }
 
     public void saveSource(UUID messageId, UUID chunkId, double similarityScore) {
         String sql = """
             INSERT INTO message_sources (id, message_id, chunk_id, similarity_score)
-            VALUES (:id, :messageId, :chunkId, :similarityScore)
+            VALUES (:id::uuid, :messageId::uuid, :chunkId::uuid, :similarityScore)
             """;
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", UUID.randomUUID())
-                .addValue("messageId", messageId)
-                .addValue("chunkId", chunkId)
+                .addValue("id", UUID.randomUUID().toString())
+                .addValue("messageId", messageId.toString())
+                .addValue("chunkId", chunkId.toString())
                 .addValue("similarityScore", similarityScore);
         jdbcTemplate.update(sql, params);
     }
@@ -68,9 +68,9 @@ public class MessageRepository {
                    c.content AS snippet
             FROM message_sources s
             JOIN document_chunks c ON s.chunk_id = c.id
-            WHERE s.message_id = :messageId
+            WHERE s.message_id::text = :messageId
             """;
-        MapSqlParameterSource params = new MapSqlParameterSource("messageId", messageId);
+        MapSqlParameterSource params = new MapSqlParameterSource("messageId", messageId.toString());
         return jdbcTemplate.query(sql, params, (rs, rowNum) -> {
             String title = rs.getString("title");
             Integer page = rs.getObject("page_number") != null ? rs.getInt("page_number") : null;
@@ -84,15 +84,42 @@ public class MessageRepository {
         @Override
         public Message mapRow(ResultSet rs, int rowNum) throws SQLException {
             Message msg = new Message();
-            msg.setId(UUID.fromString(rs.getString("id")));
-            msg.setConversationId(UUID.fromString(rs.getString("conversation_id")));
-            msg.setRole(rs.getString("role"));
-            msg.setContent(rs.getString("content"));
-            msg.setTokenCount(rs.getInt("token_count"));
-            msg.setModel(rs.getString("model"));
-            msg.setLatencyMs(rs.getObject("latency_ms") != null ? rs.getLong("latency_ms") : null);
-            msg.setCreatedAt(rs.getTimestamp("created_at").toInstant());
+            msg.setId(com.raj.document_qna_assistant.util.UuidUtils.parseSafely(getString(rs, "id", null)));
+            msg.setConversationId(com.raj.document_qna_assistant.util.UuidUtils.parseSafely(getString(rs, "conversation_id", null)));
+            msg.setRole(getString(rs, "role", "user"));
+            msg.setContent(getString(rs, "content", ""));
+            
+            try {
+                msg.setTokenCount(rs.getInt("token_count"));
+            } catch (SQLException ignored) {
+                msg.setTokenCount(0);
+            }
+
+            msg.setModel(getString(rs, "model", null));
+
+            try {
+                long lat = rs.getLong("latency_ms");
+                msg.setLatencyMs(rs.wasNull() ? null : lat);
+            } catch (SQLException ignored) {
+                msg.setLatencyMs(null);
+            }
+
+            try {
+                Timestamp created = rs.getTimestamp("created_at");
+                msg.setCreatedAt(created != null ? created.toInstant() : Instant.now());
+            } catch (SQLException ignored) {
+                msg.setCreatedAt(Instant.now());
+            }
             return msg;
+        }
+
+        private String getString(ResultSet rs, String col, String fallback) {
+            try {
+                String val = rs.getString(col);
+                return (val != null && !val.isBlank()) ? val : fallback;
+            } catch (SQLException e) {
+                return fallback;
+            }
         }
     }
 }

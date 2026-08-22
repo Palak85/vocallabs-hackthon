@@ -28,9 +28,55 @@ export default function KnowledgeBasePanel() {
 
   useEffect(() => {
     fetchDocuments();
-    // Poll ingestion status every 4 seconds as specified in frontend guide
-    const interval = setInterval(fetchDocuments, 4000);
-    return () => clearInterval(interval);
+    
+    // Real-time SSE updates for document ingestion & status (Zero Polling)
+    const unsubscribe = api.subscribeToMonitoringEvents((event, data) => {
+      if (event === "document_status" && data) {
+        setDocuments((prevDocs) => {
+          const docId = data.documentId || data.id;
+          const exists = prevDocs.some((d) => d.id === docId);
+          if (exists) {
+            return prevDocs.map((d) =>
+              d.id === docId
+                ? {
+                    ...d,
+                    status: data.status,
+                    chunkCount: data.chunkCount || d.chunkCount,
+                    errorMessage: data.errorMessage || d.errorMessage,
+                  }
+                : d
+            );
+          } else {
+            // New document broadcasted
+            return [
+              {
+                id: docId,
+                title: data.title || "Processing Document",
+                category: data.category || "general",
+                status: data.status || "PROCESSING",
+                chunkCount: data.chunkCount || 0,
+                createdAt: new Date().toISOString(),
+              },
+              ...prevDocs,
+            ];
+          }
+        });
+
+        if (data.status === "READY") {
+          fetchDocuments();
+        }
+      } else if (event === "documents" && data) {
+        if (Array.isArray(data)) {
+          setDocuments(data);
+        } else {
+          fetchDocuments();
+        }
+      }
+    });
+
+    return () => {
+      if (unsubscribe) unsubscribe();
+    };
   }, []);
 
   const handleFileUpload = async (file) => {
@@ -228,12 +274,12 @@ export default function KnowledgeBasePanel() {
                           <span className="capitalize">{doc.category || "General"}</span>
                           <span>•</span>
                           <span>{doc.chunkCount || doc.chunk_count || 0} chunks</span>
-                          {doc.size && (
+                          {(doc.sizeBytes || doc.size) ? (
                             <>
                               <span>•</span>
-                              <span>{(doc.size / 1024).toFixed(1)} KB</span>
+                              <span>{(((doc.sizeBytes || doc.size) || 0) / 1024).toFixed(1)} KB</span>
                             </>
-                          )}
+                          ) : null}
                         </div>
                       </div>
                     </div>

@@ -117,6 +117,69 @@ export default function CustomerChat() {
     };
   }, [isCalling, isMuted, conversationId]);
 
+  const conversationIdRef = useRef(conversationId);
+  useEffect(() => {
+    conversationIdRef.current = conversationId;
+  }, [conversationId]);
+
+  // Real-time SSE listener for Live Agent / Admin messages
+  useEffect(() => {
+    const unsubscribe = api.subscribeToMonitoringEvents((event, data) => {
+      const incomingId = String(data?.id || data?.conversationId || "").toLowerCase();
+
+      // If we don't have conversationId state yet, adopt it from the incoming event
+      if (!conversationIdRef.current && data?.id) {
+        conversationIdRef.current = data.id;
+        setConversationId(data.id);
+      }
+
+      const activeId = String(conversationIdRef.current || "").toLowerCase();
+      if (event === "session_update" && data && (incomingId === activeId || !activeId)) {
+        if (Array.isArray(data.messages)) {
+          setMessages((prev) => {
+            const existingIds = new Set(prev.map((m) => String(m.id).toLowerCase()));
+            const newAgentMessages = [];
+
+            for (const m of data.messages) {
+              const roleUpper = (m.role || "").toUpperCase();
+              const mIdStr = String(m.id).toLowerCase();
+
+              // Only pick up AGENT / HUMAN messages or SYSTEM notices not already in state
+              if ((roleUpper === "AGENT" || roleUpper === "HUMAN" || roleUpper === "SYSTEM") && !existingIds.has(mIdStr)) {
+                // If it's a duplicate handoff system notification, skip it
+                if (roleUpper === "SYSTEM" && prev.some((p) => p.text?.includes("taken over") || p.text?.includes("live support specialist"))) {
+                  continue;
+                }
+
+                newAgentMessages.push({
+                  id: m.id,
+                  role: roleUpper === "SYSTEM" ? "System" : "Live Specialist",
+                  text: m.content,
+                  time: m.createdAt
+                    ? new Date(m.createdAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
+                    : new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
+                });
+              }
+            }
+
+            if (newAgentMessages.length > 0) {
+              const lastAgent = newAgentMessages[newAgentMessages.length - 1];
+              if (lastAgent && lastAgent.role === "Live Specialist") {
+                speakResponse(lastAgent.text);
+              }
+              return [...prev, ...newAgentMessages];
+            }
+            return prev;
+          });
+        }
+      }
+    });
+
+    return () => {
+      if (typeof unsubscribe === "function") unsubscribe();
+    };
+  }, []);
+
   // TTS Output
   const speakResponse = (text) => {
     if (!speakerEnabled || typeof window === "undefined" || !("speechSynthesis" in window)) {
@@ -125,11 +188,11 @@ export default function CustomerChat() {
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
     utterance.rate = 1.0;
-    utterance.pitch = 1.1;
+    utterance.pitch = 1.05;
 
     const voices = window.speechSynthesis.getVoices();
     const friendlyVoice = voices.find(
-      (v) => v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Natural"))
+      (v) => v.lang.startsWith("en") && (v.name.includes("Google") || v.name.includes("Samantha") || v.name.includes("Natural") || v.name.includes("Female"))
     );
     if (friendlyVoice) utterance.voice = friendlyVoice;
 
@@ -150,7 +213,6 @@ export default function CustomerChat() {
         setIsListening(true);
       } catch (e) {}
     }
-    // Greet user
     speakResponse("Call connected. How can I help you today?");
   };
 
@@ -191,7 +253,7 @@ export default function CustomerChat() {
     e.target.value = "";
   };
 
-  // Main message dispatch connected to real backend
+  // Real-time SSE Stream message dispatch connected to backend1 & NLP service
   const handleSend = async (textToSend = inputText, role = "You") => {
     const cleanText = (textToSend || "").trim();
     if (!cleanText && !selectedFile) return;
@@ -218,7 +280,7 @@ export default function CustomerChat() {
     setIsLoading(true);
 
     try {
-      // 1. Upload document if present
+      // 1. Upload document if attached
       if (currentFile) {
         setMessages((prev) => [
           ...prev,
@@ -232,38 +294,105 @@ export default function CustomerChat() {
         setMessages((prev) => prev.filter((m) => !m.id.startsWith("sys-")));
       }
 
-      // 2. Query LLM / RAG Backend
+      // 2. Stream AI tokens & NLP events from backend1
       if (cleanText) {
-        const response = await api.sendMessage(cleanText, conversationId);
+        const aiMsgId = "ai-" + Date.now();
+        let fullAnswer = "";
+        let nlpPayload = null;
+        let sourcesList = [];
 
-        if (response.conversationId) {
-          setConversationId(response.conversationId);
-        }
+        // Initialize placeholder AI message in chat
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: aiMsgId,
+            role: "AI Assistant",
+            text: "",
+            time: timeString,
+            sources: [],
+            nlp: null,
+          },
+        ]);
+
+        await api.streamMessage(cleanText, conversationId, "cust_web_user", (event, data) => {
+          if (event === "nlp") {
+            try {
+              nlpPayload = JSON.parse(data);
+              if (nlpPayload?.conversation_id) {
+                setConversationId(nlpPayload.conversation_id);
+                conversationIdRef.current = nlpPayload.conversation_id;
+              }
+              setMessages((prev) =>
+                prev.map((m) => (m.id === aiMsgId ? { ...m, nlp: nlpPayload } : m))
+              );
+            } catch (e) {}
+          } else if (event === "token") {
+            fullAnswer += data;
+            setMessages((prev) =>
+              prev.map((m) => (m.id === aiMsgId ? { ...m, text: fullAnswer } : m))
+            );
+          } else if (event === "human_agent_active") {
+            // Check if human handoff notice was already displayed previously
+            setMessages((prev) => {
+              const alreadyNotified = prev.some(
+                (m) => m.id !== aiMsgId && m.text?.includes("live support specialist is currently handling")
+              );
+              if (alreadyNotified) {
+                // Remove the redundant placeholder bubble
+                return prev.filter((m) => m.id !== aiMsgId);
+              }
+              // Show system notice once
+              return prev.map((m) =>
+                m.id === aiMsgId
+                  ? { ...m, role: "System", text: data }
+                  : m
+              );
+            });
+          } else if (event === "sources") {
+            try {
+              sourcesList = JSON.parse(data);
+              setMessages((prev) =>
+                prev.map((m) =>
+                  m.id === aiMsgId ? { ...m, sources: sourcesList } : m
+                )
+              );
+            } catch (e) {}
+          } else if (event === "done") {
+            if (activeMode === "voice" || speakerEnabled) {
+              if (fullAnswer) speakResponse(fullAnswer);
+            }
+          }
+        });
+      }
+    } catch (err) {
+      console.warn("SSE Stream failed, falling back to REST message dispatch...", err);
+      try {
+        const resp = await api.sendMessage(cleanText, conversationId);
+        if (resp.conversationId) setConversationId(resp.conversationId);
 
         const aiResponse = {
-          id: response.messageId || "ai-" + Date.now(),
-          role: response.source === "HUMAN_AGENT" ? "Live Specialist" : "AI Assistant",
-          text: response.answer || "I have received your inquiry.",
+          id: "ai-" + Date.now(),
+          role: resp.source === "HUMAN_AGENT" ? "Live Specialist" : "AI Assistant",
+          text: resp.answer || "I have received your inquiry.",
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
-          intent: response.intent,
-          emotion: response.emotion,
+          sources: resp.sources || [],
+          nlp: resp.nlp,
         };
 
         setMessages((prev) => [...prev, aiResponse]);
-
         if (activeMode === "voice" || speakerEnabled) {
           speakResponse(aiResponse.text);
         }
+      } catch (fallbackErr) {
+        setMessages((prev) => [
+          ...prev,
+          {
+            id: "err-" + Date.now(),
+            role: "System",
+            text: `⚠️ Network Error: ${fallbackErr.message || "Failed to reach backend."}`,
+          },
+        ]);
       }
-    } catch (err) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: "err-" + Date.now(),
-          role: "System",
-          text: `⚠️ Network Error: ${err.message || "Failed to reach backend."}`,
-        },
-      ]);
     } finally {
       setIsLoading(false);
     }
@@ -459,7 +588,43 @@ export default function CustomerChat() {
                             Live Human Specialist
                           </div>
                         )}
-                        {msg.text}
+                        {msg.text || (isLoading && !isUser ? "..." : "")}
+
+                        {/* NLP Diagnostic Chips if available */}
+                        {msg.nlp?.nlp && (
+                          <div className="flex flex-wrap gap-1.5 mt-2 pt-2 border-t border-slate-300/40 text-[10px]">
+                            {msg.nlp.nlp.domain?.label && (
+                              <span className="bg-white/80 px-2 py-0.5 rounded-md text-slate-700 font-semibold">
+                                🏷️ {msg.nlp.nlp.domain.label}
+                              </span>
+                            )}
+                            {msg.nlp.nlp.intent?.label && (
+                              <span className="bg-white/80 px-2 py-0.5 rounded-md text-[#006a6a] font-semibold">
+                                🎯 {msg.nlp.nlp.intent.label}
+                              </span>
+                            )}
+                            {msg.nlp.nlp.emotion?.label && (
+                              <span className="bg-white/80 px-2 py-0.5 rounded-md text-slate-700 font-semibold capitalize">
+                                😊 {msg.nlp.nlp.emotion.label}
+                              </span>
+                            )}
+                          </div>
+                        )}
+
+                        {/* Citation Sources */}
+                        {msg.sources && msg.sources.length > 0 && (
+                          <div className="mt-2 pt-2 border-t border-slate-300/50 flex flex-wrap gap-1">
+                            {msg.sources.map((src, idx) => (
+                              <span
+                                key={idx}
+                                className="bg-white/80 text-[10px] text-slate-700 px-2 py-0.5 rounded-md border border-slate-300/50 flex items-center gap-1"
+                              >
+                                <span className="material-symbols-outlined text-[12px]">menu_book</span>
+                                {src.title} {src.pageNumber ? `(p.${src.pageNumber})` : ""}
+                              </span>
+                            ))}
+                          </div>
+                        )}
                       </div>
                       <span className={`text-[10px] text-slate-400 ${isUser ? "text-right mr-1" : "ml-1"}`}>
                         {msg.time} • {msg.role || (isUser ? "You" : "AI")}
@@ -684,8 +849,15 @@ export default function CustomerChat() {
                         : "bg-emerald-50 border-l-4 border-emerald-500 text-slate-800"
                     }`}
                   >
-                    <div className="font-bold text-[11px] mb-0.5 text-slate-600">
-                      [{msg.role || "AI"}] • {msg.time}
+                    <div className="font-bold text-[11px] mb-0.5 text-slate-600 flex items-center justify-between">
+                      <span>[{msg.role || "AI"}] • {msg.time}</span>
+                      {msg.nlp?.nlp?.frustration?.score != null && (
+                        <span className={`text-[10px] px-1.5 py-0.5 rounded font-bold ${
+                          msg.nlp.nlp.frustration.score >= 70 ? "bg-red-100 text-red-700" : "bg-slate-200 text-slate-700"
+                        }`}>
+                          Frustration: {msg.nlp.nlp.frustration.score}%
+                        </span>
+                      )}
                     </div>
                     {msg.text}
                   </div>
@@ -747,13 +919,13 @@ export default function CustomerChat() {
                     <div
                       key={i}
                       className={`p-3 rounded-xl text-xs ${
-                        m.source === "USER"
+                        m.role === "USER" || m.source === "USER"
                           ? "bg-slate-100 text-slate-800"
                           : "bg-[#eef5f4] text-[#004f50] border border-[#b8ecec]"
                       }`}
                     >
                       <span className="font-bold text-[10px] block mb-1">
-                        [{m.source === "USER" ? "You" : m.source === "HUMAN_AGENT" ? "Live Agent" : "AI"}]
+                        [{m.role === "USER" || m.source === "USER" ? "You" : m.role === "AGENT" || m.source === "HUMAN_AGENT" ? "Live Agent" : "AI"}]
                       </span>
                       {m.text || m.content}
                     </div>

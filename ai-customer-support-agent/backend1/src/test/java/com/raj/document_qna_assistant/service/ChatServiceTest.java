@@ -65,6 +65,9 @@ class ChatServiceTest {
     @Mock
     private NlpService nlpService;
 
+    @Mock
+    private org.springframework.context.ApplicationEventPublisher eventPublisher;
+
     private ObjectMapper objectMapper;
     private ChatService chatService;
 
@@ -79,7 +82,8 @@ class ChatServiceTest {
                 messageRepository,
                 objectMapper,
                 transactionTemplate,
-                nlpService
+                nlpService,
+                eventPublisher
         );
     }
 

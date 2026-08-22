@@ -10,7 +10,8 @@ import org.springframework.util.StringUtils;
 @Component
 public class TenantInterceptor implements HandlerInterceptor {
 
-    private static final String TENANT_HEADER = "X-Tenant-Id";
+    public static final String TENANT_HEADER = "X-Tenant-Id";
+    public static final String DEFAULT_TENANT = "default";
     private final TenantRepository tenantRepository;
 
     public TenantInterceptor(TenantRepository tenantRepository) {
@@ -19,23 +20,24 @@ public class TenantInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // Bypass actuator endpoints
+        // Bypass actuator endpoints and pre-flight CORS requests
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/actuator")) {
+        if (requestURI.startsWith("/actuator") || "OPTIONS".equalsIgnoreCase(request.getMethod())) {
             return true;
         }
 
         String tenantId = request.getHeader(TENANT_HEADER);
         if (!StringUtils.hasText(tenantId)) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Missing required request header: X-Tenant-Id\"}");
-            return false;
+            tenantId = DEFAULT_TENANT;
         }
 
-        // Auto-register tenant if it doesn't exist yet
-        if (!tenantRepository.existsById(tenantId)) {
-            tenantRepository.save(tenantId, "Tenant " + tenantId);
+        // Auto-register tenant in repository if it doesn't exist yet
+        try {
+            if (!tenantRepository.existsById(tenantId)) {
+                tenantRepository.save(tenantId, "Tenant " + tenantId);
+            }
+        } catch (Exception ignored) {
+            // Safe fallback if database is bootstrapping
         }
 
         TenantContext.setCurrentTenant(tenantId);

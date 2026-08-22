@@ -53,7 +53,7 @@ public class ConversationRepository {
                 updated_at = :updatedAt
             """;
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", conv.getId())
+                .addValue("id", conv.getId().toString())
                 .addValue("tenantId", conv.getTenantId())
                 .addValue("title", conv.getTitle())
                 .addValue("mode", conv.getMode())
@@ -73,10 +73,20 @@ public class ConversationRepository {
     }
 
     public Optional<Conversation> findByIdAndTenantId(UUID id, String tenantId) {
-        String sql = "SELECT * FROM conversations WHERE id = :id AND tenant_id = :tenantId";
+        String sql = "SELECT * FROM conversations WHERE id::text = :id AND tenant_id = :tenantId";
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", id)
+                .addValue("id", id.toString())
                 .addValue("tenantId", tenantId);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(sql, params, rowMapper));
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<Conversation> findById(UUID id) {
+        String sql = "SELECT * FROM conversations WHERE id::text = :id";
+        MapSqlParameterSource params = new MapSqlParameterSource("id", id.toString());
         try {
             return Optional.ofNullable(jdbcTemplate.queryForObject(sql, params, rowMapper));
         } catch (EmptyResultDataAccessException e) {
@@ -97,10 +107,10 @@ public class ConversationRepository {
                 assigned_agent = :assignedAgent,
                 escalation_status = :escalationStatus,
                 updated_at = :updatedAt
-            WHERE id = :id AND tenant_id = :tenantId
+            WHERE id::text = :id AND tenant_id = :tenantId
             """;
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", convId)
+                .addValue("id", convId.toString())
                 .addValue("tenantId", tenantId)
                 .addValue("mode", mode)
                 .addValue("assignedAgent", assignedAgent)
@@ -123,10 +133,10 @@ public class ConversationRepository {
                 escalation_status = :status,
                 escalation_reason = :reason,
                 updated_at = :updatedAt
-            WHERE id = :id AND tenant_id = :tenantId
+            WHERE id::text = :id AND tenant_id = :tenantId
             """;
         MapSqlParameterSource params = new MapSqlParameterSource()
-                .addValue("id", convId)
+                .addValue("id", convId.toString())
                 .addValue("tenantId", tenantId)
                 .addValue("score", frustrationScore)
                 .addValue("level", frustrationLevel)
@@ -177,48 +187,50 @@ public class ConversationRepository {
         @Override
         public Conversation mapRow(ResultSet rs, int rowNum) throws SQLException {
             Conversation conv = new Conversation();
-            conv.setId(UUID.fromString(rs.getString("id")));
-            conv.setTenantId(rs.getString("tenant_id"));
-            conv.setTitle(rs.getString("title"));
+            conv.setId(com.raj.document_qna_assistant.util.UuidUtils.parseSafely(getString(rs, "id", null)));
+            conv.setTenantId(getString(rs, "tenant_id", "default"));
+            conv.setTitle(getString(rs, "title", "Support Session"));
+            conv.setMode(getString(rs, "mode", "AI"));
+            conv.setAssignedAgent(getString(rs, "assigned_agent", null));
+            conv.setEscalationStatus(getString(rs, "escalation_status", "NONE"));
+            conv.setEscalationReason(getString(rs, "escalation_reason", null));
             
-            // Optional monitoring columns (safely check with column name)
-            try {
-                conv.setMode(rs.getString("mode"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setAssignedAgent(rs.getString("assigned_agent"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setEscalationStatus(rs.getString("escalation_status"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setEscalationReason(rs.getString("escalation_reason"));
-            } catch (SQLException ignored) {}
             try {
                 conv.setLastFrustrationScore(rs.getInt("last_frustration_score"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setLastFrustrationLevel(rs.getString("last_frustration_level"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setLastSentiment(rs.getString("last_sentiment"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setLastEmotion(rs.getString("last_emotion"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setLastIntent(rs.getString("last_intent"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setLastDomain(rs.getString("last_domain"));
-            } catch (SQLException ignored) {}
-            try {
-                conv.setCallStatus(rs.getString("call_status"));
-            } catch (SQLException ignored) {}
+            } catch (SQLException ignored) {
+                conv.setLastFrustrationScore(0);
+            }
+            
+            conv.setLastFrustrationLevel(getString(rs, "last_frustration_level", "low"));
+            conv.setLastSentiment(getString(rs, "last_sentiment", "neutral"));
+            conv.setLastEmotion(getString(rs, "last_emotion", "neutral"));
+            conv.setLastIntent(getString(rs, "last_intent", null));
+            conv.setLastDomain(getString(rs, "last_domain", null));
+            conv.setCallStatus(getString(rs, "call_status", "ACTIVE"));
 
-            conv.setCreatedAt(rs.getTimestamp("created_at").toInstant());
-            conv.setUpdatedAt(rs.getTimestamp("updated_at").toInstant());
+            Timestamp created = getTimestamp(rs, "created_at");
+            conv.setCreatedAt(created != null ? created.toInstant() : Instant.now());
+
+            Timestamp updated = getTimestamp(rs, "updated_at");
+            conv.setUpdatedAt(updated != null ? updated.toInstant() : Instant.now());
             return conv;
+        }
+
+        private String getString(ResultSet rs, String col, String fallback) {
+            try {
+                String val = rs.getString(col);
+                return (val != null && !val.isBlank()) ? val : fallback;
+            } catch (SQLException e) {
+                return fallback;
+            }
+        }
+
+        private Timestamp getTimestamp(ResultSet rs, String col) {
+            try {
+                return rs.getTimestamp(col);
+            } catch (SQLException e) {
+                return null;
+            }
         }
     }
 }
