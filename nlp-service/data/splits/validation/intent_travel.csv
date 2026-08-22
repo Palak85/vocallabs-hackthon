@@ -1,8 +1,5 @@
 text,label
-Boarding pass download nahi ho raha error aa raha.,ticket_problem
-General question regarding airport terminal departure gates.,general_query
-Airline cancelled my flight without prior notice.,flight_cancellation
-When will hotel cancellation refund reach my account?,refund
-Hotel me check-in nahi de rahe booking mil nahi rahi.,hotel_problem
-Luggage airport par kho gaya hai bag nahi mila.,baggage_problem
-"My flight 6E-412 was cancelled, need full refund.",flight_cancellation
+I want to book a one-way flight from Delhi to Mumbai.,booking
+My flight was cancelled and I need a refund.,refund
+Luggage bag did not arrive at destination airport.,baggage
+Refund status for train ticket cancellation PNR.,refund

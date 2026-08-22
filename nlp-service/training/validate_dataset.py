@@ -50,8 +50,10 @@ def validate_and_split():
         class_dist = df["label"].value_counts().to_dict()
         min_class_samples = min(class_dist.values()) if class_dist else 0
 
-        # Stratified Split 70% train, 15% val, 15% test
-        stratify_1 = df["label"] if min_class_samples >= 2 else None
+        # Check if stratified split is feasible
+        num_classes = len(class_dist)
+        can_stratify_1 = (min_class_samples >= 2) and (int(len(df) * 0.30) >= num_classes)
+        stratify_1 = df["label"] if can_stratify_1 else None
 
         train_df, test_val_df = train_test_split(
             df,
@@ -62,7 +64,9 @@ def validate_and_split():
 
         test_val_class_dist = test_val_df["label"].value_counts().to_dict()
         min_test_val_samples = min(test_val_class_dist.values()) if test_val_class_dist else 0
-        stratify_2 = test_val_df["label"] if min_test_val_samples >= 2 else None
+        num_test_val_classes = len(test_val_class_dist)
+        can_stratify_2 = (min_test_val_samples >= 2) and (int(len(test_val_df) * 0.50) >= num_test_val_classes)
+        stratify_2 = test_val_df["label"] if can_stratify_2 else None
 
         val_df, test_df = train_test_split(
             test_val_df,

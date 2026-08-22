@@ -1,33 +1,25 @@
 text,label
-Complaint regarding 2 hour waiting time despite appointment.,complaint
-Discrepancy in ICU bed charges and medication billing.,billing_problem
-Can I substitute prescribed medicine with generic brand?,prescription_query
-Vaccination schedule and age limits for toddlers.,general_query
-Cancel dental checkup appointment and refund booking fee.,appointment_cancellation
-Ambulance service charges and stretcher availability.,other
-Dawai kitni baar leni hai prescription me clear nahi hai.,prescription_query
-Connect me to hospital helpdesk staff immediately.,human_support_request
-TPA desk pre-authorization query for scheduled surgery.,insurance_query
-Schedule a consultation with orthopedic doctor tomorrow.,appointment
-When will my lipid profile blood test report be ready?,report_query
-Hospital bill me extra charge lagaya gaya hai dispute karna hai.,billing_problem
-Doctor was extremely dismissive and rude during consultation.,complaint
-What are visiting hours for ICU admitted patients?,general_query
-Home nurse care and medical equipment rental inquiry.,other
-Filthy hospital hygiene condition and uncleaned beds.,complaint
-Find senior cardiologist doctor profile and fees.,doctor_information
-I need to book a doctor appointment.,appointment
-Unable to download MRI scan radiologist report from app.,report_query
-Is cashless hospitalization available with Star Health insurance?,insurance_query
-Doctor ki availability aur OPD timing kya hai?,doctor_information
-Book OPD consultation slot with pediatrician.,appointment
-Is fasting required before full body blood checkup?,general_query
-How many times a day should I take this antibiotic tablet?,prescription_query
-Overcharged on pharmacy medicine bill at discharge.,billing_problem
-Hospital support executive se connect karein.,human_support_request
-"Unable to attend doctor appointment, please cancel slot.",appointment_cancellation
-I want to speak with clinic support human representative.,human_support_request
-Please cancel my doctor consultation appointment for tonight.,appointment_cancellation
-I need to book an appointment with a doctor.,appointment
-Kuch alag healthcare assistance query hai.,other
-Lab test report kab tak download ho payegi?,report_query
+Is cashless hospitalization available with Star Health insurance?,insurance_issue
+Mere family member ki condition suddenly serious ho gayi hai. Hume urgently hospital jaana hai aur emergency appointment pending hai.,emergency_appointment
+Urgent emergency doctor appointment required for serious patient.,emergency_appointment
+Schedule a consultation with orthopedic doctor tomorrow.,appointment_booking
+Query regarding dosage instructions on my digital prescription.,prescription
+Emergency appointment slot booking pending payment deducted.,emergency_appointment
+Cancel my appointment with Dr Sharma tomorrow.,appointment_cancellation
+Bhai mere family member ki condition suddenly serious ho gayi hai aur humein urgently hospital le jaana hai emergency appointment pending.,emergency_appointment
+Family member ki condition serious hai aur emergency appointment pending hai.,emergency_appointment
+Hospital admission room billing discrepancy and itemized bill.,billing_issue
+Hospital me emergency appointment slot book karni hai jaldi.,emergency_appointment
+Unable to download MRI scan radiologist report from app.,test_report
+What is the qualification and OPD timing of Dr. Sharma?,doctor_availability
+Lab test report abhi tak download nahi ho raha portal se.,test_report
+I need to cancel my appointment with Dr Sharma tomorrow.,appointment_cancellation
+Doctor appointment reschedule karna hai kal ke liye.,appointment_rescheduling
+Book OPD consultation slot with pediatrician.,appointment_booking
+Doctor ki availability aur OPD timing kya hai?,doctor_availability
+Emergency medical assistance needed for heart attack symptoms immediately.,emergency_medical_assistance
+"Doctor cancelled my appointment, how do I reschedule?",appointment_rescheduling
+Vaccination schedule and general hospital clinic inquiry.,other
+Patient unconscious call ambulance and emergency medical team now.,emergency_medical_assistance
+Doctor appointment cancel karke refund process karein.,appointment_cancellation
+Dawai kitni baar leni hai prescription me clear nahi hai.,prescription

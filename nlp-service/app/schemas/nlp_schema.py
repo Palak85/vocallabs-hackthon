@@ -1,6 +1,6 @@
 """
 Pydantic Schemas for Request & Response validation.
-Strictly adheres to integration contracts without human escalation decision fields.
+Adheres strictly to the NLP intelligence layer specifications.
 """
 
 from typing import List, Optional, Any, Dict
@@ -24,11 +24,13 @@ class LabelConfidence(BaseModel):
 class FrustrationOutput(BaseModel):
     score: int
     level: str
+    trend: Optional[str] = "unknown"
 
 
 class UrgencyOutput(BaseModel):
     level: str
     confidence: float
+    trend: Optional[str] = "unknown"
 
 
 class EntityOutput(BaseModel):
@@ -46,6 +48,11 @@ class NLPOutput(BaseModel):
     frustration: FrustrationOutput
     urgency: UrgencyOutput
     entities: List[EntityOutput]
+    nlp_confidence: int = Field(85, description="Composite NLP confidence score 0-100")
+    risk_signals: List[str] = Field(default_factory=list, description="Extracted financial or medical risk indicators")
+    clarification_required: bool = Field(False, description="True if ambiguity or low confidence warrants clarification")
+    escalation_signals: List[str] = Field(default_factory=list, description="Escalation indicators forwarded to Decision Engine")
+    recommended_status: str = Field("IN_PROGRESS", description="Operational recommended case status")
 
 
 class ConversationAnalysisOutput(BaseModel):

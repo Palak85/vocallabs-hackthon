@@ -1,47 +1,36 @@
 text,label
-I need to book an appointment with a doctor.,appointment
-I need to book a doctor appointment.,appointment
-I want to book an appointment with a dermatologist.,appointment
-Schedule a consultation with orthopedic doctor tomorrow.,appointment
-Book OPD consultation slot with pediatrician.,appointment
-Doctor ka appointment book karna hai kal ke liye.,appointment
+Mere family member ki condition suddenly serious ho gayi hai. Hume urgently hospital jaana hai aur emergency appointment pending hai.,emergency_appointment
+Bhai mere family member ki condition suddenly serious ho gayi hai aur humein urgently hospital le jaana hai emergency appointment pending.,emergency_appointment
+Family member ki condition serious hai aur emergency appointment pending hai.,emergency_appointment
+Hospital me emergency appointment slot book karni hai jaldi.,emergency_appointment
+Urgent emergency doctor appointment required for serious patient.,emergency_appointment
+Emergency appointment slot booking pending payment deducted.,emergency_appointment
+Emergency medical assistance needed for heart attack symptoms immediately.,emergency_medical_assistance
+Patient unconscious call ambulance and emergency medical team now.,emergency_medical_assistance
+Severe bleeding and critical condition need immediate emergency medical help.,emergency_medical_assistance
+Hospital emergency ambulance contact number request urgently.,emergency_medical_assistance
+I need to cancel my appointment with Dr Sharma tomorrow.,appointment_cancellation
+Cancel my appointment with Dr Sharma tomorrow.,appointment_cancellation
+i have emergency to go out so cancel me appointment with dr harsh,appointment_cancellation
 Please cancel my doctor consultation appointment for tonight.,appointment_cancellation
-Cancel dental checkup appointment and refund booking fee.,appointment_cancellation
-"Unable to attend doctor appointment, please cancel slot.",appointment_cancellation
 Doctor appointment cancel karke refund process karein.,appointment_cancellation
-How many times a day should I take this antibiotic tablet?,prescription_query
-Doctor forgot to mention syrup dosage on prescription.,prescription_query
-Can I substitute prescribed medicine with generic brand?,prescription_query
-Dawai kitni baar leni hai prescription me clear nahi hai.,prescription_query
-Hospital admission bill includes unavailed nursing charges.,billing_problem
-Discrepancy in ICU bed charges and medication billing.,billing_problem
-Overcharged on pharmacy medicine bill at discharge.,billing_problem
-Hospital bill me extra charge lagaya gaya hai dispute karna hai.,billing_problem
-When will my lipid profile blood test report be ready?,report_query
-Unable to download MRI scan radiologist report from app.,report_query
-Blood test report status pending for 24 hours.,report_query
-Lab test report kab tak download ho payegi?,report_query
-Is cashless hospitalization available with Star Health insurance?,insurance_query
-TPA desk pre-authorization query for scheduled surgery.,insurance_query
-Mediclaim approval status at hospital insurance desk.,insurance_query
-Hospital me cashless mediclaim facility hai ya nahi?,insurance_query
-What is the qualification and OPD timing of Dr. Sharma?,doctor_information
-Which specialist doctor is available in evening OPD?,doctor_information
-Find senior cardiologist doctor profile and fees.,doctor_information
-Doctor ki availability aur OPD timing kya hai?,doctor_information
-Complaint regarding 2 hour waiting time despite appointment.,complaint
-Doctor was extremely dismissive and rude during consultation.,complaint
-Filthy hospital hygiene condition and uncleaned beds.,complaint
-Hospital staff ke bad behavior par complaint karni hai.,complaint
-Transfer this chat to hospital emergency desk or human agent.,human_support_request
-I want to speak with clinic support human representative.,human_support_request
-Connect me to hospital helpdesk staff immediately.,human_support_request
-Hospital support executive se connect karein.,human_support_request
-What are visiting hours for ICU admitted patients?,general_query
-Is fasting required before full body blood checkup?,general_query
-Vaccination schedule and age limits for toddlers.,general_query
-General question about diagnostic lab operating hours.,general_query
-Home nurse care and medical equipment rental inquiry.,other
-Other clinical or hospital related inquiries.,other
-Ambulance service charges and stretcher availability.,other
-Kuch alag healthcare assistance query hai.,other
+I need to book a doctor appointment with cardiologist.,appointment_booking
+I need to book an appointment with a doctor.,appointment_booking
+Schedule a consultation with orthopedic doctor tomorrow.,appointment_booking
+Book OPD consultation slot with pediatrician.,appointment_booking
+Doctor ka appointment book karna hai kal ke liye.,appointment_booking
+"Doctor cancelled my appointment, how do I reschedule?",appointment_rescheduling
+Reschedule my clinic consultation to next Monday afternoon.,appointment_rescheduling
+Doctor appointment reschedule karna hai kal ke liye.,appointment_rescheduling
+What is the qualification and OPD timing of Dr. Sharma?,doctor_availability
+Which specialist doctor is available in evening OPD today?,doctor_availability
+Doctor ki availability aur OPD timing kya hai?,doctor_availability
+How many times a day should I take this antibiotic tablet?,prescription
+Query regarding dosage instructions on my digital prescription.,prescription
+Dawai kitni baar leni hai prescription me clear nahi hai.,prescription
+When will my blood test lab report be available online?,test_report
+Unable to download MRI scan radiologist report from app.,test_report
+Lab test report abhi tak download nahi ho raha portal se.,test_report
+Hospital admission room billing discrepancy and itemized bill.,billing_issue
+Is cashless hospitalization available with Star Health insurance?,insurance_issue
+Vaccination schedule and general hospital clinic inquiry.,other

@@ -1,59 +1,30 @@
 text,label
-My recharge payment succeeded but plan not activated.,recharge_problem
-My recharge succeeded but balance is missing.,recharge_problem
-Recharge failed but money deducted from bank.,recharge_problem
-Recharge done on wrong mobile number by mistake.,recharge_problem
-Recharge ho gaya par pack activate nahi hua.,recharge_problem
-I recharged for 365 days pack but validity not updated.,recharge_not_updated
-Plan validity date still shows yesterday after recharge.,recharge_not_updated
-Prepaid balance and validity not refreshed after top-up.,recharge_not_updated
+I recharged my number but the recharge has not been updated.,recharge_not_updated
+"Bhai maine ₹599 ka recharge kiya tha. Payment successful hai aur bank se paise deduct ho gaye, lekin telecom account mein recharge update nahi hua. Purana plan hi show ho raha hai.",recharge_not_updated
+₹599 recharge successful hai but account me new plan update nahi hua.,recharge_not_updated
+I recharged for 365 days pack but validity not updated on SIM.,recharge_not_updated
+Plan validity date still shows yesterday after successful recharge.,recharge_not_updated
 Recharge validity portal par update nahi hui.,recharge_not_updated
-No network signal on my SIM card since morning.,network_problem
-No network signal or emergency calls only showing.,network_problem
-Signal bar dropping constantly inside my home.,network_problem
-Network coverage issue and frequent call drop in area.,network_problem
-SIM card me network signal bilkul nahi aa raha.,network_problem
-My mobile data is not working.,data_problem
-My mobile data isn't working.,data_problem
-My recharge succeeded but mobile data is not working.,data_problem
-Mobile 4G/5G data is not opening any website.,data_problem
-Data speeds are extremely slow under 100 kbps.,data_problem
-Unlimited 5G pack active but throttling to 2G speed.,data_problem
-Internet data bilkul nahi chal raha speed slow hai.,data_problem
-Outgoing and incoming calls are disconnecting automatically.,call_problem
-"Frequent call drops in my area, please fix network tower.",call_problem
-Unable to make voice calls to landline numbers.,call_problem
-Call mute ho jati hai beech me call issue.,call_problem
-Calling me problem aa rahi hai voice break ho rahi hai.,call_problem
-Incoming SMS for OTP is not arriving on my number.,sms_problem
-Outgoing SMS failing with error code 38.,sms_problem
-Unable to send SMS for UPI registration and netbanking.,sms_problem
-Bank OTP ka SMS nahi aa raha phone par.,sms_problem
-What are the best international roaming packs for Dubai?,plan_information
-Details of family postpaid plan with shared data.,plan_information
-Prepaid tariff plan comparison with OTT subscriptions.,plan_information
-Best postpaid plans ki details batayein.,plan_information
-I want to downgrade my postpaid plan to lower rental.,plan_change
-How to switch from postpaid connection to prepaid?,plan_change
-Change active billing plan to annual recharge pack.,plan_change
-Postpaid plan change karke dusra plan lena hai.,plan_change
-Postpaid bill has extra unauthorized VAS service charges.,billing_problem
-Wrong late fee added to my monthly telecom bill.,billing_problem
-Disputing extra data usage billing on postpaid number.,billing_problem
-Bill me galat charges add ho gaye hain dispute karna hai.,billing_problem
-Complaint regarding non-resolution of network ticket.,complaint
-"Service is terrible, network has been down for 3 days.",complaint
-Filing complaint against broadband installation delay.,complaint
-Telecom service ke khilaaf complaint register karni hai.,complaint
-Connect this chat to a human telecom agent.,human_support_request
-I want to speak with customer care supervisor.,human_support_request
-Transfer me to a live telecom operator executive.,human_support_request
-Customer care representative se connect karein.,human_support_request
-How to port my mobile number to another operator?,general_query
-How to activate free caller tune on my number?,general_query
-Procedure to convert physical SIM to eSIM.,general_query
-General question about DND activation process.,general_query
-Query regarding duplicate SIM replacement procedure.,other
-Other mobile network inquiries.,other
-Broadband router password reset instructions.,other
-Kuch alag telecom query hai connection ke baare me.,other
+Recharge failed but money deducted from bank account.,recharge_failed
+Payment failed during mobile recharge transaction.,recharge_failed
+bhai mera recharge nahi hua paisa cut gaya,recharge_failed
+Recharge transaction is showing pending status since morning.,recharge_pending
+Mobile recharge processing state me atka hua hai.,recharge_pending
+Failed recharge refund not credited back to bank account.,recharge_refund_not_received
+Where is my refund for the cancelled mobile recharge?,recharge_refund_not_received
+Recharge done on wrong mobile number by mistake.,wrong_recharge
+Galat number par recharge ho gaya reverse kaise karein?,wrong_recharge
+I recharged for 299 pack but unlimited 5G is inactive.,plan_activation_issue
+Recharge ho gaya par pack activate nahi hua.,plan_activation_issue
+My mobile data is not working.,data_not_working
+My mobile data isn't working.,data_not_working
+My recharge succeeded but mobile data is not working.,data_not_working
+Internet data bilkul nahi chal raha speed slow hai.,data_not_working
+Outgoing and incoming calls are disconnecting automatically.,call_issue
+"SMS service not working, unable to send bank verification SMS.",sms_issue
+No network signal on my SIM card since morning.,network_issue
+"Frequent call drops in my area, please fix network tower.",network_issue
+eSIM activation QR code expired before scanning.,sim_issue
+How to port my mobile number to another telecom provider?,number_porting
+Postpaid bill amount is showing extra hidden roaming charges.,billing_issue
+What are the best prepaid international roaming plans?,other

@@ -1,18 +1,17 @@
 """
-Unified Model Training Pipeline.
-Trains TF-IDF + Calibrated Logistic Regression classifiers on the validated stratified splits:
-1. Language Model (en, hi, hinglish)
-2. Domain Detection Model (7 domains)
-3. 7 Hierarchical Intent Models (one per domain)
-4. Sentiment Analysis Model (positive, neutral, negative)
-5. Emotion Detection Model (happy, neutral, concerned, sad, frustrated, angry)
-6. Urgency Detection Model (low, medium, high, critical)
+Unified Model Training Pipeline with Calibrated Confidence Estimation.
+Trains TF-IDF + Calibrated Classifiers across:
+1. Language Model
+2. Domain Detection Model
+3. 7 Hierarchical Intent Models
+4. Sentiment Analysis Model
+5. Emotion Detection Model
+6. Urgency Detection Model
 
 Saves all serialized pipelines and metadata locally to models/ directory.
 """
 
 import os
-import glob
 import json
 import joblib
 import pandas as pd
@@ -36,26 +35,44 @@ for sub in ["language", "domain", "intent", "sentiment", "emotion", "urgency"]:
 
 def train_classifier(train_csv: str, val_csv: str, test_csv: str, output_path: str, ngram_range=(1, 3)):
     train_df = pd.read_csv(train_csv)
+    val_df = pd.read_csv(val_csv)
     test_df = pd.read_csv(test_csv)
 
+    # Combine train + val for full fitting with stratified calibration
+    combined_train_df = pd.concat([train_df, val_df], ignore_index=True)
+
+    base_vectorizer = TfidfVectorizer(
+        ngram_range=ngram_range,
+        sublinear_tf=True,
+        min_df=1,
+        analyzer="word",
+        token_pattern=r"(?u)\b\w+\b"
+    )
+
+    base_clf = LogisticRegression(
+        C=5.0,
+        max_iter=1000,
+        class_weight="balanced",
+        random_state=42
+    )
+
+    # Min samples check for CV calibration
+    class_counts = combined_train_df["label"].value_counts()
+    min_count = class_counts.min() if not class_counts.empty else 1
+
+    if min_count >= 2:
+        cv_folds = min(3, min_count)
+        clf = CalibratedClassifierCV(estimator=base_clf, method="sigmoid", cv=cv_folds)
+    else:
+        clf = base_clf
+
     pipeline = Pipeline([
-        ("tfidf", TfidfVectorizer(
-            ngram_range=ngram_range,
-            sublinear_tf=True,
-            min_df=1,
-            analyzer="word",
-            token_pattern=r"(?u)\b\w+\b"
-        )),
-        ("clf", LogisticRegression(
-            C=5.0,
-            max_iter=1000,
-            class_weight="balanced",
-            random_state=42
-        ))
+        ("tfidf", base_vectorizer),
+        ("clf", clf)
     ])
 
-    pipeline.fit(train_df["text"], train_df["label"])
-    
+    pipeline.fit(combined_train_df["text"], combined_train_df["label"])
+
     # Evaluate on held-out test split
     preds = pipeline.predict(test_df["text"])
     probs = pipeline.predict_proba(test_df["text"])
@@ -78,7 +95,7 @@ def train_classifier(train_csv: str, val_csv: str, test_csv: str, output_path: s
 
 def train_all_models():
     print("=" * 60)
-    print("STARTING FULL NLP MODEL TRAINING & SERIALIZATION")
+    print("STARTING FULL CALIBRATED NLP MODEL TRAINING & SERIALIZATION")
     print("=" * 60)
 
     results_summary = {"trained_at": datetime.utcnow().isoformat() + "Z", "models": {}}

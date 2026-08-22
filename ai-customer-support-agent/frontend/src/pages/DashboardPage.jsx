@@ -1,28 +1,80 @@
+import { useState } from "react";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import KPIStrip from "../components/dashboard/KPIStrip";
-import KnowledgeBasePanel from "../components/dashboard/KnowledgeBasePanel";
-import LiveMonitorConsole from "../components/dashboard/LiveMonitorConsole";
+import ActiveChat from "../components/dashboard/ActiveChat";
+import TelemetryPanel from "../components/dashboard/TelemetryPanel";
 
 export default function DashboardPage() {
+  const [telemetry, setTelemetry] = useState({
+    domain: "Ecommerce",
+    intent: "Order Tracking",
+    sentiment: "Neutral",
+    emotion: "Neutral",
+    frustration_score: 25,
+    frustration_level: "low",
+    urgency: "low",
+    frustration_trend: "stable",
+    confidence: 0.95,
+    entities: []
+  });
+
+  const [isEscalated, setIsEscalated] = useState(false);
+  const [logs, setLogs] = useState([
+    { time: new Date().toLocaleTimeString(), text: "System Initialized: Multi-Domain AI Gateway Online (:8081)", color: "text-dash-primary-fixed-dim" },
+    { time: new Date().toLocaleTimeString(), text: "NLP Inference Engine Connected (:8000)", color: "text-dash-secondary-fixed-dim" },
+    { time: new Date().toLocaleTimeString(), text: "Continuous Monitor & Decision Engine Ready", color: "text-dash-primary-fixed-dim" }
+  ]);
+
+  const handleTurnComplete = (response) => {
+    const timeStr = new Date().toLocaleTimeString();
+    if (response) {
+      if (response.escalated || response.status === "ESCALATED") {
+        setIsEscalated(true);
+        setLogs(prev => [
+          ...prev,
+          { time: timeStr, text: `MONITOR: High risk detected. HUMAN ESCALATION triggered.`, color: "text-dash-error-container text-red-400" }
+        ]);
+      } else {
+        setIsEscalated(false);
+      }
+
+      if (response.nlp) {
+        const n = response.nlp;
+        const confidence = n.domainConfidence || n.intentConfidence || (n.confidence != null ? n.confidence : 0.92);
+        setTelemetry({
+          domain: n.domain ? n.domain.charAt(0).toUpperCase() + n.domain.slice(1) : "General",
+          intent: n.intent ? n.intent.replace(/_/g, " ").replace(/\b\w/g, l => l.toUpperCase()) : "General Query",
+          sentiment: n.sentiment ? n.sentiment.charAt(0).toUpperCase() + n.sentiment.slice(1) : "Neutral",
+          emotion: n.emotion ? n.emotion.charAt(0).toUpperCase() + n.emotion.slice(1) : "Neutral",
+          frustration_score: n.frustration_score != null ? n.frustration_score : (n.frustrationScore != null ? n.frustrationScore : 20),
+          frustration_level: n.frustration_level || n.frustrationLevel || "low",
+          urgency: n.urgency || "low",
+          frustration_trend: n.frustration_trend || n.frustrationTrend || "stable",
+          confidence: confidence,
+          entities: n.entities || []
+        });
+
+        setLogs(prev => [
+          ...prev,
+          { time: timeStr, text: `NLP: Domain='${n.domain}' | Intent='${n.intent}' | Frustration=${n.frustration_score || n.frustrationScore || 0}`, color: "text-dash-secondary-fixed-dim" },
+          { time: timeStr, text: `DECISION: Status='${response.status || "RESOLVED"}' | Escalated=${response.escalated}`, color: response.escalated ? "text-red-400" : "text-emerald-400" }
+        ]);
+      }
+    }
+  };
+
   return (
-    <div className="bg-[#f4f7f6] text-slate-900 min-h-screen flex flex-col antialiased select-none font-sans">
+    <div className="bg-[#f4f7f6] dark:bg-slate-950 text-slate-900 dark:text-slate-100 min-h-screen flex flex-col antialiased select-none font-sans">
       <DashboardHeader />
 
       <div className="flex-1 flex flex-col overflow-hidden h-[calc(100vh-4rem)]">
         {/* Top Real-time Metrics KPI Strip */}
-        <KPIStrip />
+        <KPIStrip isEscalated={isEscalated} telemetry={telemetry} />
 
-        {/* Dual Dashboard Workspace: Knowledge Base Ingestion + Live Monitor Takeover Console */}
+        {/* Main Workspace Layout */}
         <main className="flex-1 flex flex-col lg:flex-row overflow-hidden p-4 pt-0 gap-4">
-          {/* Column 1: Ingestion & Knowledge Base Management */}
-          <div className="w-full lg:w-5/12 flex flex-col h-full overflow-hidden">
-            <KnowledgeBasePanel />
-          </div>
-
-          {/* Column 2: Live Call Monitor & Human Takeover Console */}
-          <div className="w-full lg:w-7/12 flex flex-col h-full overflow-hidden">
-            <LiveMonitorConsole />
-          </div>
+          <ActiveChat isEscalated={isEscalated} onTurnComplete={handleTurnComplete} />
+          <TelemetryPanel telemetry={telemetry} isEscalated={isEscalated} logs={logs} />
         </main>
       </div>
     </div>

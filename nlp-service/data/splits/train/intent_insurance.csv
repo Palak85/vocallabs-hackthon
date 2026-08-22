@@ -1,43 +1,15 @@
 text,label
-Excess premium deduction refund request.,refund_request
-How to update nominee name and bank details in policy?,nominee_information
-My hospital claim reimbursement is delayed by 15 days.,claim_delay
-Policy document copy email par bhej dijiye.,policy_document
-My insurance claim is delayed.,claim_delay
-Other policy endorsement inquiries.,other
-Freelook period policy cancellation refund status.,refund_request
-Transfer this call to an insurance claims officer.,human_support_request
-Track status of cashless claim CLM-9912.,claim_status
-What is the current status of my health insurance claim?,claim_status
-Change percentage share of nominee in policy record.,nominee_information
-Premium payment failed on portal using debit card.,premium_payment
-Claim officer se baat karwao turant.,human_support_request
-Miscellaneous insurance coverage query.,other
-Mis-selling of ULIP policy by insurance agent complaint.,complaint
-Why is the surveyor taking so long to approve motor claim?,claim_delay
-Tax deduction 80D limits for senior citizen parents.,general_query
-Insurance policy band karwani hai surrender kaise karein?,policy_cancellation
-Policy cancel hone ke baad refund kab aayega?,refund_request
-Maternity coverage and newborn cover policy details.,coverage_information
-Does this health policy cover robotic surgeries and day care?,coverage_information
-Direct payment link for life insurance premium.,premium_payment
-Surrender value calculation for endowment policy.,policy_cancellation
-Unable to download e-insurance policy PDF from portal.,policy_document
-Renew term plan with NCB bonus discount.,policy_renewal
-Escalating poor customer service from insurance branch.,complaint
-Change residential address in policy document.,other
-General question about insurance renewal grace period.,general_query
-Original policy certificate download link requested.,policy_document
-My policy premium is due.,premium_payment
-Check reimbursement claim status for surgery bill.,claim_status
-Connect me with customer care manager for claim issue.,human_support_request
-Claim reject kar diya gaya hai appeal kaise karein?,claim_rejection
-Claim pending hai do hafte se koi update nahi.,claim_delay
-My insurance claim has been pending for three weeks.,claim_delay
-How to renew my expired car insurance policy?,policy_renewal
-What are the network cashless hospitals in Bangalore?,general_query
-Insurance company ke against fraud complaint karni hai.,complaint
-Car insurance policy renew karni hai online.,policy_renewal
-"My claim was rejected without clear reason, please review.",claim_rejection
-Why was motor accidental claim repudiated by insurer?,claim_rejection
-Procedure for cancellation of life insurance bond.,policy_cancellation
+How to renew my two-wheeler insurance policy online?,policy_renewal
+Reimbursement claim form submission guidelines.,reimbursement
+Email digital certificate and policy bond PDF.,policy_document
+How to pay insurance premium installment via Net Banking?,premium_payment
+Buy motor car insurance policy quote comparison.,policy_purchase
+Hospitalization cashless claim approval tracking.,claim_status
+Add family member to existing floater policy.,other
+Policy renewal anniversary date query.,policy_renewal
+Why was my mediclaim rejected by TPA desk?,claim_rejected
+I want to check status of my health insurance claim CLM-9921.,claim_status
+My car accident insurance claim was rejected unfairly.,claim_rejected
+Premium payment grace period query for term plan.,premium_payment
+What are cashless network hospitals for Star Health in Delhi?,other
+Health policy renewal premium payment link.,policy_renewal

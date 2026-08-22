@@ -1,8 +1,7 @@
 text,label
-Doctor forgot to mention syrup dosage on prescription.,prescription_query
-Other clinical or hospital related inquiries.,other
-Hospital staff ke bad behavior par complaint karni hai.,complaint
-Hospital me cashless mediclaim facility hai ya nahi?,insurance_query
-General question about diagnostic lab operating hours.,general_query
-Hospital admission bill includes unavailed nursing charges.,billing_problem
-Mediclaim approval status at hospital insurance desk.,insurance_query
+When will my blood test lab report be available online?,test_report
+How many times a day should I take this antibiotic tablet?,prescription
+I need to book an appointment with a doctor.,appointment_booking
+Hospital emergency ambulance contact number request urgently.,emergency_medical_assistance
+Which specialist doctor is available in evening OPD today?,doctor_availability
+Please cancel my doctor consultation appointment for tonight.,appointment_cancellation

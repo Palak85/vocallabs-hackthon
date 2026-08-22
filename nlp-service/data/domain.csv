@@ -1,111 +1,95 @@
 text,label
-My Amazon package hasn't arrived yet.,ecommerce
-My Blinkit delivery is late by two hours.,ecommerce
-"My package is late, where is the courier?",ecommerce
-My Amazon package is late.,ecommerce
-My Blinkit delivery is late.,ecommerce
-My Flipkart order has not arrived.,ecommerce
-I received a damaged phone in my delivery box.,ecommerce
-"The shirt size is wrong, I want to initiate a return.",ecommerce
-Where is my order ORD-99214 tracking link?,ecommerce
-I want to cancel my order before it ships.,ecommerce
-Refund has not been credited to my source account.,ecommerce
-"Item missing from parcel, only received invoice.",ecommerce
-Can I get a replacement for this defective product?,ecommerce
-Delivery partner did not call and marked order delivered.,ecommerce
-Mera order abhi tak deliver nahi hua.,ecommerce
-Mera order abhi tak nahi aaya hai.,ecommerce
-Mera order abhi tak nahi aaya.,ecommerce
-"Parcel kab tak aayega, status update nahi ho raha.",ecommerce
-"Flipkart order is delayed, please update status.",ecommerce
-My cart item is showing out of stock after payment.,ecommerce
-The courier delivery guy was rude and refused OTP.,ecommerce
-How do I exchange my sneakers for a larger size?,ecommerce
-Product quality is extremely poor compared to photo.,ecommerce
-Can you change the delivery address for order ORD-112?,ecommerce
-Payment deducted for order but order status is failed.,ecommerce
-I bought wireless earbuds but the charging case is not working.,ecommerce
-Is cash on delivery available for electronic gadgets?,ecommerce
-My order was delivered to the wrong house address.,ecommerce
-Coupons and promo code not applying at checkout page.,ecommerce
-Delivery boy order deke nahi gaya par delivered mark kar diya.,ecommerce
-Amazon se mangwaya tha parcel abhi tak nahi aaya.,ecommerce
-I need to pay my college semester tuition fees.,education
-I need to pay my college fees.,education
-My school payment isn't showing.,education
-My school fee payment isn't showing in the portal.,education
-I paid my daughter's school fees yesterday but portal says unpaid.,education
-I paid my college fees yesterday but the portal still shows unpaid.,education
-When is the last date for admission form submission?,education
-How do I apply for the merit scholarship?,education
-The university exam hall ticket has a spelling mistake in my name.,education
-Where can I download the semester fee receipt?,education
-Fee payment debited from bank but no receipt generated.,education
-My attendance is marked incorrect for the math lecture.,education
-Can I get a refund of the admission seat booking fee?,education
-College bus transport route information needed.,education
-Mera college fee pay ho gaya par portal par unpaid dikh raha hai.,education
-College ki fees pay ho gayi par portal unpaid dikha raha hai.,education
-Semester exam schedule and timetable release date.,education
-I want to change my elective course for 4th semester.,education
-Hostel fee breakdown and installment options query.,education
-Student portal login is locked due to password error.,education
-When will the scholarship amount be disbursed to my account?,education
-Marksheet correction application process details.,education
-School transport fee is deducted twice this quarter.,education
-How to apply for transfer certificate from school?,education
-Admission form submit nahi ho raha server error aa raha.,education
-Exam admit card download nahi ho raha college portal se.,education
-My insurance claim CLM-45672 is still pending for three weeks.,insurance
-My insurance claim has been pending for three weeks.,insurance
-My insurance claim is delayed.,insurance
-"My policy premium is due tomorrow, how do I pay?",insurance
-My policy premium is due.,insurance
-Why was my health insurance cashless claim rejected?,insurance
-I need to download my car insurance policy document.,insurance
-How to add my spouse as nominee in life policy POL-9912?,insurance
-What is the waiting period for pre-existing disease coverage?,insurance
-I want to cancel my policy and request a premium refund.,insurance
-Claim reimbursement amount settled is lower than bill.,insurance
-Renewal notice not received for my health policy.,insurance
-Hospitalisation cashless approval delayed by TPA desk.,insurance
-Mera health insurance claim abhi tak pass nahi hua.,insurance
-Claim approve kab tak hoga kuch update do insurance desk.,insurance
-Policy document email par nahi mila abhi tak.,insurance
-Term insurance cover amount enhancement eligibility query.,insurance
-Accidental damage claim inspection surveyor contact number.,insurance
-"My motor insurance expired last week, how to renew?",insurance
-Maturity benefit payout date for endowment policy.,insurance
-No claim bonus transfer from previous vehicle insurer.,insurance
-Critical illness rider inclusion in existing policy.,insurance
-Claim status check for hospitalization bill refund.,insurance
-Change communication address in policy record POL-3312.,insurance
-Bima policy ka claim status track karna hai.,insurance
-My UPI payment failed but money was deducted from account.,banking
-My UPI payment failed.,banking
-My UPI transaction failed.,banking
-Money was deducted twice for a single grocery transaction.,banking
-"My debit card is blocked, how to unblock it immediately?",banking
-I need last 6 months bank account statement PDF.,banking
-Unauthorized ATM cash withdrawal transaction reported.,banking
+Where is my order ORD-99214 right now?,ecommerce
+My order ORD12345 has not arrived yet and it was supposed to be delivered yesterday.,ecommerce
+I received a damaged phone in my delivery package.,ecommerce
+I want to return the shoes I received yesterday.,ecommerce
+Can I get a refund for my cancelled order ORD-8812?,ecommerce
+Mera order abhi tak deliver nahi hua ORD-7721.,ecommerce
+"Wrong color jacket delivered, need replacement immediately.",ecommerce
+Product missing from my shipment box.,ecommerce
+When will my Amazon package reach my address?,ecommerce
+Courier delivery boy asked for extra money on prepaid order.,ecommerce
+How to initiate return pickup for electronic items?,ecommerce
+Order cancel karne ke baad refund kab aayega?,ecommerce
+"Defective toaster received, replace with new unit.",ecommerce
+Invoice bill was not included in my package.,ecommerce
+Galat item deliver ho gaya parcel me replacement do.,ecommerce
+Order dispatch ho gaya hai par tracking link nahi chal rahi.,ecommerce
+Parcel box was torn and items were broken inside.,ecommerce
+Exchange request for a larger shirt size.,ecommerce
+Refund status showing processed but money not in wallet.,ecommerce
+What are the upcoming festive sale discounts?,ecommerce
+I paid my college fee yesterday but it is still showing unpaid.,education
+I paid school fees but portal still shows unpaid.,education
+How to pay semester tuition fees online?,education
+Where can I download the tuition fee receipt PDF?,education
+"Withdrew admission, when will fee refund be credited?",education
+What is the admission procedure for B.Tech computer science?,education
+Eligibility criteria for state government merit scholarship.,education
+When is the final semester exam timetable coming?,education
+Need fee payment installment plan for second term.,education
+Admit card download error for upcoming university exam.,education
+Hostel and mess fee structure details for first year.,education
+Kaise bhai school ka kya fee h?,education
+I paid my school fees.,education
+"Maine aaj subah apni college fees ₹85,000 pay ki dono transactions deduct ho gaye total ₹1,70,000 chala gaya duplicate fee payment refund.",education
+College fees deducted twice from bank account for same semester.,education
+"Paid college fees two times by mistake, need refund for second transaction.",education
+"Duplicate fee payment deduction on college portal, second payment successful first pending.",education
+"College fee double debit issue, two times deducted from account.",education
+Fees do baar cut ho gayi account se ek hi receipt mili hai refund chahiye.,education
+Failed fee transaction ka amount abhi tak account me wapas nahi aaya refund timeline batao.,education
+College fee receipt generate nahi hui payment complete hone ke baad bhi.,education
+Today is the last date for fee payment and portal is showing payment error.,education
+Fee deadline issue: portal down on last day of fee submission.,education
+When will my insurance expire?,insurance
+I want to check status of my health insurance claim CLM-9921.,insurance
+My car accident insurance claim was rejected unfairly.,insurance
+How to renew my two-wheeler comprehensive insurance policy?,insurance
+Need cashless hospital list in Bangalore for Star Health.,insurance
+What is the grace period for term life insurance premium payment?,insurance
+Download soft copy of my active health insurance policy document.,insurance
+Claim reimbursement amount credited is less than approved sum.,insurance
+Add my newborn child as a beneficiary in family floater policy.,insurance
+Mera health insurance claim pending hai 10 din se.,insurance
+Policy renewal payment cut gaya par policy document nahi mila.,insurance
+TPA desk pre-authorization form for planned knee surgery.,insurance
+No Claim Bonus discount percentage for current renewal year.,insurance
+How to file critical illness claim under health insurance?,insurance
+Car insurance policy lapse ho gayi hai renew kaise karein?,insurance
+Is robotic surgery covered under my existing health policy?,insurance
+Mera claim reject ho gaya dispute kaise file karein?,insurance
+Premium receipt for 80D income tax deduction download.,insurance
+Address change request in life insurance policy.,insurance
+Network hospital me cashless approval nahi de rahe TPA wale.,insurance
+My UPI transaction failed but the money was deducted from my account.,banking
+Hey I have to pay EMI this month from my bank.,banking
+Money was debited from my account but receiver did not receive it.,banking
+"₹75,000 do baar debit ho gaya. Merchant ko sirf ek payment mili. Second payment failed thi lekin amount deduct ho gaya aur refund nahi aaya.",banking
+"₹40,000 account se deduct hua but receiver ko nahi mila.",banking
+"₹75,000 payment was deducted twice for a single order swipe.",banking
+Amount deducted twice for same transaction on Google Pay UPI.,banking
+I was charged twice for the same restaurant POS swipe.,banking
+Debit card blocked after three incorrect ATM PIN attempts.,banking
+Credit card unauthorized international transaction alert received.,banking
+Download bank account statement PDF for last 6 months.,banking
 Net banking password reset OTP is not coming on phone.,banking
-Credit card bill payment reversed but limit not restored.,banking
-When will my failed IMPS transaction money be refunded?,banking
-Home loan interest certificate download issue.,banking
-How to enable international transactions on credit card?,banking
 Mera UPI payment fail ho gaya aur paise kat gaye.,banking
+mera UPI fail ho gaya paisa kat gaya,banking
 Account me money debit hua but receiver ko nahi mila.,banking
 Cheque bounce charges wrongly levied on savings account.,banking
 Fixed deposit maturity amount auto-renewal cancellation.,banking
-KYC document verification is still pending after 5 days.,banking
-Need to update my registered mobile number in bank account.,banking
 Transaction TXN-89912 is stuck in processing state.,banking
-Annual debit card maintenance charge refund query.,banking
 Bank account se paise cut gaye par transfer nahi hua.,banking
 ATM machine me cash atak gaya aur balance cut gaya.,banking
+I recharged my number but the recharge has not been updated.,telecom
+I recharged my mobile number but validity not updated.,telecom
+"Bhai maine ₹599 ka recharge kiya tha. Payment successful hai aur bank se paise deduct ho gaye, lekin telecom account mein recharge update nahi hua. Purana plan hi show ho raha hai.",telecom
+bhai mera recharge nahi hua,telecom
+mera recharge abhi tak nahi hua,telecom
+Recharge done but pack not activated on SIM.,telecom
 My recharge succeeded but mobile data is not working.,telecom
 My mobile data is not working.,telecom
-My mobile data isn't working.,telecom
 No network signal on my SIM card since morning.,telecom
 I recharged for 299 pack but unlimited 5G is inactive.,telecom
 "Frequent call drops in my area, please fix network tower.",telecom
@@ -114,53 +98,42 @@ How to port my mobile number to another telecom provider?,telecom
 Broadband fiber wifi internet is down with red light on router.,telecom
 Postpaid bill amount is showing extra hidden roaming charges.,telecom
 Mera recharge ho gaya lekin data nahi chal raha.,telecom
-Mera recharge ho gaya lekin internet data nahi chal raha hai.,telecom
 SIM card me full signal nahi aa raha hai call disconnect ho rahi hai.,telecom
-Validity recharge pack options for prepaid number.,telecom
 eSIM activation QR code expired before scanning.,telecom
-"Caller tune service activated without my consent, deactivate it.",telecom
-Data balance exhausted too fast without heavy usage.,telecom
-International roaming pack not activated after deduction.,telecom
-Fiber installation technician did not arrive at appointment.,telecom
-"PUK code blocked for my SIM card, need unlock key.",telecom
 Net nahi chal raha SIM me signal gayab hai.,telecom
 Mobile network issue aa raha hai call drop ho rahi hai.,telecom
+My flight was cancelled and I need a refund.,travel
 "My flight 6E-412 was cancelled, need full refund.",travel
 My flight was cancelled.,travel
+meri flight cancel ho gayi refund chahiye,travel
+Flight cancel ho gayi hai refund kaise aayega?,travel
 I want to reschedule my flight departure date to next Monday.,travel
 Baggage missing at luggage belt in Mumbai airport.,travel
 Hotel booking confirmation voucher not received on email.,travel
 Boarding pass web check-in is throwing server error.,travel
 Can I change passenger name on booked flight ticket?,travel
 "Train ticket PNR is in RAC, will it confirm before chart?",travel
-"Flight delay of 4 hours, is refreshment compensation provided?",travel
+"Flight delay of 4 hours, is refreshment compensation provided.",travel
 Mera flight ticket cancel ho gaya refund kab aayega?,travel
-Flight cancel ho gayi hai refund kaise aayega?,travel
 Hotel check-in denied due to booking discrepancy.,travel
-Infant baggage allowance and seat booking inquiry.,travel
-Cab driver did not arrive at airport pickup spot.,travel
-Seat selection charges deducted twice during web check-in.,travel
-Cancellation charges for refundable domestic flight ticket.,travel
-Terminal change notice for connecting international flight.,travel
-Visa assistance and travel insurance policy for trip.,travel
-Lost handbag reported inside flight cabin.,travel
 Flight ticket booking cancel karke full refund chahiye.,travel
+Lost handbag reported inside flight cabin.,travel
+Seat selection charges deducted twice during web check-in.,travel
+I need to cancel my appointment with Dr Sharma tomorrow.,healthcare
+Cancel my appointment with Dr Sharma tomorrow.,healthcare
+i have emergency to go out so cancel me appointment with dr harsh,healthcare
 I need to book a doctor appointment with cardiologist.,healthcare
-I need to book an appointment with a doctor.,healthcare
-I need to book a doctor appointment.,healthcare
+Mere family member ki condition suddenly serious ho gayi hai. Hume urgently hospital jaana hai aur emergency appointment pending hai.,healthcare
+Bhai mere family member ki condition suddenly serious ho gayi hai aur humein urgently hospital le jaana hai emergency appointment pending.,healthcare
+Hospital me emergency doctor appointment book karni hai jaldi.,healthcare
+Emergency medical assistance needed for chest pain patient.,healthcare
 When will my blood test lab report be available online?,healthcare
 "Doctor cancelled my appointment, how do I reschedule?",healthcare
 Query regarding dosage instructions on my digital prescription.,healthcare
 Hospital admission room billing discrepancy and itemized bill.,healthcare
 Is cashless mediclaim accepted for cataract surgery at clinic?,healthcare
-Online video consultation doctor did not join call.,healthcare
-Prescription medicine delivery is delayed by pharmacy.,healthcare
 Doctor appointment reschedule karna hai kal ke liye.,healthcare
 Lab test report abhi tak download nahi ho raha portal se.,healthcare
 Vaccination slot availability for infant immunization.,healthcare
-Need second opinion consultation with neurologist.,healthcare
-MRI scan appointment booking and preparation guidelines.,healthcare
 Diagnostic center appointment confirmation SMS not received.,healthcare
-Prescription refill request for chronic blood pressure tablet.,healthcare
 Hospital emergency ambulance contact number request.,healthcare
-Doctor ka appointment lena hai specialist clinic me.,healthcare
