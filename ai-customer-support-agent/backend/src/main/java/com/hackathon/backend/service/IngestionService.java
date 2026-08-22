@@ -135,7 +135,9 @@ public class IngestionService {
                 metadata.put("chunkIndex", i);
                 metadata.put("totalChunks", textChunks.size());
 
-                String chunkId = documentId + "_chk_" + i;
+//                String chunkId = documentId + "_chk_" + i;
+                String chunkId = UUID.randomUUID().toString();
+                metadata.put("customChunkId", documentId + "_chk_" + i);
                 org.springframework.ai.document.Document aiDoc = new org.springframework.ai.document.Document(chunkId, chunk, metadata);
                 aiDocs.add(aiDoc);
             }
