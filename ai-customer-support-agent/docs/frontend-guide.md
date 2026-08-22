@@ -1,194 +1,160 @@
-# AI Customer Support Agent — Frontend UI/UX Guide
+# AI Customer Support Agent — Dual Dashboard Frontend Guide
 
-This guide outlines how the React frontend UI should be structured, how visual components should behave across different lifecycle states, and what the user should see at each step of the user journey.
+This guide describes how to build the two primary frontend dashboards:
+1. **Normal User / Consumer Dashboard**: A clean, consumer-facing two-sided interface featuring a **Text Chat Mode** and a **Voice Call Mode** with live speech recognition (STT), voice synthesis (TTS), live call transcripts, and history. (No admin/ingestion controls).
+2. **Monitoring & Supervisor Dashboard**: A comprehensive supervisor and admin interface where:
+   - **Knowledge Base Ingestion & Document Management** is conducted (Upload PDFs, DOCX, TXT, MD; track chunking & indexing; delete docs).
+   - **Live Calls & Chats are Monitored** in real-time with customer emotional metrics and frustration scores.
+   - **AI-Driven Escalation Alerts** prompt supervisors when a user is frustrated (*"User is getting frustrated. Recommend switching to live chat"*).
+   - **Human Takeover & Direct Messaging Console** allows admins to explicitly take over calls/chats and hand them back to AI.
 
 ---
 
-## 1. UI Component Architecture & Layout
+## 1. Dashboard 1: Normal User / Consumer Dashboard
 
-The recommended UI layout consists of three primary zones:
+The consumer dashboard is dedicated entirely to the end user's query experience with a toggle between **Text Chat Mode** and **Voice Call Mode**.
 
 ```text
 ┌────────────────────────────────────────────────────────────────────────────────────────┐
-│  HEADER: App Title | Tenant Selector [X-Tenant-Id: default] | KB Status (3 Docs)       │
-├───────────────────────┬────────────────────────────────────────┬───────────────────────┤
-│  SIDEBAR              │  CENTRAL CHAT & NLP HUD                │  SOURCES / CITATIONS  │
-│                       │                                        │  DRAWER (Expandable)  │
-│  [+ New Chat]         │  ┌──────────────────────────────────┐  │                       │
-│                       │  │ LIVE NLP ANALYSIS HUD            │  │  • UPI FAQs.pdf       │
-│  Conversations:       │  │ [Banking] [Txn Failed] [High: 72]│  │    Page 3 (Score 0.89)│
-│  • UPI Transaction    │  │ Entities: [TXN12345]             │  │                       │
-│  • Refund Policy      │  └──────────────────────────────────┘  │  • Refund_Rules.docx  │
-│                       │                                        │    Page 1 (Score 0.78)│
-│  Knowledge Base:      │  Message Feed:                         │                       │
-│  • [Upload Document]  │  [User Bubble]: My UPI txn failed...   │                       │
-│  • faq.pdf (Ready)    │  [Assistant Bubble]: Streaming text... │                       │
-│                       │                                        │                       │
-│                       ├────────────────────────────────────────┤                       │
-│                       │  INPUT & AUDIO CONTROLS                │                       │
-│                       │  [ Input text... ] [🎙️ Mic] [🔊 TTS]   │                       │
-│                       │  [ 〰️〰️ Live Audio Waveform (STT) 〰️〰️ ] │                       │
-└───────────────────────┴────────────────────────────────────────┴───────────────────────┘
+│  CUSTOMER SUPPORT PORTAL | [ 💬 Text Mode ] [ 📞 Voice Call Mode ] | [ Call History 🕒] │
+├────────────────────────────────────────────────────────┬───────────────────────────────┤
+│  SIDE A: TEXT CHAT MODE                                │  SIDE B: VOICE CALL MODE      │
+│                                                        │                               │
+│  Chat Transcript Feed:                                 │  [ 🟢 Call Connected: 01:45 ] │
+│  ┌──────────────────────────────────────────────────┐  │                               │
+│  │ User: My UPI transaction failed...               │  │  Live Audio Visualizer:       │
+│  │ Assistant: I understand your frustration...      │  │  ( 〰️〰️ Live Sound Wave 〰️〰️ )   │
+│  └──────────────────────────────────────────────────┘  │                               │
+│                                                        │  Live Call Transcript Stream: │
+│  Input Area:                                           │  • [You (01:20)]: I was       │
+│  [ Type your question here...          ] [ Send 📤 ]   │    charged twice.             │
+│                                                        │  • [AI (01:22)]: Let me check.│
+│                                                        │                               │
+│                                                        │  Call Controls:               │
+│                                                        │  [ 🎙️ Mute ] [ 🔊 Speaker ]   │
+│                                                        │  [ 🔴 End Call ]              │
+└────────────────────────────────────────────────────────┴───────────────────────────────┘
 ```
 
----
+### 1.1. Side A: Text Chat Mode
+* **Query Input**: Focused text field with prompt suggestion chips.
+* **Token Streaming**: Consumes `POST /api/v1/chat/stream`, rendering text token-by-token.
+* **Live Badges**: Optionally displays detected intent and entity tags.
 
-## 2. Comprehensive State-by-State UI Guide
-
-### State 1: IDLE / READY STATE
-
-#### What the user sees:
-* **Chat Area**: Centered welcome message with quick prompt chips:
-  * *"My UPI transaction failed and money was debited"*
-  * *"How do I request a refund?"*
-  * *"What are your customer support hours?"*
-* **Input Box**: Focused text field with placeholder *"Type your question or click the microphone to speak..."*.
-* **Action Buttons**:
-  * **Microphone Icon (STT)**: Solid blue, ready for single-click voice input.
-  * **TTS Toggle**: Enabled/Disabled state toggle for auto-speaking responses.
-  * **Send Button**: Disabled when text is empty; enabled when text is typed.
-* **Sidebar**: List of previous chat sessions and active knowledge base documents.
+### 1.2. Side B: Voice Call Mode
+* **Voice-First Experience**:
+  1. User clicks **"Start Call"** to speak into their microphone.
+  2. Browser Web Speech API (`SpeechRecognition`) converts speech to text in real-time.
+  3. The recognized speech appears instantly in the **Live Call Transcript** and is dispatched to `/api/v1/chat/stream`.
+  4. As assistant tokens stream in, browser Speech Synthesis (`SpeechSynthesisUtterance`) speaks the response aloud naturally.
+  5. The transcript highlights speaker labels (`[You]`, `[AI Assistant]`, `[Live Specialist]`).
+* **Interactive Soundwave Visualizer**: Animated canvas/SVG waves reacting to speech volume.
+* **Call Controls**: Mute/Unmute, Speaker Mute, End Call.
+* **Call History Modal**: Displays previous call transcripts, timestamps, and durations.
 
 ---
 
-### State 2: LISTENING STATE (Voice STT Active)
+## 2. Dashboard 2: Monitoring & Supervisor Dashboard
 
-#### Trigger:
-* User clicks the **Microphone Button** (or hotkey `Spacebar`).
+The monitoring dashboard is the control center for administrators and support supervisors. It houses **Knowledge Base Ingestion** as well as **Live Call Monitoring & Human Takeover**.
 
-#### What the user sees:
-* **Microphone Button**: Turns vibrant red with an animated pulsing ring.
-* **Audio Visualizer**: An animated audio frequency waveform (bars or glowing wave) displays under the input box reflecting user voice volume.
-* **Live Transcription**: Spoken words appear in real-time inside the input text field.
-* **Status Badge**: *"Listening... Click to send or press Esc to cancel"*.
-* **Control Actions**:
-  * **Stop / Submit Button**: Immediately commits the recognized speech and starts the chat flow.
-  * **Cancel Button**: Discards speech and returns to State 1.
+```text
+┌────────────────────────────────────────────────────────────────────────────────────────┐
+│  SUPERVISOR & MONITORING CONSOLE | Tenant: [ default ▼ ] | Stats: 15 Active | 2 Escalated │
+├────────────────────────────────────────┬───────────────────────────────────────────────┤
+│  KNOWLEDGE BASE MANAGEMENT (INGESTION) │  LIVE CALL MONITOR & HUMAN TAKEOVER CONSOLE   │
+│                                        │                                               │
+│  Upload New Document:                  │  Active Call: conv_001 | Customer: cust_987   │
+│  ┌──────────────────────────────────┐  │  Current Mode: [ 🤖 AI Handled ]              │
+│  │ 📁 Drag & drop PDF/DOCX/TXT/MD   │  │  [ 🛑 Switch to Human / Takeover Call ]      │
+│  │ Category: [ banking ▼ ]          │  │                                               │
+│  │ [ Upload to Vector DB 📤 ]       │  │  ┌─────────────────────────────────────────┐  │
+│  └──────────────────────────────────┘  │  │ ⚠️ AI AGENT ESCALATION ALERT:            │  │
+│                                        │  │ "User is getting frustrated (Score: 72).│  │
+│  Ingested Knowledge Base:              │  │  Recommend switching to live chat."     │  │
+│  • upi_faq.pdf (12 chunks) [Ready]     │  └─────────────────────────────────────────┘  │
+│  • refund_policy.pdf (8 chunks) [Ready]│                                               │
+│  • warranty.docx [ ⏳ Processing... ]  │  Live Transcript & Metrics:                   │
+│                                        │  Frustration: 72/100 (High) 🔥 | Intent: UPI  │
+│                                        │  • [User]: Money deducted from account!       │
+│                                        │  • [AI]: Reversal occurs within 24-48 hrs.   │
+│                                        │                                               │
+│                                        │  Supervisor Live Reply Box:                   │
+│                                        │  [ Type message as Human Agent... ] [ Send 📨]│
+│                                        │                                               │
+│                                        │  [ 🔄 Hand Back to AI ]                       │
+└────────────────────────────────────────┴───────────────────────────────────────────────┘
+```
 
----
+### 2.1. Knowledge Base Ingestion Panel (Admin Only)
+* **Document Upload**:
+  * Dropzone accepting `.pdf`, `.docx`, `.txt`, `.md` (Max 20MB).
+  * Category tagging selector (`banking`, `ecommerce`, `technical`, `general`).
+  * Triggers `POST /api/v1/documents`.
+* **Real-time Indexing Status**:
+  * Status pills: `PROCESSING` (with spinner), `COMPLETED` (green with chunk count), `FAILED` (red with error and retry button).
+* **Document Deletion**: Trash icon triggering `DELETE /api/v1/documents/{id}` to purge chunks from `pgvector`.
 
-### State 3: DOCUMENT UPLOAD & INGESTION STATE
+### 2.2. Live Call Monitoring & Frustration Tracking
+* **Real-time Session Cards**:
+  * Color-coded Frustration Meter: `Low (0-39)`, `Medium (40-69)`, `High (70-100)`.
+  * Sentiment and Emotion Badges (`Frustrated`, `Anxious`, `Neutral`).
+  * Extracted Entity Chips (`[Transaction ID: TXN12345]`, `[Order ID: ORD9988]`).
 
-#### Trigger:
-* User drags and drops a file (PDF, DOCX, TXT, MD) into the Knowledge Base Drawer or clicks "Upload Document".
+### 2.3. AI-Driven Escalation Alerts
+* When frustration reaches **`>= 70`** or urgent negative sentiment is detected:
+  * The supervisor console flashes an alert banner:
+    > **⚠️ AI Agent Prompt**: *"Customer is getting frustrated (Score: 72/100, Intent: transaction_failed). Recommend switching to live chat."*
+  * A prominent **"Takeover Call"** button is highlighted.
 
-#### What the user sees:
-* **Upload Progress**:
-  * Step 1: File upload bar (`0% -> 100%`).
-  * Step 2: Badge changes to `PROCESSING` with a circular spinner.
-  * Step 3: Once pgvector chunking & embedding finishes, badge turns green `COMPLETED` showing chunk count (`e.g. 12 chunks indexed`).
-* **Error Handling**: If upload or parsing fails, a red `FAILED` badge appears with a tooltip error message and a *"Retry"* button.
-
----
-
-### State 4: ANALYZING & RETRIEVING STATE (Enriched Query Processing)
-
-#### Trigger:
-* User submits a question (via text or STT).
-
-#### What the user sees:
-1. **User Message Bubble**: Renders immediately on the right side with timestamps.
-2. **Real-Time NLP HUD** (Appears instantly at the top of the chat window on `event: nlp`):
-   * **Domain Badge**: E.g., `Domain: Banking` (Blue pill)
-   * **Intent Badge**: E.g., `Intent: Transaction Failed` (Purple pill)
-   * **Emotion & Sentiment**: E.g., `Sentiment: Negative` | `Emotion: Frustrated` (Amber pill)
-   * **Frustration Gauge**: Visual progress meter with score `72/100 (High)`
-   * **Entity Chips**: Clickable tags showing extracted values like `[Transaction ID: TXN12345]`, `[Amount: ₹500]`
-3. **Retrieval Indicator**: A subtle shimmer or skeleton pulse below the user message: *"Searching knowledge base documents..."*.
-
----
-
-### State 5: STREAMING RESPONSE STATE (SSE Token Generation)
-
-#### Trigger:
-* First `event: token` received from `/api/v1/chat/stream`.
-
-#### What the user sees:
-* **Assistant Message Bubble**: Appears on the left side with an AI avatar.
-* **Typewriter Effect**: Words stream in character-by-character or token-by-token with a subtle blinking cursor `|`.
-* **Smooth Auto-Scroll**: The viewport smoothly auto-scrolls down as new lines are generated.
-* **Stop Button**: An optional *"Stop Generating"* button allows the user to abort the stream.
-
----
-
-### State 6: RESPONSE COMPLETE & CITATIONS RENDERED
-
-#### Trigger:
-* `event: sources` and `event: done` received.
-
-#### What the user sees:
-* **Blinking Cursor**: Disappears.
-* **Action Toolbar on Assistant Bubble**:
-  * **Copy to Clipboard**: Copies formatted markdown.
-  * **Replay Voice (TTS)**: Reads the answer aloud.
-  * **Thumbs Up / Thumbs Down**: Feedback rating.
-* **Expandable Citations Accordion (`Sources` Drawer)**:
-  * Displays source document cards with:
-    * Document Title (e.g. `UPI Banking FAQs.pdf`)
-    * Page Number (e.g. `Page 3`)
-    * Similarity Match Badge (e.g. `89% match`)
-    * Quoted Context Snippet
+### 2.4. Human Takeover Workflow
+1. **Takeover Action**: Admin clicks **"Takeover Call"** (`POST /api/v1/monitoring/conversations/{id}/takeover`).
+2. **AI Paused**: The AI stops generating responses; customer receives notice that a specialist has joined.
+3. **Supervisor Direct Messaging**: Supervisor replies directly using `POST /api/v1/monitoring/conversations/{id}/message`. Messages are spoken aloud in the customer's Voice Call mode as `[Live Specialist]`.
+4. **Hand Back to AI**: Admin clicks **"Hand Back to AI"** (`POST /api/v1/monitoring/conversations/{id}/handback`) once the issue is resolved.
 
 ---
 
-### State 7: SPEAKING / AUDIO PLAYBACK STATE (Frontend TTS)
+## 3. Frontend Integration Code (React + TypeScript)
 
-#### Trigger:
-* User clicks "Read Aloud" or auto-TTS was enabled.
-
-#### What the user sees:
-* **Audio Wave Indicator**: Small animated soundbars next to the Assistant bubble.
-* **Controls**: **Pause**, **Resume**, **Stop Playback** buttons.
-* **Optional Karaoke Highlighting**: Highlights the current sentence being spoken.
-
----
-
-### State 8: REFUSAL / NO CONTEXT / ERROR STATE
-
-#### Trigger:
-* No matching documents found (refusal) or server error occurs.
-
-#### What the user sees:
-* **Refusal Response**:
-  * Gentle, polite message: *"I could not find information regarding this in our available knowledge base documents."*
-  * Quick Actions:
-    * *"Upload relevant document"* button (opens KB drawer).
-    * *"Contact human support"* button.
-* **Network Error / 500**:
-  * Toast notification: *"Failed to connect to backend. Please verify your connection and try again."*
-  * *"Retry"* action directly on the message bubble.
-
----
-
-## 3. Frontend Integration Code Snippets (React + TypeScript)
-
-### 3.1. SSE Stream Client (`/api/v1/chat/stream`)
+### 3.1. Voice Call Hook (Customer Dashboard)
 
 ```typescript
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 
-interface NlpData {
-  language: { label: string; confidence: number };
-  domain: { label: string; confidence: number };
-  intent: { label: string; confidence: number };
-  sentiment: { label: string; confidence: number };
-  emotion: { label: string; confidence: number };
-  frustration: { score: number; level: string };
-  urgency: { level: string; confidence: number };
-  entities: Array<{ type: string; value: string; confidence: number }>;
-}
+export function useVoiceCall(conversationId?: string) {
+  const [isCalling, setIsCalling] = useState<boolean>(false);
+  const [transcript, setTranscript] = useState<Array<{ role: string; text: string }>>([]);
+  const [isSpeaking, setIsSpeaking] = useState<boolean>(false);
+  const recognitionRef = useRef<any>(null);
 
-export function useChatStream() {
-  const [tokens, setTokens] = useState<string>('');
-  const [nlp, setNlp] = useState<NlpData | null>(null);
-  const [sources, setSources] = useState<any[]>([]);
-  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const startCall = () => {
+    setIsCalling(true);
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert('Speech recognition is not supported in this browser.');
+      return;
+    }
 
-  const sendMessage = async (question: string, conversationId?: string) => {
-    setIsStreaming(true);
-    setTokens('');
-    setSources([]);
+    const recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = true;
+    recognition.interimResults = false;
 
+    recognition.onresult = async (event: any) => {
+      const lastIndex = event.results.length - 1;
+      const spokenText = event.results[lastIndex][0].transcript.trim();
+      if (!spokenText) return;
+
+      setTranscript((prev) => [...prev, { role: 'You', text: spokenText }]);
+      await sendVoiceQuery(spokenText);
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+  };
+
+  const sendVoiceQuery = async (query: string) => {
     const response = await fetch('http://localhost:8080/api/v1/chat/stream', {
       method: 'POST',
       headers: {
@@ -198,13 +164,14 @@ export function useChatStream() {
       },
       body: JSON.stringify({
         conversation_id: conversationId,
-        text: question,
-        customer_id: 'cust_react_user',
+        text: query,
+        customer_id: 'cust_voice_user',
       }),
     });
 
     const reader = response.body?.getReader();
     const decoder = new TextDecoder('utf-8');
+    let aiAnswer = '';
     let buffer = '';
 
     if (!reader) return;
@@ -222,78 +189,92 @@ export function useChatStream() {
         const dataMatch = block.match(/data:\s*(.+)/);
 
         if (eventMatch && dataMatch) {
-          const eventType = eventMatch[1].trim();
-          const rawData = dataMatch[1].trim();
+          const event = eventMatch[1].trim();
+          const data = dataMatch[1].trim();
 
-          if (eventType === 'nlp') {
-            const parsed = JSON.parse(rawData);
-            setNlp(parsed.nlp);
-          } else if (eventType === 'token') {
-            setTokens((prev) => prev + rawData);
-          } else if (eventType === 'sources') {
-            const parsedSources = JSON.parse(rawData);
-            setSources(parsedSources);
-          } else if (eventType === 'done') {
-            setIsStreaming(false);
+          if (event === 'token') {
+            aiAnswer += data;
+          } else if (event === 'human_agent_active') {
+            aiAnswer = data;
           }
         }
       }
     }
-    setIsStreaming(false);
+
+    setTranscript((prev) => [...prev, { role: 'AI Assistant', text: aiAnswer }]);
+    speakResponse(aiAnswer);
   };
 
-  return { sendMessage, tokens, nlp, sources, isStreaming };
-}
-```
+  const speakResponse = (text: string) => {
+    if (!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
 
----
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    window.speechSynthesis.speak(utterance);
+  };
 
-### 3.2. Speech-to-Text (STT) Client
-
-```typescript
-export function startSpeechRecognition(onResult: (text: string) => void, onEnd: () => void) {
-  const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
-  if (!SpeechRecognition) {
-    alert('Speech recognition is not supported in this browser.');
-    return null;
-  }
-
-  const recognition = new SpeechRecognition();
-  recognition.lang = 'en-US';
-  recognition.continuous = false;
-  recognition.interimResults = true;
-
-  recognition.onresult = (event: any) => {
-    let transcript = '';
-    for (let i = event.resultIndex; i < event.results.length; i++) {
-      transcript += event.results[i][0].transcript;
+  const endCall = () => {
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
     }
-    onResult(transcript);
+    window.speechSynthesis.cancel();
+    setIsCalling(false);
+    setIsSpeaking(false);
   };
 
-  recognition.onend = onEnd;
-  recognition.start();
-  return recognition;
+  return { isCalling, isSpeaking, transcript, startCall, endCall };
 }
 ```
 
 ---
 
-### 3.3. Text-to-Speech (TTS) Client
+### 3.2. Knowledge Base Ingestion Hook (Monitoring Dashboard)
 
 ```typescript
-export function speakText(text: string, onEnd?: () => void) {
-  if (!('speechSynthesis' in window)) return;
+import { useState, useEffect } from 'react';
 
-  window.speechSynthesis.cancel(); // Stop any previous speech
-  const utterance = new SpeechSynthesisUtterance(text);
-  utterance.rate = 1.0;
-  utterance.pitch = 1.0;
+export function useKnowledgeBase() {
+  const [documents, setDocuments] = useState<any[]>([]);
+  const [isUploading, setIsUploading] = useState<boolean>(false);
 
-  if (onEnd) {
-    utterance.onend = onEnd;
-  }
+  const fetchDocuments = async () => {
+    const res = await fetch('http://localhost:8080/api/v1/documents', {
+      headers: { 'X-Tenant-Id': 'default' },
+    });
+    if (res.ok) setDocuments(await res.json());
+  };
 
-  window.speechSynthesis.speak(utterance);
+  useEffect(() => {
+    fetchDocuments();
+    const interval = setInterval(fetchDocuments, 4000); // Poll ingestion status
+    return () => clearInterval(interval);
+  }, []);
+
+  const uploadDocument = async (file: File, category?: string) => {
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', file);
+    if (category) formData.append('category', category);
+
+    await fetch('http://localhost:8080/api/v1/documents', {
+      method: 'POST',
+      headers: { 'X-Tenant-Id': 'default' },
+      body: formData,
+    });
+    setIsUploading(false);
+    fetchDocuments();
+  };
+
+  const deleteDocument = async (id: string) => {
+    await fetch(`http://localhost:8080/api/v1/documents/${id}`, {
+      method: 'DELETE',
+      headers: { 'X-Tenant-Id': 'default' },
+    });
+    fetchDocuments();
+  };
+
+  return { documents, isUploading, uploadDocument, deleteDocument };
 }
 ```
