@@ -8,9 +8,9 @@ from pydantic import BaseModel, Field
 
 
 class NLPAnalyzeRequest(BaseModel):
-    conversation_id: str = Field(..., description="Unique conversation identifier", min_length=1)
+    conversation_id: Optional[str] = Field(None, description="Unique conversation identifier")
     customer_id: Optional[str] = Field(None, description="Optional customer identifier")
-    message_id: str = Field(..., description="Unique message identifier", min_length=1)
+    message_id: Optional[str] = Field(None, description="Unique message identifier")
     timestamp: Optional[str] = Field(None, description="ISO-8601 message timestamp")
     text: str = Field(..., description="Raw customer message text", min_length=1)
     language: Optional[str] = Field(None, description="Optional upstream language code")
