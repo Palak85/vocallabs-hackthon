@@ -31,6 +31,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -106,11 +107,20 @@ public class ChatService {
         NlpAnalysisRequest nlpReq = new NlpAnalysisRequest(convId.toString(), userMsgId.toString(), customerId, request.question());
         NlpAnalysisResponse nlpResponse = nlpService.analyze(nlpReq);
 
-        // 4. Query Enrichment: Combine question + NLP intent/domain/entities for vector search
+        // 4. Update NLP metrics & evaluate escalation
+        updateConversationNlpMetrics(conv, nlpResponse);
+
+        // 5. Check if Human Takeover Mode is Active
+        if ("HUMAN".equalsIgnoreCase(conv.getMode())) {
+            String humanNotice = "A live support specialist is currently handling this session. Your message has been received by the agent.";
+            return new ChatResponse(humanNotice, convId, List.of(), nlpResponse);
+        }
+
+        // 6. Query Enrichment: Combine question + NLP intent/domain/entities for vector search
         String enrichedQuery = buildEnrichedQuery(request.question(), nlpResponse);
         log.info("Enriched query for retrieval: '{}'", enrichedQuery);
 
-        // 5. Retrieve chunks with enriched query
+        // 7. Retrieve chunks with enriched query
         List<org.springframework.ai.document.Document> chunks = retrievalService.retrieveChunks(
                 enrichedQuery,
                 tenantId,
@@ -119,7 +129,7 @@ public class ChatService {
                 defaultThreshold
         );
 
-        // 6. Refusal path if no chunks match threshold
+        // 8. Refusal path if no chunks match threshold
         if (chunks.isEmpty()) {
             String refusalText = "not found in the available documents";
             UUID assistantMsgId = UUID.randomUUID();
@@ -130,21 +140,21 @@ public class ChatService {
             return new ChatResponse(refusalText, convId, List.of(), nlpResponse);
         }
 
-        // 7. Format context & sources
+        // 9. Format context & sources
         List<SourceDto> sources = formatSources(chunks);
         String contextString = formatContext(chunks);
 
-        // 8. Build Prompt combining Context + NLP Insights + Customer Query + Bounded History
+        // 10. Build Prompt combining Context + NLP Insights + Customer Query + Bounded History
         Prompt prompt = buildPrompt(request.question(), contextString, nlpResponse, convId);
 
-        // 9. Call LLM Model and measure latency
+        // 11. Call LLM Model and measure latency
         long startTime = System.currentTimeMillis();
         var response = chatModel.call(prompt);
         long latency = System.currentTimeMillis() - startTime;
 
         String answer = response.getResult().getOutput().getText();
 
-        // 10. Persist Assistant Message and Sources
+        // 12. Persist Assistant Message and Sources
         UUID assistantMsgId = UUID.randomUUID();
         int assistantTokens = TokenEstimator.estimateTokens(answer);
         Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", answer, assistantTokens, "gemini",
@@ -170,13 +180,14 @@ public class ChatService {
         try {
             // 1. Resolve or create conversation
             final UUID convId;
+            Conversation conv;
             if (request.conversationId() == null) {
                 convId = UUID.randomUUID();
-                Conversation conv = new Conversation(convId, tenantId, truncateTitle(request.question()), Instant.now(), Instant.now());
+                conv = new Conversation(convId, tenantId, truncateTitle(request.question()), Instant.now(), Instant.now());
                 conversationRepository.save(conv);
             } else {
                 convId = request.conversationId();
-                conversationRepository.findByIdAndTenantId(convId, tenantId)
+                conv = conversationRepository.findByIdAndTenantId(convId, tenantId)
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Conversation not found"));
             }
 
@@ -191,11 +202,46 @@ public class ChatService {
             NlpAnalysisRequest nlpReq = new NlpAnalysisRequest(convId.toString(), userMsgId.toString(), customerId, request.question());
             NlpAnalysisResponse nlpResponse = nlpService.analyze(nlpReq);
 
-            // 4. Query Enrichment
+            // 4. Update Conversation with latest NLP metrics & Evaluate Escalation
+            boolean escalationAlertTriggered = updateConversationNlpMetrics(conv, nlpResponse);
+
+            // Emit NLP analysis event first
+            String nlpJson = objectMapper.writeValueAsString(nlpResponse);
+            ServerSentEvent<String> nlpEvent = ServerSentEvent.<String>builder(nlpJson).event("nlp").build();
+
+            // Prepare optional escalation event
+            List<ServerSentEvent<String>> initialEvents = new ArrayList<>();
+            initialEvents.add(nlpEvent);
+
+            if (escalationAlertTriggered) {
+                Map<String, Object> alertData = new HashMap<>();
+                alertData.put("recommended", true);
+                alertData.put("reason", conv.getEscalationReason());
+                alertData.put("frustrationScore", conv.getLastFrustrationScore());
+                alertData.put("frustrationLevel", conv.getLastFrustrationLevel());
+                alertData.put("emotion", conv.getLastEmotion());
+                alertData.put("intent", conv.getLastIntent());
+
+                String alertJson = objectMapper.writeValueAsString(alertData);
+                initialEvents.add(ServerSentEvent.<String>builder(alertJson).event("escalation_alert").build());
+            }
+
+            // 5. Check if Human Agent Takeover is active
+            if ("HUMAN".equalsIgnoreCase(conv.getMode())) {
+                String humanNotice = "A live support specialist is currently handling this session. Your message has been delivered to the agent.";
+                ServerSentEvent<String> humanActiveEvent = ServerSentEvent.<String>builder(humanNotice).event("human_agent_active").build();
+                ServerSentEvent<String> doneEvent = ServerSentEvent.<String>builder("").event("done").build();
+
+                initialEvents.add(humanActiveEvent);
+                initialEvents.add(doneEvent);
+                return Flux.fromIterable(initialEvents);
+            }
+
+            // 6. Query Enrichment
             String enrichedQuery = buildEnrichedQuery(request.question(), nlpResponse);
             log.info("Enriched stream query for retrieval: '{}'", enrichedQuery);
 
-            // 5. Retrieve Chunks
+            // 7. Retrieve Chunks
             List<org.springframework.ai.document.Document> chunks = retrievalService.retrieveChunks(
                     enrichedQuery,
                     tenantId,
@@ -203,10 +249,6 @@ public class ChatService {
                     defaultTopK,
                     defaultThreshold
             );
-
-            // Emit NLP analysis event first
-            String nlpJson = objectMapper.writeValueAsString(nlpResponse);
-            ServerSentEvent<String> nlpEvent = ServerSentEvent.<String>builder(nlpJson).event("nlp").build();
 
             // Refusal Path
             if (chunks.isEmpty()) {
@@ -216,22 +258,21 @@ public class ChatService {
                 Message assistantMsg = new Message(assistantMsgId, convId, "ASSISTANT", refusalText, assistantTokens, null, 0L, Instant.now());
                 messageRepository.save(assistantMsg);
 
-                return Flux.just(
-                        nlpEvent,
-                        ServerSentEvent.<String>builder(refusalText).event("token").build(),
-                        ServerSentEvent.<String>builder("[]").event("sources").build(),
-                        ServerSentEvent.<String>builder("").event("done").build()
-                );
+                initialEvents.add(ServerSentEvent.<String>builder(refusalText).event("token").build());
+                initialEvents.add(ServerSentEvent.<String>builder("[]").event("sources").build());
+                initialEvents.add(ServerSentEvent.<String>builder("").event("done").build());
+
+                return Flux.fromIterable(initialEvents);
             }
 
-            // 6. Format Sources & Context
+            // 8. Format Sources & Context
             List<SourceDto> sources = formatSources(chunks);
             String contextString = formatContext(chunks);
 
-            // 7. Build Grounded Prompt
+            // 9. Build Grounded Prompt
             Prompt prompt = buildPrompt(request.question(), contextString, nlpResponse, convId);
 
-            // 8. Stream tokens from LLM
+            // 10. Stream tokens from LLM
             StringBuilder answerAccumulator = new StringBuilder();
             long startTime = System.currentTimeMillis();
 
@@ -273,7 +314,7 @@ public class ChatService {
                     ServerSentEvent.<String>builder("").event("done").build()
             );
 
-            return Flux.concat(Mono.just(nlpEvent), tokenStream, sourcesEvent, doneEvent)
+            return Flux.concat(Flux.fromIterable(initialEvents), tokenStream, sourcesEvent, doneEvent)
                     .onErrorResume(err -> {
                         log.error("Error occurred during SSE stream generation", err);
                         return Flux.just(ServerSentEvent.<String>builder(err.getMessage()).event("error").build());
@@ -282,6 +323,45 @@ public class ChatService {
         } catch (Exception e) {
             log.error("Failed to initiate SSE stream", e);
             return Flux.just(ServerSentEvent.<String>builder(e.getMessage()).event("error").build());
+        }
+    }
+
+    private boolean updateConversationNlpMetrics(Conversation conv, NlpAnalysisResponse nlpResponse) {
+        if (nlpResponse == null || nlpResponse.nlp() == null) {
+            return false;
+        }
+
+        var nlp = nlpResponse.nlp();
+        int frustrationScore = (nlp.frustration() != null && nlp.frustration().score() != null) ? nlp.frustration().score() : 0;
+        String frustrationLevel = (nlp.frustration() != null && nlp.frustration().level() != null) ? nlp.frustration().level() : "low";
+        String sentiment = (nlp.sentiment() != null && nlp.sentiment().label() != null) ? nlp.sentiment().label() : "neutral";
+        String emotion = (nlp.emotion() != null && nlp.emotion().label() != null) ? nlp.emotion().label() : "neutral";
+        String intent = (nlp.intent() != null && nlp.intent().label() != null) ? nlp.intent().label() : "information_lookup";
+        String domain = (nlp.domain() != null && nlp.domain().label() != null) ? nlp.domain().label() : "general";
+
+        conv.setLastFrustrationScore(frustrationScore);
+        conv.setLastFrustrationLevel(frustrationLevel);
+        conv.setLastSentiment(sentiment);
+        conv.setLastEmotion(emotion);
+        conv.setLastIntent(intent);
+        conv.setLastDomain(domain);
+
+        boolean isFrustrated = frustrationScore >= 70 || "high".equalsIgnoreCase(frustrationLevel);
+        boolean isEscalationTrigger = isFrustrated || ("negative".equalsIgnoreCase(sentiment) && "high".equalsIgnoreCase(nlp.urgency() != null ? nlp.urgency().level() : "low"));
+
+        if (isEscalationTrigger && !"ESCALATED".equalsIgnoreCase(conv.getEscalationStatus())) {
+            conv.setEscalationStatus("RECOMMENDED");
+            conv.setEscalationReason("Customer frustration score is " + frustrationScore + " (" + frustrationLevel + ") on intent '" + intent + "'. AI recommends switching to a live agent.");
+            conversationRepository.save(conv);
+            return true;
+        } else if (!"ESCALATED".equalsIgnoreCase(conv.getEscalationStatus())) {
+            conv.setEscalationStatus("NONE");
+            conv.setEscalationReason(null);
+            conversationRepository.save(conv);
+            return false;
+        } else {
+            conversationRepository.save(conv);
+            return false;
         }
     }
 
@@ -386,6 +466,8 @@ public class ChatService {
             if ("USER".equalsIgnoreCase(msg.getRole())) {
                 historyMessagesToInclude.add(0, new UserMessage(msg.getContent()));
             } else if ("ASSISTANT".equalsIgnoreCase(msg.getRole())) {
+                historyMessagesToInclude.add(0, new AssistantMessage(msg.getContent()));
+            } else if ("AGENT".equalsIgnoreCase(msg.getRole())) {
                 historyMessagesToInclude.add(0, new AssistantMessage(msg.getContent()));
             }
         }

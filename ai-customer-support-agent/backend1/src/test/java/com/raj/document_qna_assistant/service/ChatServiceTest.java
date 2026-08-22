@@ -135,7 +135,7 @@ class ChatServiceTest {
     }
 
     @Test
-    void testChatStreamEmitsNlpAndTokens() {
+    void testChatStreamEmitsNlpEscalationAlertAndTokens() {
         UUID convId = UUID.randomUUID();
         Conversation conv = new Conversation(convId, "test-tenant", "Stream Title", Instant.now(), Instant.now());
         when(conversationRepository.findByIdAndTenantId(convId, "test-tenant")).thenReturn(Optional.of(conv));
@@ -175,18 +175,64 @@ class ChatServiceTest {
 
         List<ServerSentEvent<String>> events = stream.collectList().block();
         assertNotNull(events);
-        assertEquals(5, events.size());
+        // Events: nlp, escalation_alert (because score is 72 high), token 1, token 2, sources, done
+        assertEquals(6, events.size());
 
         assertEquals("nlp", events.get(0).event());
         assertTrue(events.get(0).data().contains("transaction_failed"));
 
-        assertEquals("token", events.get(1).event());
-        assertEquals("Hello! ", events.get(1).data());
+        assertEquals("escalation_alert", events.get(1).event());
+        assertTrue(events.get(1).data().contains("recommended"));
 
         assertEquals("token", events.get(2).event());
-        assertEquals("We are resolving your issue.", events.get(2).data());
+        assertEquals("Hello! ", events.get(2).data());
 
-        assertEquals("sources", events.get(3).event());
-        assertEquals("done", events.get(4).event());
+        assertEquals("token", events.get(3).event());
+        assertEquals("We are resolving your issue.", events.get(3).data());
+
+        assertEquals("sources", events.get(4).event());
+        assertEquals("done", events.get(5).event());
+    }
+
+    @Test
+    void testChatStreamInHumanTakeoverMode() {
+        UUID convId = UUID.randomUUID();
+        Conversation conv = new Conversation(convId, "test-tenant", "Human Mode Title", Instant.now(), Instant.now());
+        conv.setMode("HUMAN");
+        conv.setAssignedAgent("Supervisor Alex");
+        when(conversationRepository.findByIdAndTenantId(convId, "test-tenant")).thenReturn(Optional.of(conv));
+
+        NlpAnalysisResponse nlpResponse = new NlpAnalysisResponse(
+                true,
+                convId.toString(),
+                "msg_human",
+                new NlpDetails(
+                        new LabelConfidence("en", 0.99),
+                        new LabelConfidence("general", 0.80),
+                        new LabelConfidence("help", 0.85),
+                        new LabelConfidence("neutral", 0.80),
+                        new LabelConfidence("neutral", 0.80),
+                        new Frustration(20, "low"),
+                        new Urgency("low", 0.50),
+                        List.of()
+                ),
+                new ConversationAnalysis("stable")
+        );
+        when(nlpService.analyze(any(NlpAnalysisRequest.class))).thenReturn(nlpResponse);
+
+        ChatRequest request = new ChatRequest(convId, "Hello are you there?", "cust_123", null);
+        Flux<ServerSentEvent<String>> stream = chatService.chatStream(request);
+
+        List<ServerSentEvent<String>> events = stream.collectList().block();
+        assertNotNull(events);
+        assertEquals(3, events.size());
+
+        assertEquals("nlp", events.get(0).event());
+        assertEquals("human_agent_active", events.get(1).event());
+        assertEquals("done", events.get(2).event());
+
+        // LLM and Vector search should NOT be called
+        verify(chatModel, never()).stream(any(Prompt.class));
+        verify(retrievalService, never()).retrieveChunks(anyString(), anyString(), any(), anyInt(), anyDouble());
     }
 }
